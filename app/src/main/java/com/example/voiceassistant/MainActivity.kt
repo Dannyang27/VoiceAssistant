@@ -5,8 +5,10 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.RecognizerIntent
+import android.util.Log
 import android.widget.Toast
 import com.example.voiceassistant.Retrofit.RetrofitClient
+import com.example.voiceassistant.Util.VoiceFilterUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -18,8 +20,8 @@ class MainActivity : AppCompatActivity() {
 
         voiceButton.setOnClickListener {
             Toast.makeText(this, "Starting...", Toast.LENGTH_SHORT).show()
-            //getVoiceSpeech()
-            RetrofitClient.getWeather("barcelona")
+            getVoiceSpeech()
+            //RetrofitClient.getWeather("barcelona")
         }
     }
 
@@ -42,6 +44,10 @@ class MainActivity : AppCompatActivity() {
                     if (resultCode == Activity.RESULT_OK && data != null) {
                         val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                         voiceText.text = result[0].toString()
+                        val cityId = VoiceFilterUtils.getIdByCity(result[0].split(' '))
+                        if(cityId != -1){
+                            RetrofitClient.getWeatherById(cityId)
+                        }
                     }
             }
         }

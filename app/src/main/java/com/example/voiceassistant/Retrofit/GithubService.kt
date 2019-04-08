@@ -7,5 +7,8 @@ import retrofit2.http.Query
 
 interface GithubService {
     @GET("/data/2.5/weather")
-    fun getWeatherFromApi( @Query("q") location: String, @Query("appid") apiKey: String) : Call<Weather>
+    fun getWeatherByCityName( @Query("q") location: String, @Query("appid") apiKey: String) : Call<Weather>
+
+    @GET("/data/2.5/weather")
+    fun getWeatherByCityId( @Query("id") cityId: String, @Query("appid") apiKey: String) : Call<Weather>
 }

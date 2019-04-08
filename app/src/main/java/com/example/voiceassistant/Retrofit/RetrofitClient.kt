@@ -1,8 +1,6 @@
 package com.example.voiceassistant.Retrofit
 
 import android.util.Log
-import android.widget.Toast
-import com.example.voiceassistant.Model.Weather.Main
 import com.example.voiceassistant.Model.Weather.Weather
 import com.example.voiceassistant.Util.TempConverterUtils
 import retrofit2.Call
@@ -22,8 +20,8 @@ object RetrofitClient{
 
     val service = retrofit.create(GithubService::class.java)
 
-    fun getWeather( city: String){
-        val call = service.getWeatherFromApi(city, token)
+    fun getWeatherByName( city: String){
+        val call = service.getWeatherByCityName(city, token)
 
         call.enqueue(object : Callback<Weather>{
 
@@ -37,6 +35,25 @@ object RetrofitClient{
 
             override fun onFailure(call: Call<Weather>, t: Throwable) {
                 Log.d("Weather", "Could not get weather for city $city")
+            }
+        })
+    }
+
+    fun getWeatherById( cityId: Int){
+        val call = service.getWeatherByCityId(cityId.toString(), token)
+
+        call.enqueue(object : Callback<Weather>{
+
+            override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
+                val weather: Weather? = response.body()
+                weather.let {
+                    val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(it?.main?.temp!!))
+                    Log.d("Weather of $cityId", "$currentTemp")
+                }
+            }
+
+            override fun onFailure(call: Call<Weather>, t: Throwable) {
+                Log.d("Weather", "Could not get weather for city $cityId")
             }
         })
     }
