@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         voiceButton.setOnClickListener {
             Toast.makeText(this, "Starting...", Toast.LENGTH_SHORT).show()
             //getVoiceSpeech()
-            RetrofitClient.getWeather("London")
+            RetrofitClient.getWeather("barcelona")
         }
     }
 

@@ -12,8 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient{
     const val token = "b4139617dc083e665e03aa3f9d1d0064"
-    const val baseUrl = "https://openweathermap.org"
-    val unitType = "imperial"
+    const val baseUrl = "https://api.openweathermap.org"
 
     val retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
@@ -23,14 +22,14 @@ object RetrofitClient{
     val service = retrofit.create(GithubService::class.java)
 
     fun getWeather( city: String){
-        val call = service.getWeatherFromApi(city, token, unitType)
+        val call = service.getWeatherFromApi(city, token)
 
         call.enqueue(object : Callback<Weather>{
 
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
-                val weather: Main? = response.body()?.main
+                val weather: Weather? = response.body()
                 weather.let {
-                    Log.d("Weather", "${it?.temp}")
+                    Log.d("Weather of $city", "${it?.main?.temp}")
                 }
             }
 
