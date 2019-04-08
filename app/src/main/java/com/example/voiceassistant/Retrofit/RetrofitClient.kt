@@ -4,6 +4,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.voiceassistant.Model.Weather.Main
 import com.example.voiceassistant.Model.Weather.Weather
+import com.example.voiceassistant.Util.TempConverterUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,7 +30,8 @@ object RetrofitClient{
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
                 val weather: Weather? = response.body()
                 weather.let {
-                    Log.d("Weather of $city", "${it?.main?.temp}")
+                    val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(it?.main?.temp!!))
+                    Log.d("Weather of $city", "$currentTemp")
                 }
             }
 
