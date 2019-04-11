@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
                                              android:layout_height="match_parent">
 
-    <TextView
-            android:text="Voice Assistance"
+    <Button
+            android:id="@+id/voiceButton"
+            android:text="Click Me!"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="201dp"
-            tools:layout_editor_absoluteX="146dp" android:id="@+id/textView"/>
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="161dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="160dp" android:layout_marginTop="371dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="312dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 </android.support.constraint.ConstraintLayout>
