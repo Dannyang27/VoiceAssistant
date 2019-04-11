@@ -28,7 +28,7 @@ object VoiceFilterUtils{
     )
 
     fun getIdByCity(words: List<String>) : Int{
-    Log.d("Weather", words.toString())
+    Log.d("CurrentWeather", words.toString())
         for (word in words){
             for(key in cityHashmap.keys){
                 if(key == word){

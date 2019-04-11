@@ -1,8 +1,8 @@
-package com.example.voiceassistant.Model.Weather
+package com.example.voiceassistant.Model.Weather.CurrentWeather
 
 import com.google.gson.annotations.SerializedName
 
-data class Weather(
+data class CurrentWeather(
     @SerializedName("base")
     val base: String,
     @SerializedName("clouds")

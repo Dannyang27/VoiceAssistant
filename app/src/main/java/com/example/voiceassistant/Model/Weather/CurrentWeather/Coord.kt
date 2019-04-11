@@ -1,4 +1,4 @@
-package com.example.voiceassistant.Model.Weather
+package com.example.voiceassistant.Model.Weather.CurrentWeather
 
 import com.google.gson.annotations.SerializedName
 
