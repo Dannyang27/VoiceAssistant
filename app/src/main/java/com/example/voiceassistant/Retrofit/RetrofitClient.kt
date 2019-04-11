@@ -12,6 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient{
     const val token = "b4139617dc083e665e03aa3f9d1d0064"
     const val baseUrl = "https://api.openweathermap.org"
+    const val TAG = "Weather"
 //    http://api.openweathermap.org/data/2.5/forecast?q=London&appid=b4139617dc083e665e03aa3f9d1d0064
 //    https://api.openweathermap.org/data/2.5/forecast?q=london&appid=b4139617dc083e665e03aa3f9d1d0064
 
@@ -31,12 +32,12 @@ object RetrofitClient{
                 val currentWeather: CurrentWeather? = response.body()
                 currentWeather.let {
                     val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(it?.main?.temp!!))
-                    Log.d("CurrentWeather of $city", "$currentTemp")
+                    Log.d(TAG, "$currentTemp")
                 }
             }
 
             override fun onFailure(call: Call<CurrentWeather>, t: Throwable) {
-                Log.d("CurrentWeather", "Could not get weather for city $city")
+                Log.d(TAG, "Could not get weather for city $city")
             }
         })
     }
@@ -50,12 +51,12 @@ object RetrofitClient{
                 val currentWeather: CurrentWeather? = response.body()
                 currentWeather.let {
                     val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(it?.main?.temp!!))
-                    Log.d("CurrentWeather of $cityId", "$currentTemp")
+                    Log.d(TAG, "$currentTemp")
                 }
             }
 
             override fun onFailure(call: Call<CurrentWeather>, t: Throwable) {
-                Log.d("CurrentWeather", "Could not get weather for city $cityId")
+                Log.d(TAG, "Could not get weather for city $cityId")
             }
         })
     }

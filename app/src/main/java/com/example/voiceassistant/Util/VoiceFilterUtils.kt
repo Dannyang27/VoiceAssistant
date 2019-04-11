@@ -1,19 +1,9 @@
 package com.example.voiceassistant.Util
 
 import android.util.Log
+import com.example.voiceassistant.Retrofit.RetrofitClient
 
 object VoiceFilterUtils{
-//    val cityHashmap = mapOf(
-//        Pair(6356055, "Barcelona"),
-//        Pair(6058560, "Londres"),
-//        Pair(2518878, "Denia"),
-//        Pair(2509954, "Valencia"),
-//        Pair(6359304, "Madrid"),
-//        Pair(2759794, "Amsterdam"),
-//        Pair(1850147, "Tokio"),
-//        Pair(6455259, "Paris"),
-//        Pair(2950158, "Berlin")
-//        )
 
     val cityHashmap = mapOf(
         Pair("Barcelona", 6356055),
@@ -28,7 +18,7 @@ object VoiceFilterUtils{
     )
 
     fun getIdByCity(words: List<String>) : Int{
-    Log.d("CurrentWeather", words.toString())
+    Log.d(RetrofitClient.TAG, words.toString())
         for (word in words){
             for(key in cityHashmap.keys){
                 if(key == word){

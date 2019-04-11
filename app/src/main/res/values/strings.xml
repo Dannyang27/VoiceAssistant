@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">VoiceAssistant</string>
     <string name="voiceButton">SAY</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_voice">Voice Assistance</string>
+    <string name="title_weather">History</string>
+    <string name="todo">Things to do</string>
 </resources>
