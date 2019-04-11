@@ -6,13 +6,16 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.support.v4.app.Fragment
+import android.support.v7.widget.CardView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Retrofit.RetrofitClient
+import kotlinx.android.synthetic.main.voice_assistance_fragment.*
 
 class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
@@ -24,6 +27,9 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         val view = inflater.inflate(R.layout.voice_assistance_fragment, container, false)
 
         val voiceButton = view.findViewById<Button>(R.id.voiceButton)
+        val voiceText = view.findViewById<TextView>(R.id.voiceText)
+        val assistantText = view.findViewById<TextView>(R.id.assistantText)
+
         val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity)
         speechRecognizer.setRecognitionListener(this)
 
@@ -52,8 +58,8 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
     override fun onPartialResults(partialResults: Bundle?) {
         val partialText = partialResults?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-
-        Log.d(RetrofitClient.TAG, partialText.toString())
+        voiceText.text = partialText?.get(0).toString()
+//        Log.d(RetrofitClient.TAG, partialText.toString())
     }
 
     override fun onEvent(eventType: Int, params: Bundle?) {
@@ -62,10 +68,13 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
     override fun onBeginningOfSpeech() {
         Log.d(RetrofitClient.TAG, "onBeginningOfSpeech")
+        voiceText.text = ""
+
     }
 
     override fun onEndOfSpeech() {
         Log.d(RetrofitClient.TAG, "onEndOfSpeech")
+        assistantText.text = "The temperature is 18.7C"
     }
 
     override fun onResults(results: Bundle?) {
