@@ -45,6 +45,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
         textToSpeech = TextToSpeech(activity, this)
 
         voiceButton.setOnClickListener {
+            clearChat()
             speechRecognizer.startListening(recognizerIntent)
         }
 
@@ -83,8 +84,6 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
 
     override fun onBeginningOfSpeech() {
         Log.d(RetrofitClient.TAG, "onBeginningOfSpeech")
-        clearChat()
-
     }
 
     override fun onEndOfSpeech() {
