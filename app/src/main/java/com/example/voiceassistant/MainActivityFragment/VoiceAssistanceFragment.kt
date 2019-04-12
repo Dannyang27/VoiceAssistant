@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.speech.tts.TextToSpeech
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
 import android.util.Log
@@ -16,8 +17,11 @@ import android.widget.TextView
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Retrofit.RetrofitClient
 import kotlinx.android.synthetic.main.voice_assistance_fragment.*
+import java.util.*
 
-class VoiceAssistanceFragment : Fragment(), RecognitionListener{
+class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.OnInitListener{
+
+    lateinit var textToSpeech: TextToSpeech
 
     companion object {
         fun newInstance(): VoiceAssistanceFragment = VoiceAssistanceFragment()
@@ -27,8 +31,6 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         val view = inflater.inflate(R.layout.voice_assistance_fragment, container, false)
 
         val voiceButton = view.findViewById<Button>(R.id.voiceButton)
-        val voiceText = view.findViewById<TextView>(R.id.voiceText)
-        val assistantText = view.findViewById<TextView>(R.id.assistantText)
 
         val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity)
         speechRecognizer.setRecognitionListener(this)
@@ -39,11 +41,24 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en_US")
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
 
+        textToSpeech = TextToSpeech(activity, this)
+
         voiceButton.setOnClickListener {
             speechRecognizer.startListening(recognizerIntent)
         }
 
         return view
+    }
+
+    override fun onInit(status: Int) {
+        if(status == TextToSpeech.SUCCESS){
+            val result = textToSpeech.setLanguage(Locale.US)
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS","The Language specified is not supported!")
+            }
+        }else{
+            Log.d(RetrofitClient.TAG, "TTS init failed")
+        }
     }
 
     override fun onReadyForSpeech(params: Bundle?) {
@@ -59,7 +74,6 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
     override fun onPartialResults(partialResults: Bundle?) {
         val partialText = partialResults?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
         voiceText.text = partialText?.get(0).toString()
-//        Log.d(RetrofitClient.TAG, partialText.toString())
     }
 
     override fun onEvent(eventType: Int, params: Bundle?) {
@@ -68,13 +82,15 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
     override fun onBeginningOfSpeech() {
         Log.d(RetrofitClient.TAG, "onBeginningOfSpeech")
-        voiceText.text = ""
+        clearChat()
 
     }
 
     override fun onEndOfSpeech() {
         Log.d(RetrofitClient.TAG, "onEndOfSpeech")
-        assistantText.text = "The temperature is 18.7C"
+        val text = "thats hot"
+        assistantText.text = text
+        speak(text)
     }
 
     override fun onResults(results: Bundle?) {
@@ -94,6 +110,23 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
             SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> Log.d(RetrofitClient.TAG, "ERROR RECOGNIZER BUSY")
             SpeechRecognizer.ERROR_SERVER -> Log.d(RetrofitClient.TAG, "ERROR SERVER")
             SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> Log.d(RetrofitClient.TAG, "ERROR SPEECH TIMEOUT")
+        }
+    }
+
+    private fun clearChat(){
+        voiceText.text = ""
+        assistantText.text = ""
+    }
+
+    private fun speak(text : String){
+        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(textToSpeech != null){
+            textToSpeech.stop()
+            textToSpeech.shutdown()
         }
     }
 }
