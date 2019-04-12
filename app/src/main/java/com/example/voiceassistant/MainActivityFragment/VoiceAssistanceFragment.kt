@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Retrofit.RetrofitClient
@@ -30,7 +31,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.voice_assistance_fragment, container, false)
 
-        val voiceButton = view.findViewById<Button>(R.id.voiceButton)
+        val voiceButton = view.findViewById<ImageButton>(R.id.voiceButton)
 
         val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity)
         speechRecognizer.setRecognitionListener(this)
@@ -73,7 +74,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
 
     override fun onPartialResults(partialResults: Bundle?) {
         val partialText = partialResults?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-        voiceText.text = partialText?.get(0).toString()
+        voiceText.text = partialText?.get(0).toString().capitalize()
     }
 
     override fun onEvent(eventType: Int, params: Bundle?) {
@@ -88,14 +89,13 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
 
     override fun onEndOfSpeech() {
         Log.d(RetrofitClient.TAG, "onEndOfSpeech")
-        val text = "thats hot"
+        val text = "Celia stop farting please"
         assistantText.text = text
         speak(text)
     }
 
     override fun onResults(results: Bundle?) {
-        val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-        Log.d(RetrofitClient.TAG, text.toString())
+        Log.d(RetrofitClient.TAG, "onResults")
     }
 
     override fun onError(error: Int) {
@@ -124,9 +124,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
 
     override fun onDestroy() {
         super.onDestroy()
-        if(textToSpeech != null){
-            textToSpeech.stop()
-            textToSpeech.shutdown()
-        }
+        textToSpeech.stop()
+        textToSpeech.shutdown()
     }
 }
