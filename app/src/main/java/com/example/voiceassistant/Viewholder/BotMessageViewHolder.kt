@@ -6,5 +6,5 @@ import android.widget.TextView
 import com.example.voiceassistant.R
 
 class BotMessageViewHolder(view: View) : RecyclerView.ViewHolder(view){
-    val botText = view.findViewById<TextView>(R.id.bot_message_body)
+    val botText = view.findViewById(R.id.bot_message_body) as? TextView
 }

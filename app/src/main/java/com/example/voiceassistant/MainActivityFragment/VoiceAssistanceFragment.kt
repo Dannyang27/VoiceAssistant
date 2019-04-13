@@ -147,7 +147,9 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
     private fun loadMessages(): MutableList<Message>{
         val messages = mutableListOf<Message>()
         messages.add(Message(1, Sender.USER,"Hello Bot"))
-        messages.add(Message(2, Sender.USER,"How are you"))
+        messages.add(Message(2, Sender.BOT,"Hi Danny, what can I do for you"))
+        messages.add(Message(3, Sender.USER,"Tell me the weather, please"))
+        messages.add(Message(4, Sender.BOT,"Current temperature is 16 celsius"))
 
         return messages
     }
