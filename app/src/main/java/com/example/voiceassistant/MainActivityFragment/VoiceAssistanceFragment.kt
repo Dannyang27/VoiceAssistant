@@ -8,6 +8,8 @@ import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +17,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import com.example.voiceassistant.Adapter.ChatAdapter
+import com.example.voiceassistant.Enums.Sender
+import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Retrofit.RetrofitClient
 import kotlinx.android.synthetic.main.voice_assistance_fragment.*
@@ -23,15 +28,29 @@ import java.util.*
 class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.OnInitListener{
 
     lateinit var textToSpeech: TextToSpeech
+    lateinit var messagesList: RecyclerView
+    private lateinit var viewManager : RecyclerView.LayoutManager
+
 
     companion object {
         fun newInstance(): VoiceAssistanceFragment = VoiceAssistanceFragment()
+        lateinit var viewAdapter : RecyclerView.Adapter<*>
     }
+    lateinit var viewAdapter : RecyclerView.Adapter<*>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.voice_assistance_fragment, container, false)
 
         val voiceButton = view.findViewById<ImageButton>(R.id.voiceButton)
+
+        viewManager = LinearLayoutManager(activity)
+        viewAdapter = ChatAdapter(loadMessages())
+
+        messagesList = view.findViewById<RecyclerView>(R.id.chatList).apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
 
         val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity)
         speechRecognizer.setRecognitionListener(this)
@@ -45,8 +64,8 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
         textToSpeech = TextToSpeech(activity, this)
 
         voiceButton.setOnClickListener {
-            clearChat()
-            speechRecognizer.startListening(recognizerIntent)
+//            clearChat()
+            //speechRecognizer.startListening(recognizerIntent)
         }
 
         return view
@@ -75,7 +94,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
 
     override fun onPartialResults(partialResults: Bundle?) {
         val partialText = partialResults?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-        voiceText.text = partialText?.get(0).toString().capitalize()
+//        voiceText.text = partialText?.get(0).toString().capitalize()
     }
 
     override fun onEvent(eventType: Int, params: Bundle?) {
@@ -88,9 +107,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
 
     override fun onEndOfSpeech() {
         Log.d(RetrofitClient.TAG, "onEndOfSpeech")
-        val text = "Celia stop farting please"
-        assistantText.text = text
-        speak(text)
+//        speak(text)
     }
 
     override fun onResults(results: Bundle?) {
@@ -113,8 +130,8 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
     }
 
     private fun clearChat(){
-        voiceText.text = ""
-        assistantText.text = ""
+//        voiceText.text = ""
+//        assistantText.text = ""
     }
 
     private fun speak(text : String){
@@ -125,5 +142,13 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
         super.onDestroy()
         textToSpeech.stop()
         textToSpeech.shutdown()
+    }
+
+    private fun loadMessages(): MutableList<Message>{
+        val messages = mutableListOf<Message>()
+        messages.add(Message(1, Sender.USER,"Hello Bot"))
+        messages.add(Message(2, Sender.USER,"How are you"))
+
+        return messages
     }
 }
