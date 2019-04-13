@@ -30,6 +30,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
     lateinit var textToSpeech: TextToSpeech
     lateinit var messagesList: RecyclerView
     private lateinit var viewManager : RecyclerView.LayoutManager
+    private val messages = mutableListOf<Message>()
 
 
     companion object {
@@ -43,8 +44,11 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
 
         val voiceButton = view.findViewById<ImageButton>(R.id.voiceButton)
 
+        // Dummy data
+        messages.addAll(loadMessages())
+
         viewManager = LinearLayoutManager(activity)
-        viewAdapter = ChatAdapter(loadMessages())
+        viewAdapter = ChatAdapter(messages)
 
         messagesList = view.findViewById<RecyclerView>(R.id.chatList).apply {
             setHasFixedSize(true)
@@ -65,7 +69,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
 
         voiceButton.setOnClickListener {
 //            clearChat()
-            //speechRecognizer.startListening(recognizerIntent)
+            speechRecognizer.startListening(recognizerIntent)
         }
 
         return view
@@ -112,6 +116,10 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
 
     override fun onResults(results: Bundle?) {
         Log.d(RetrofitClient.TAG, "onResults")
+        val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+        val message = Message(messages.size,Sender.USER,text?.get(0).toString().capitalize())
+        messages.add(message)
+        viewAdapter.notifyDataSetChanged()
     }
 
     override fun onError(error: Int) {
@@ -129,11 +137,6 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
         }
     }
 
-    private fun clearChat(){
-//        voiceText.text = ""
-//        assistantText.text = ""
-    }
-
     private fun speak(text : String){
         textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
     }
@@ -146,10 +149,10 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
 
     private fun loadMessages(): MutableList<Message>{
         val messages = mutableListOf<Message>()
-        messages.add(Message(1, Sender.USER,"Hello Bot"))
-        messages.add(Message(2, Sender.BOT,"Hi Danny, what can I do for you"))
-        messages.add(Message(3, Sender.USER,"Tell me the weather, please"))
-        messages.add(Message(4, Sender.BOT,"Current temperature is 16 celsius"))
+        messages.add(Message(0, Sender.USER,"Hello Bot"))
+        messages.add(Message(1, Sender.BOT,"Hi Danny, what can I do for you"))
+        messages.add(Message(2, Sender.USER,"Tell me the weather, please"))
+        messages.add(Message(3, Sender.BOT,"Current temperature is 16 celsius"))
 
         return messages
     }
