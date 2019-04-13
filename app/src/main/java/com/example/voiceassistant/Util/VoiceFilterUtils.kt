@@ -1,9 +1,12 @@
 package com.example.voiceassistant.Util
 
 import android.util.Log
+import com.example.voiceassistant.Enums.Sender
+import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
+import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.Retrofit.RetrofitClient
 
-object VoiceFilterUtils{
+object VoiceController{
 
     val cityHashmap = mapOf(
         Pair("Barcelona", 6356055),
@@ -28,5 +31,12 @@ object VoiceFilterUtils{
         }
 
         return -1
+    }
+
+    fun processVoiceInput(voiceInput: String): String{
+        // Create string and add to VoiceAssistaceFragment.Adapter
+        VoiceAssistanceFragment.messages.add(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, "Sure!"))
+//        VoiceAssistanceFragment.viewAdapter.notifyDataSetChanged()
+        return "Sure"
     }
 }

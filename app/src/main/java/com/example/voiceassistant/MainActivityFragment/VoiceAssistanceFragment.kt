@@ -22,6 +22,7 @@ import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Retrofit.RetrofitClient
+import com.example.voiceassistant.Util.VoiceController
 import kotlinx.android.synthetic.main.voice_assistance_fragment.*
 import java.util.*
 
@@ -30,11 +31,11 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
     lateinit var textToSpeech: TextToSpeech
     lateinit var messagesList: RecyclerView
     private lateinit var viewManager : RecyclerView.LayoutManager
-    private val messages = mutableListOf<Message>()
 
 
     companion object {
         fun newInstance(): VoiceAssistanceFragment = VoiceAssistanceFragment()
+        val messages = mutableListOf<Message>()
         lateinit var viewAdapter : RecyclerView.Adapter<*>
     }
     lateinit var viewAdapter : RecyclerView.Adapter<*>
@@ -68,7 +69,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
         textToSpeech = TextToSpeech(activity, this)
 
         voiceButton.setOnClickListener {
-//            clearChat()
+            Log.d(RetrofitClient.TAG, messages.toString())
             speechRecognizer.startListening(recognizerIntent)
         }
 
@@ -97,8 +98,6 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
     }
 
     override fun onPartialResults(partialResults: Bundle?) {
-        val partialText = partialResults?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-//        voiceText.text = partialText?.get(0).toString().capitalize()
     }
 
     override fun onEvent(eventType: Int, params: Bundle?) {
@@ -111,15 +110,16 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
 
     override fun onEndOfSpeech() {
         Log.d(RetrofitClient.TAG, "onEndOfSpeech")
-//        speak(text)
     }
 
     override fun onResults(results: Bundle?) {
         Log.d(RetrofitClient.TAG, "onResults")
-        val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-        val message = Message(messages.size,Sender.USER,text?.get(0).toString().capitalize())
+        val voiceInput = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.get(0).toString().capitalize()
+        val message = Message(messages.size, Sender.USER, voiceInput)
         messages.add(message)
         viewAdapter.notifyDataSetChanged()
+
+        speak(VoiceController.processVoiceInput(voiceInput))
     }
 
     override fun onError(error: Int) {
