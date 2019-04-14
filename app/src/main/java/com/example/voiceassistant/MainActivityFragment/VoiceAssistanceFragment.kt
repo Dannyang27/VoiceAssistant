@@ -46,7 +46,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
         val voiceButton = view.findViewById<ImageButton>(R.id.voiceButton)
 
         // Dummy data
-        messages.addAll(loadMessages())
+//        messages.addAll(loadMessages())
 
         viewManager = LinearLayoutManager(activity)
         viewAdapter = ChatAdapter(messages)
@@ -117,9 +117,9 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
         val voiceInput = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.get(0).toString().capitalize()
         val message = Message(messages.size, Sender.USER, voiceInput)
         messages.add(message)
-        viewAdapter.notifyDataSetChanged()
 
         speak(VoiceController.processVoiceInput(voiceInput))
+        viewAdapter.notifyDataSetChanged()
     }
 
     override fun onError(error: Int) {
