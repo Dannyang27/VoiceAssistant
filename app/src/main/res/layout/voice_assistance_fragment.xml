@@ -8,7 +8,7 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"
+            android:layout_weight="12"
             android:orientation="vertical">
 
         <android.support.v7.widget.RecyclerView
@@ -16,21 +16,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
     </LinearLayout>
-
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
 
         <ImageButton
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:scaleType="fitXY"
-                android:padding="20dp"
-                app:srcCompat="@drawable/microphone"
                 android:id="@+id/voiceButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:scaleType="fitXY"
+                android:padding="10dp"
+                app:srcCompat="@drawable/microphone_svg"
                 android:layout_centerInParent="true"
                 android:elevation="5dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/shape"/>
     </RelativeLayout>
 </LinearLayout>
