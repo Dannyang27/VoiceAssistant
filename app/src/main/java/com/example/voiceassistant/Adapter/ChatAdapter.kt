@@ -1,14 +1,12 @@
 package com.example.voiceassistant.Adapter
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.R
-import com.example.voiceassistant.Retrofit.RetrofitClient
 import com.example.voiceassistant.Viewholder.BotMessageViewHolder
 import com.example.voiceassistant.Viewholder.UserMessageViewHolder
 

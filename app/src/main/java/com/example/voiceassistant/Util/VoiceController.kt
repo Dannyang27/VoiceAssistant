@@ -13,6 +13,7 @@ object VoiceController{
     const val LOCAL_WEATHER_TOMORROW = "TELL ME THE WEATHER FOR TOMORROW"
     const val IS_IT_COLD_OUTSIDE = "IS IT COLD OUTSIDE"
     const val IS_IT_HOT_OUTSIDE = "IS IT HOT OUTSIDE"
+    const val CITY_WEATHER = "TELL WE THE WEATHER IN"
     val RAINING = listOf("SHOULD I GET AN UMBRELLA", "IS IT RAINING")
 
     val cityHashmap = mapOf(
@@ -46,6 +47,18 @@ object VoiceController{
 //        VoiceAssistanceFragment.viewAdapter.notifyDataSetChanged()
 
         var response = ""
+        Log.d(RetrofitClient.TAG, voiceInput.toUpperCase())
+        Log.d(RetrofitClient.TAG, CITY_WEATHER)
+
+
+        if( voiceInput.toUpperCase() in CITY_WEATHER){
+            Log.d(RetrofitClient.TAG, "SPLIT:" +  voiceInput.split(" ").toString())
+            val city = voiceInput.split(" ").get(5)
+            RetrofitClient.getWeatherByName(city, "temperature")
+
+            return response
+
+        }
         when(voiceInput.toUpperCase()){
             in HELLO -> {
                 response = "Hi Danny, I missed you"
@@ -72,7 +85,7 @@ object VoiceController{
             else -> response = "Sorry, I did not get it"
 
         }
-        VoiceAssistanceFragment.messages.add(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
+        VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
 
         return response
     }

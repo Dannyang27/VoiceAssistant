@@ -1,6 +1,9 @@
 package com.example.voiceassistant.Retrofit
 
 import android.util.Log
+import com.example.voiceassistant.Enums.Sender
+import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
+import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.Model.Weather.CurrentWeather.CurrentWeather
 import com.example.voiceassistant.Util.TempConverterUtils
 import retrofit2.Call
@@ -23,7 +26,7 @@ object RetrofitClient{
 
     val service = retrofit.create(GithubService::class.java)
 
-    fun getWeatherByName( city: String){
+    fun getWeatherByName( city: String, property: String = ""){
         val call = service.getWeatherByCityName(city, token)
 
         call.enqueue(object : Callback<CurrentWeather>{
@@ -33,6 +36,24 @@ object RetrofitClient{
                 currentWeather.let {
                     val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(it?.main?.temp!!))
                     Log.d(TAG, "$currentTemp")
+
+                    var response = ""
+                    when(property){
+                        "temperature" -> {
+                            val celsius  = "%.1f".format(TempConverterUtils.convertKelvinToCelsius(it.main.temp))
+                            response = "The temperature in $city is $celsius celsius"
+                        }
+                        "humidity" -> {
+                            response = "The temperature in $city is ${it.main.humidity}%"
+
+                        }
+                        "pressure" -> {
+                            response = "The temperature in $city is ${it.main.pressure} pascal"
+                        }
+                        else -> response = "Sorry, I did not get it"
+                    }
+
+                    VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
                 }
             }
 

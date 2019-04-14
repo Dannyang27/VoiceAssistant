@@ -1,29 +1,24 @@
 package com.example.voiceassistant.MainActivityFragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognitionListener
-import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
 import android.support.v4.app.Fragment
-import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
-import android.widget.TextView
 import com.example.voiceassistant.Adapter.ChatAdapter
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Retrofit.RetrofitClient
 import com.example.voiceassistant.Util.VoiceController
-import kotlinx.android.synthetic.main.voice_assistance_fragment.*
+import com.example.voiceassistant.Util.VoiceRecognition
 import java.util.*
 
 class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.OnInitListener{
@@ -33,20 +28,23 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
 
 
     companion object {
-        fun newInstance(): VoiceAssistanceFragment = VoiceAssistanceFragment()
         val messages = mutableListOf<Message>()
         lateinit var messagesList: RecyclerView
         lateinit var viewAdapter : RecyclerView.Adapter<*>
+
+        fun newInstance(): VoiceAssistanceFragment = VoiceAssistanceFragment()
+        fun addMessage(message : Message){
+            messages.add(message)
+            viewAdapter.notifyDataSetChanged()
+            messagesList.scrollToPosition(viewAdapter.itemCount - 1)
+
+        }
     }
-    lateinit var viewAdapter : RecyclerView.Adapter<*>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.voice_assistance_fragment, container, false)
 
         val voiceButton = view.findViewById<ImageButton>(R.id.voiceButton)
-
-        // Dummy data
-//        messages.addAll(loadMessages())
 
         viewManager = LinearLayoutManager(activity)
         viewAdapter = ChatAdapter(messages)
@@ -60,11 +58,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
         val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity)
         speechRecognizer.setRecognitionListener(this)
 
-        val recognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "en_US")
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en_US")
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
+        val recognizerIntent = VoiceRecognition().createSpeechRecognizer()
 
         textToSpeech = TextToSpeech(activity, this)
 
@@ -116,11 +110,9 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
         Log.d(RetrofitClient.TAG, "onResults")
         val voiceInput = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.get(0).toString().capitalize()
         val message = Message(messages.size, Sender.USER, voiceInput)
-        messages.add(message)
 
+        addMessage(message)
         speak(VoiceController.processVoiceInput(voiceInput))
-        viewAdapter.notifyDataSetChanged()
-        VoiceAssistanceFragment.messagesList.scrollToPosition(viewAdapter.itemCount - 1)
     }
 
     override fun onError(error: Int) {
@@ -146,15 +138,5 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
         super.onDestroy()
         textToSpeech.stop()
         textToSpeech.shutdown()
-    }
-
-    private fun loadMessages(): MutableList<Message>{
-        val messages = mutableListOf<Message>()
-        messages.add(Message(0, Sender.USER,"Hello Bot"))
-        messages.add(Message(1, Sender.BOT,"Hi Danny, what can I do for you"))
-        messages.add(Message(2, Sender.USER,"Tell me the weather, please"))
-        messages.add(Message(3, Sender.BOT,"Current temperature is 16 celsius"))
-
-        return messages
     }
 }
