@@ -29,13 +29,13 @@ import java.util.*
 class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.OnInitListener{
 
     lateinit var textToSpeech: TextToSpeech
-    lateinit var messagesList: RecyclerView
     private lateinit var viewManager : RecyclerView.LayoutManager
 
 
     companion object {
         fun newInstance(): VoiceAssistanceFragment = VoiceAssistanceFragment()
         val messages = mutableListOf<Message>()
+        lateinit var messagesList: RecyclerView
         lateinit var viewAdapter : RecyclerView.Adapter<*>
     }
     lateinit var viewAdapter : RecyclerView.Adapter<*>
@@ -120,6 +120,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
 
         speak(VoiceController.processVoiceInput(voiceInput))
         viewAdapter.notifyDataSetChanged()
+        VoiceAssistanceFragment.messagesList.scrollToPosition(viewAdapter.itemCount - 1)
     }
 
     override fun onError(error: Int) {
