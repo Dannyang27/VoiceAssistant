@@ -8,13 +8,13 @@ import com.example.voiceassistant.Retrofit.RetrofitClient
 
 object VoiceController{
 
-    val HELLO = listOf("HI", "HELLO", "SUP")
-    const val LOCAL_WEATHER = "TELL ME THE WEATHER"
-    const val LOCAL_WEATHER_TOMORROW = "TELL ME THE WEATHER FOR TOMORROW"
-    const val IS_IT_COLD_OUTSIDE = "IS IT COLD OUTSIDE"
-    const val IS_IT_HOT_OUTSIDE = "IS IT HOT OUTSIDE"
-    const val CITY_WEATHER = "TELL WE THE WEATHER IN"
-    val RAINING = listOf("SHOULD I GET AN UMBRELLA", "IS IT RAINING")
+    private val HELLO = listOf("HI", "HELLO", "SUP")
+    private const val LOCAL_WEATHER = "TELL ME THE WEATHER"
+    private const val LOCAL_WEATHER_TOMORROW = "TELL ME THE WEATHER FOR TOMORROW"
+    private const val IS_IT_COLD_OUTSIDE = "IS IT COLD OUTSIDE"
+    private const val IS_IT_HOT_OUTSIDE = "IS IT HOT OUTSIDE"
+    private const val CITY_WEATHER = "TELL WE THE WEATHER IN"
+    private val RAINING = listOf("SHOULD I GET AN UMBRELLA", "IS IT RAINING")
 
     fun processVoiceInput(voiceInput: String): String{
 
