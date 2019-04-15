@@ -63,6 +63,13 @@ object RetrofitClient{
         })
     }
 
+    fun getWeatherByNameSync( city: String ){
+        val call = service.getWeatherByCityName(city, token)
+
+        //val temp = call.execute().body()?.main?.temp
+        //Log.d(TAG, "Temp: $temp")
+    }
+
     fun getWeatherById( cityId: Int){
         val call = service.getWeatherByCityId(cityId.toString(), token)
 

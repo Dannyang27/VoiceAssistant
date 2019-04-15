@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import com.example.voiceassistant.Adapter.ChatAdapter
 import com.example.voiceassistant.Enums.Sender
+import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Retrofit.RetrofitClient
@@ -21,10 +22,10 @@ import com.example.voiceassistant.Util.VoiceController
 import com.example.voiceassistant.Util.VoiceRecognition
 import java.util.*
 
-class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.OnInitListener{
+class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
-    lateinit var textToSpeech: TextToSpeech
     private lateinit var viewManager : RecyclerView.LayoutManager
+    private lateinit var googleSpeaker: GoogleSpeaker
 
 
     companion object {
@@ -34,10 +35,10 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
 
         fun newInstance(): VoiceAssistanceFragment = VoiceAssistanceFragment()
         fun addMessage(message : Message){
+            RetrofitClient.getWeatherByNameSync("London")
             messages.add(message)
             viewAdapter.notifyDataSetChanged()
             messagesList.scrollToPosition(viewAdapter.itemCount - 1)
-
         }
     }
 
@@ -48,6 +49,8 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
 
         viewManager = LinearLayoutManager(activity)
         viewAdapter = ChatAdapter(messages)
+        googleSpeaker = GoogleSpeaker(activity?.applicationContext!!)
+
 
         messagesList = view.findViewById<RecyclerView>(R.id.chatList).apply {
             setHasFixedSize(true)
@@ -60,25 +63,12 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
 
         val recognizerIntent = VoiceRecognition().createSpeechRecognizer()
 
-        textToSpeech = TextToSpeech(activity, this)
-
         voiceButton.setOnClickListener {
             Log.d(RetrofitClient.TAG, messages.toString())
             speechRecognizer.startListening(recognizerIntent)
         }
 
         return view
-    }
-
-    override fun onInit(status: Int) {
-        if(status == TextToSpeech.SUCCESS){
-            val result = textToSpeech.setLanguage(Locale.US)
-            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                Log.e("TTS","The Language specified is not supported!")
-            }
-        }else{
-            Log.d(RetrofitClient.TAG, "TTS init failed")
-        }
     }
 
     override fun onReadyForSpeech(params: Bundle?) {
@@ -112,7 +102,9 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
         val message = Message(messages.size, Sender.USER, voiceInput)
 
         addMessage(message)
-        speak(VoiceController.processVoiceInput(voiceInput))
+        val voiceText = VoiceController.processVoiceInput(voiceInput)
+
+        googleSpeaker.speak(voiceText)
     }
 
     override fun onError(error: Int) {
@@ -130,13 +122,8 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener, TextToSpeech.On
         }
     }
 
-    private fun speak(text : String){
-        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        textToSpeech.stop()
-        textToSpeech.shutdown()
+        googleSpeaker.destroy()
     }
 }

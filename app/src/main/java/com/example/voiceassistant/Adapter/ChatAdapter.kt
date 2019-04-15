@@ -35,6 +35,7 @@ class ChatAdapter( val messages: MutableList<Message>) : RecyclerView.Adapter<Re
                 return BotMessageViewHolder(view)
             }
         }
+        // TODO dont know what to return, default one
         return UserMessageViewHolder(view!!)
     }
 
