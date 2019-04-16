@@ -72,11 +72,12 @@ object RetrofitClient{
                     }
 
                     googleSpeaker.speak(response)
+
                     VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
 
                     if( property == "all"){
-                        VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, TimeUtils.getCurrentTime(),
-                            "", MessageTypes.WEATHER_CARD, currentWeather))
+                        VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, "",
+                            TimeUtils.getCurrentTime(), MessageTypes.WEATHER_CARD, currentWeather))
 
                         val weatherPojo = WeatherPOJO(city, currentTemp.toDouble(), humidity.toDouble(),
                             "Sunny", TimeUtils.getCurrentTime(), "sun", query)
