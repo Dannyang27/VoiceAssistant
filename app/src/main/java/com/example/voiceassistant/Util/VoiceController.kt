@@ -40,7 +40,7 @@ class VoiceController(ctx: Context){
                 Log.d(RetrofitClient.TAG, "cityWeather size ${cityWeather.size}")
                 val city = text.drop(5).joinToString(" ")
                 Log.d(RetrofitClient.TAG, city)
-                RetrofitClient.getWeatherByName(city)
+                RetrofitClient.getWeatherByName(city, voiceInput)
 
             }else{
                 val response = "Sorry, could not get the city"
@@ -68,11 +68,11 @@ class VoiceController(ctx: Context){
             }
 
             TEMPERATURE -> {
-                RetrofitClient.getWeatherByName(lastLocation, "temperature")
+                RetrofitClient.getWeatherByName(lastLocation, voiceInput, "temperature")
             }
 
             HUMIDITY -> {
-                RetrofitClient.getWeatherByName(lastLocation, "humidity")
+                RetrofitClient.getWeatherByName(lastLocation, voiceInput, "humidity")
             }
 
             in RAINING -> {
@@ -82,7 +82,7 @@ class VoiceController(ctx: Context){
             }
 
             LOCAL_WEATHER -> {
-                RetrofitClient.getWeatherByName(lastLocation)
+                RetrofitClient.getWeatherByName(lastLocation, voiceInput)
             }
 
             LOCAL_WEATHER_TOMORROW -> {

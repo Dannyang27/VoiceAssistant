@@ -15,10 +15,12 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import com.example.voiceassistant.Adapter.ChatAdapter
 import com.example.voiceassistant.Database.WeatherRepository
+import com.example.voiceassistant.Database.database
 import com.example.voiceassistant.Enums.MessageTypes
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
+import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Retrofit.RetrofitClient
 import com.example.voiceassistant.Util.VoiceController
@@ -51,10 +53,6 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         val voiceButton = view.findViewById<ImageButton>(R.id.voiceButton)
         voiceContext = activity?.applicationContext!!
         voiceController = VoiceController(voiceContext)
-
-        val list = WeatherRepository(context!!).findAll()
-        Log.d(RetrofitClient.TAG, list.toString())
-
 
         viewManager = LinearLayoutManager(activity)
         viewAdapter = ChatAdapter(messages)

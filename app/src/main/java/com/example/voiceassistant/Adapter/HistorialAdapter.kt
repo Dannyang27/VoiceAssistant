@@ -7,15 +7,21 @@ import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Viewholder.WeatherHistorialViewHolder
 
-class HistorialAdapter(val historial: MutableList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class HistorialAdapter(val historial: MutableList<WeatherPOJO>) : RecyclerView.Adapter<WeatherHistorialViewHolder>(){
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherHistorialViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.weather_historial_viewholder, parent, false)
         return WeatherHistorialViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: WeatherHistorialViewHolder, position: Int) {
+        val weather = historial[position]
 
+        holder.query.text = weather.query
+        holder.city.text = weather.city
+        holder.temperature.text = weather.temp.toString()
+        holder.humidity.text = weather.humidity.toString()
+        holder.date.text = weather.date
     }
 
     override fun getItemCount(): Int = historial.size

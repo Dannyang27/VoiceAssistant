@@ -4,10 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.Retrofit.RetrofitClient
-import org.jetbrains.anko.db.MapRowParser
-import org.jetbrains.anko.db.insert
-import org.jetbrains.anko.db.select
-import org.jetbrains.anko.db.update
+import org.jetbrains.anko.db.*
 
 class WeatherRepository(val context: Context){
 
@@ -69,8 +66,12 @@ class WeatherRepository(val context: Context){
         Log.d(RetrofitClient.TAG, "Update result code is $updateResult")
     }
 
-    fun delete(id : String) = context.database.use {
-        //        delete(Movie.TABLE_NAME, whereClause = "title = How to Train Your Dragon: The Hidden World")
+    fun deleteByCity(city : String) = context.database.use {
+         delete(WeatherPOJO.TABLE_NAME,  "city={city}", "city" to city)
+    }
+
+    fun deleteById(id : String) = context.database.use {
+        delete(WeatherPOJO.TABLE_NAME,  "id={id}", "id" to id)
     }
 }
 

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.voiceassistant.Adapter.HistorialAdapter
+import com.example.voiceassistant.Database.WeatherRepository
 import com.example.voiceassistant.R
 
 class WeatherHistoryFragment : Fragment(){
@@ -24,7 +25,7 @@ class WeatherHistoryFragment : Fragment(){
         val view = inflater.inflate(R.layout.history_fragment, container, false)
 
         viewManager = LinearLayoutManager(activity)
-        viewAdapter = HistorialAdapter(mutableListOf("1", "2", "3","1", "2", "3","1", "2", "3"))
+        viewAdapter = HistorialAdapter(WeatherRepository(activity?.applicationContext!!).findAll())
 
         historialRV = view.findViewById<RecyclerView>(R.id.weather_history_rv).apply {
             setHasFixedSize(true)

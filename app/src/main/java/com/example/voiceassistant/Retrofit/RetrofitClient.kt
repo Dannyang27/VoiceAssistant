@@ -11,6 +11,7 @@ import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.Model.Weather.CurrentWeather.CurrentWeather
 import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.Util.TempConverterUtils
+import com.example.voiceassistant.Util.TimeUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,7 +34,7 @@ object RetrofitClient{
 
     val service = retrofit.create(GithubService::class.java)
 
-    fun getWeatherByName( city: String, property: String = "all"){
+    fun getWeatherByName( city: String, query: String, property: String = "all"){
         val call = service.getWeatherByCityName(city, token)
 
         call.enqueue(object : Callback<CurrentWeather>{
@@ -75,8 +76,10 @@ object RetrofitClient{
                     if( property == "all"){
                         VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT,
                             "", MessageTypes.WEATHER_CARD, currentWeather))
-                        val weatherPojo = WeatherPOJO(3, city, currentTemp.toDouble(), humidity.toDouble(),
-                            "Sunny", "27/09/2019 11:11", "sun", "Tell me the weather in Barcelona")
+
+                        val nextId = WeatherRepository(VoiceAssistanceFragment.voiceContext).findAll().size + 1
+                        val weatherPojo = WeatherPOJO(nextId, city, currentTemp.toDouble(), humidity.toDouble(),
+                            "Sunny", TimeUtils.getCurrentTime(), "sun", query)
 
                         WeatherRepository(VoiceAssistanceFragment.voiceContext).insert(weatherPojo)
                         Log.d(TAG, "Inserted $weatherPojo")
