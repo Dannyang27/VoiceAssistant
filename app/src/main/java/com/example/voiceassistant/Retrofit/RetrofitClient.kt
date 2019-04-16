@@ -1,11 +1,14 @@
 package com.example.voiceassistant.Retrofit
 
 import android.util.Log
+import com.example.voiceassistant.Enums.MessageTypes
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
+import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.Model.Weather.CurrentWeather.CurrentWeather
 import com.example.voiceassistant.Util.TempConverterUtils
+import com.example.voiceassistant.Util.VoiceController
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,6 +19,7 @@ object RetrofitClient{
     const val token = "b4139617dc083e665e03aa3f9d1d0064"
     const val baseUrl = "https://api.openweathermap.org"
     const val TAG = "Weather"
+    val googleSpeaker = GoogleSpeaker(VoiceAssistanceFragment.voiceContext)
 //    http://api.openweathermap.org/data/2.5/forecast?q=London&appid=b4139617dc083e665e03aa3f9d1d0064
 //    https://api.openweathermap.org/data/2.5/forecast?q=london&appid=b4139617dc083e665e03aa3f9d1d0064
 
@@ -26,7 +30,7 @@ object RetrofitClient{
 
     val service = retrofit.create(GithubService::class.java)
 
-    fun getWeatherByName( city: String, property: String = ""){
+    fun getWeatherByName( city: String, property: String = "all"){
         val call = service.getWeatherByCityName(city, token)
 
         call.enqueue(object : Callback<CurrentWeather>{
@@ -35,16 +39,19 @@ object RetrofitClient{
                 val currentWeather: CurrentWeather? = response.body()
                 currentWeather.let {
                     val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(it?.main?.temp!!))
+                    val humidity = it.main.humidity
                     Log.d(TAG, "$currentTemp")
 
                     var response = ""
                     when(property){
+                        "all" -> {
+                            response = "Sure, the temperature is $currentTemp celsius and $humidity % of humidity"
+                        }
                         "temperature" -> {
-                            val celsius  = "%.1f".format(TempConverterUtils.convertKelvinToCelsius(it.main.temp))
-                            response = "The temperature in $city is $celsius celsius"
+                            response = "The temperature in $city is $currentTemp celsius"
                         }
                         "humidity" -> {
-                            response = "The temperature in $city is ${it.main.humidity}%"
+                            response = "The humidity in $city is $humidity %"
 
                         }
                         "pressure" -> {
@@ -53,7 +60,13 @@ object RetrofitClient{
                         else -> response = "Sorry, I did not get it"
                     }
 
+                    googleSpeaker.speak(response)
                     VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
+
+                    if( property == "all"){
+                        VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT,
+                            "", MessageTypes.WEATHER_CARD, currentWeather))
+                    }
                 }
             }
 
@@ -61,13 +74,6 @@ object RetrofitClient{
                 Log.d(TAG, "Could not get weather for city $city")
             }
         })
-    }
-
-    fun getWeatherByNameSync( city: String ){
-        val call = service.getWeatherByCityName(city, token)
-
-        //val temp = call.execute().body()?.main?.temp
-        //Log.d(TAG, "Temp: $temp")
     }
 
     fun getWeatherById( cityId: Int){

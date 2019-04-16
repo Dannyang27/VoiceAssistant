@@ -8,6 +8,8 @@ import com.example.voiceassistant.Enums.MessageTypes
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.R
+import com.example.voiceassistant.Util.TempConverterUtils
+import com.example.voiceassistant.Util.TimeUtils
 import com.example.voiceassistant.Viewholder.BotMessageViewHolder
 import com.example.voiceassistant.Viewholder.UserMessageViewHolder
 import com.example.voiceassistant.Viewholder.WeatherCardViewHolder
@@ -63,7 +65,12 @@ class ChatAdapter( val messages: MutableList<Message>) : RecyclerView.Adapter<Re
             }
 
             is WeatherCardViewHolder ->{
-                //TODO
+                val weather = message.weather
+
+                holder.city.text = weather?.name
+                holder.temperature.text = "%.1f".format(TempConverterUtils.convertKelvinToCelsius(weather?.main?.temp!!)) + " C"
+                holder.humidity.text = weather?.main?.humidity.toString() + "%"
+                holder.time.text = TimeUtils.getCurrentTime()
             }
         }
     }

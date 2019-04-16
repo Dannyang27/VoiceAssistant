@@ -27,6 +27,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
     private lateinit var viewManager : RecyclerView.LayoutManager
     private lateinit var googleSpeaker: GoogleSpeaker
+    private lateinit var voiceController: VoiceController
 
     companion object {
         val messages = mutableListOf<Message>()
@@ -37,7 +38,6 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
         fun newInstance(): VoiceAssistanceFragment = VoiceAssistanceFragment()
         fun addMessage(message : Message){
-            RetrofitClient.getWeatherByNameSync("London")
             messages.add(message)
             viewAdapter.notifyDataSetChanged()
             messagesList.scrollToPosition(viewAdapter.itemCount - 1)
@@ -49,6 +49,8 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
         val voiceButton = view.findViewById<ImageButton>(R.id.voiceButton)
         voiceContext = activity?.applicationContext!!
+        voiceController = VoiceController(voiceContext)
+
 
         viewManager = LinearLayoutManager(activity)
         viewAdapter = ChatAdapter(messages)
@@ -67,8 +69,8 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         val recognizerIntent = VoiceRecognition().createSpeechRecognizer()
 
         voiceButton.setOnClickListener {
-            Log.d(RetrofitClient.TAG, messages.toString())
             speechRecognizer.startListening(recognizerIntent)
+//            RetrofitClient.getWeatherByName("Barcelona")
         }
 
         return view
@@ -77,12 +79,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
     override fun onResults(results: Bundle?) {
         val voiceInput = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.get(0).toString().capitalize()
         addMessage(Message(messages.size, Sender.USER, voiceInput))
-
-        val voiceText = VoiceController.processVoiceInput(voiceInput)
-        addMessage(Message(messages.size, Sender.BOT, voiceText))
-        addMessage(Message(messages.size, Sender.BOT, "", MessageTypes.WEATHER_CARD))
-
-        googleSpeaker.speak(voiceText)
+        voiceController.processVoiceInput(voiceInput)
     }
 
     override fun onError(error: Int) {
@@ -104,9 +101,6 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         val name = prefs.getString("name", "N/A")
         val lastLocation = prefs.getString("last_location", "Barcelona")
-        Log.d(RetrofitClient.TAG, name)
-        Log.d(RetrofitClient.TAG, lastLocation)
-
     }
 
     override fun onReadyForSpeech(params: Bundle?){}

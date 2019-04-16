@@ -11,4 +11,6 @@ class WeatherCardViewHolder(view : View) : RecyclerView.ViewHolder(view){
     val climaText = view.findViewById<TextView>(R.id.clima_text)
     val city = view.findViewById<TextView>(R.id.weather_cardview_city)
     val temperature = view.findViewById<TextView>(R.id.weather_cardview_temp)
+    val humidity = view.findViewById<TextView>(R.id.weather_cardview_humidity)
+    val time = view.findViewById<TextView>(R.id.weather_cardview_time)
 }

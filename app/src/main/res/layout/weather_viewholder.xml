@@ -97,7 +97,5 @@
                     android:id="@+id/weather_cardview_time"
                     android:textStyle="italic"/>
         </LinearLayout>
-
-
     </LinearLayout>
 </LinearLayout>
