@@ -8,12 +8,12 @@ import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.Model.Weather.CurrentWeather.CurrentWeather
 import com.example.voiceassistant.Util.TempConverterUtils
-import com.example.voiceassistant.Util.VoiceController
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.Exception
 
 object RetrofitClient{
     const val token = "b4139617dc083e665e03aa3f9d1d0064"
@@ -37,27 +37,32 @@ object RetrofitClient{
 
             override fun onResponse(call: Call<CurrentWeather>, response: Response<CurrentWeather>) {
                 val currentWeather: CurrentWeather? = response.body()
-                currentWeather.let {
-                    val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(it?.main?.temp!!))
-                    val humidity = it.main.humidity
-                    Log.d(TAG, "$currentTemp")
-
+                currentWeather?.let {
                     var response = ""
-                    when(property){
-                        "all" -> {
-                            response = "Sure, the temperature is $currentTemp celsius and $humidity % of humidity"
-                        }
-                        "temperature" -> {
-                            response = "The temperature in $city is $currentTemp celsius"
-                        }
-                        "humidity" -> {
-                            response = "The humidity in $city is $humidity %"
+                    try{
+                        val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(it.main.temp))
+                        val humidity = it.main.humidity
+                        Log.d(TAG, "$currentTemp")
 
+
+                        when(property){
+                            "all" -> {
+                                response = "Sure, the temperature is $currentTemp celsius and $humidity % of humidity"
+                            }
+                            "temperature" -> {
+                                response = "The temperature in $city is $currentTemp celsius"
+                            }
+                            "humidity" -> {
+                                response = "The humidity in $city is $humidity %"
+
+                            }
+                            "pressure" -> {
+                                response = "The temperature in $city is ${it.main.pressure} pascal"
+                            }
+                            else -> response = "Sorry, I did not get it"
                         }
-                        "pressure" -> {
-                            response = "The temperature in $city is ${it.main.pressure} pascal"
-                        }
-                        else -> response = "Sorry, I did not get it"
+                    }catch (e : Exception){
+                        response = "Sorry, could not get the city"
                     }
 
                     googleSpeaker.speak(response)

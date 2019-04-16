@@ -7,6 +7,7 @@ import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
 import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
+import com.example.voiceassistant.Model.Weather.NextWeather.City
 import com.example.voiceassistant.Retrofit.RetrofitClient
 
 class VoiceController(ctx: Context){
@@ -16,7 +17,7 @@ class VoiceController(ctx: Context){
     private val LOCAL_WEATHER_TOMORROW = "TELL ME THE WEATHER FOR TOMORROW"
     private val IS_IT_COLD_OUTSIDE = "IS IT COLD OUTSIDE"
     private val IS_IT_HOT_OUTSIDE = "IS IT HOT OUTSIDE"
-    private val CITY_WEATHER = "TELL WE THE WEATHER IN"
+    private val CITY_WEATHER = "TELL ME THE WEATHER IN"
     private val RAINING = listOf("SHOULD I GET AN UMBRELLA", "IS IT RAINING")
     private val TEMPERATURE = "TELL ME THE TEMPERATURE"
     private val HUMIDITY = "TELL ME THE HUMIDITY"
@@ -28,57 +29,70 @@ class VoiceController(ctx: Context){
         val name = prefs.getString("name", "N/A")
         val lastLocation = prefs.getString("last_location", "Barcelona")
 
-//        if( voiceInput.toUpperCase() in CITY_WEATHER){
-//            Log.d(RetrofitClient.TAG, "SPLIT:" +  voiceInput.split(" ").toString())
-//            val city = voiceInput.split(" ").get(5)
-//            RetrofitClient.getWeatherByName(city, "temperature")
-//
-//        }
-        when(voiceInput.toUpperCase()){
-            in HELLO -> {
-                val response = "Hi $name, I missed you"
-                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
-                googleSpeaker.speak(response)
-            }
-            IS_IT_COLD_OUTSIDE -> {
-                val response = "Nah, you should be fine"
-                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
-                googleSpeaker.speak(response)
-            }
-            IS_IT_HOT_OUTSIDE ->{
-                val response = "hot as hell mate"
+        val text = voiceInput.toUpperCase().split(" ")
+        val cityWeather = CITY_WEATHER.split(" ")
+
+        val isWeatherAbroad = text.containsAll(cityWeather)
+        if(isWeatherAbroad){
+            if(text.size > cityWeather.size){
+                Log.d(RetrofitClient.TAG, "text size ${text.size}")
+                Log.d(RetrofitClient.TAG, "cityWeather size ${cityWeather.size}")
+                val city = text.drop(5).joinToString(" ")
+                Log.d(RetrofitClient.TAG, city)
+                RetrofitClient.getWeatherByName(city)
+            }else{
+                val response = "Sorry, could not get the city"
                 VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
                 googleSpeaker.speak(response)
             }
 
-            TEMPERATURE -> {
-                RetrofitClient.getWeatherByName(lastLocation, "temperature")
-            }
+        }else{
+            when(voiceInput.toUpperCase()){
+                in HELLO -> {
+                    val response = "Hi $name, I missed you"
+                    VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
+                    googleSpeaker.speak(response)
+                }
+                IS_IT_COLD_OUTSIDE -> {
+                    val response = "Nah, you should be fine"
+                    VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
+                    googleSpeaker.speak(response)
+                }
+                IS_IT_HOT_OUTSIDE ->{
+                    val response = "hot as hell mate"
+                    VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
+                    googleSpeaker.speak(response)
+                }
 
-            HUMIDITY -> {
-                RetrofitClient.getWeatherByName(lastLocation, "humidity")
-            }
+                TEMPERATURE -> {
+                    RetrofitClient.getWeatherByName(lastLocation, "temperature")
+                }
 
-            in RAINING -> {
-                val response = "Its raining cats and dogos"
-                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
-                googleSpeaker.speak(response)
-            }
+                HUMIDITY -> {
+                    RetrofitClient.getWeatherByName(lastLocation, "humidity")
+                }
 
-            LOCAL_WEATHER -> {
-                RetrofitClient.getWeatherByName(lastLocation)
-            }
+                in RAINING -> {
+                    val response = "Its raining cats and dogos"
+                    VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
+                    googleSpeaker.speak(response)
+                }
 
-            LOCAL_WEATHER_TOMORROW -> {
-                val response = "Tomorrow it will rain, so get your best coat Danny"
-                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
-                googleSpeaker.speak(response)
-            }
+                LOCAL_WEATHER -> {
+                    RetrofitClient.getWeatherByName(lastLocation)
+                }
 
-            else -> {
-                val response = "Sorry, I did not get it"
-                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
-                googleSpeaker.speak(response)
+                LOCAL_WEATHER_TOMORROW -> {
+                    val response = "Tomorrow it will rain, so get your best coat Danny"
+                    VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
+                    googleSpeaker.speak(response)
+                }
+
+                else -> {
+                    val response = "Sorry, I did not get it"
+                    VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
+                    googleSpeaker.speak(response)
+                }
             }
         }
     }
