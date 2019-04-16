@@ -12,15 +12,16 @@ import com.example.voiceassistant.Retrofit.RetrofitClient
 
 class VoiceController(ctx: Context){
 
-    private val HELLO = listOf("HI", "HELLO", "SUP")
+    private val HELLO = listOf("HI", "HELLO", "SUP", "HEY")
     private val LOCAL_WEATHER = "TELL ME THE WEATHER"
+    private val CITY_WEATHER = "TELL ME THE WEATHER IN"
     private val LOCAL_WEATHER_TOMORROW = "TELL ME THE WEATHER FOR TOMORROW"
     private val IS_IT_COLD_OUTSIDE = "IS IT COLD OUTSIDE"
     private val IS_IT_HOT_OUTSIDE = "IS IT HOT OUTSIDE"
-    private val CITY_WEATHER = "TELL ME THE WEATHER IN"
     private val RAINING = listOf("SHOULD I GET AN UMBRELLA", "IS IT RAINING")
     private val TEMPERATURE = "TELL ME THE TEMPERATURE"
     private val HUMIDITY = "TELL ME THE HUMIDITY"
+
     private var googleSpeaker = GoogleSpeaker(ctx)
 
 
