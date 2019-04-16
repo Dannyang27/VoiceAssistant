@@ -36,10 +36,7 @@ class VoiceController(ctx: Context){
         val isWeatherAbroad = text.containsAll(cityWeather)
         if(isWeatherAbroad){
             if(text.size > cityWeather.size){
-                Log.d(RetrofitClient.TAG, "text size ${text.size}")
-                Log.d(RetrofitClient.TAG, "cityWeather size ${cityWeather.size}")
                 val city = text.drop(5).joinToString(" ")
-                Log.d(RetrofitClient.TAG, city)
                 RetrofitClient.getWeatherByName(city, voiceInput)
 
             }else{
@@ -62,7 +59,7 @@ class VoiceController(ctx: Context){
                 googleSpeaker.speak(response)
             }
             IS_IT_HOT_OUTSIDE ->{
-                val response = "hot as hell mate"
+                val response = "Hot as hell mate"
                 VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
                 googleSpeaker.speak(response)
             }
