@@ -86,6 +86,9 @@
     <string name="pref_default_location">Barcelona</string>
     <string name="weather_city">Barcelona</string>
     <string name="weather_temp">25 C</string>
-
+    <string name="temp">Temp</string>
+    <string name="humidity">Humidity</string>
+    <string name="weather_humidity">88%</string>
+    <string name="sample_hour">11:11</string>
 
 </resources>

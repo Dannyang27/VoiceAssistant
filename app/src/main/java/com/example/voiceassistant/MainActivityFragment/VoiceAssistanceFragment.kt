@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import com.example.voiceassistant.Adapter.ChatAdapter
+import com.example.voiceassistant.Enums.MessageTypes
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
@@ -79,6 +80,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
         val voiceText = VoiceController.processVoiceInput(voiceInput)
         addMessage(Message(messages.size, Sender.BOT, voiceText))
+        addMessage(Message(messages.size, Sender.BOT, "", MessageTypes.WEATHER_CARD))
 
         googleSpeaker.speak(voiceText)
     }
