@@ -90,5 +90,6 @@
     <string name="humidity">Humidity</string>
     <string name="weather_humidity">88%</string>
     <string name="sample_hour">11:11</string>
+    <string name="voiceAssistant">Voice Assistant</string>
 
 </resources>
