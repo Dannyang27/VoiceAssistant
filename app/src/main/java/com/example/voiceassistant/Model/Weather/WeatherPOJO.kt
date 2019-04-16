@@ -1,11 +1,10 @@
 package com.example.voiceassistant.Model.Weather
 
-data class WeatherPOJO (val id: Int, val city: String, val temp: Double, val humidity: Double,
+data class WeatherPOJO (val city: String, val temp: Double, val humidity: Double,
                         val clima: String, val date: String, val image: String, val query: String){
 
     companion object{
         val TABLE_NAME = "WeatherHistorial"
-        val WEATHER_ID = "id"
         val COLUMN_CITY = "city"
         val COLUMN_TEMP = "temperature"
         val COLUMN_HUMIDITY = "humidity"

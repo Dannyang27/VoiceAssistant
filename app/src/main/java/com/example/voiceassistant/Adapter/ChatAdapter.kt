@@ -13,6 +13,8 @@ import com.example.voiceassistant.Util.TimeUtils
 import com.example.voiceassistant.Viewholder.BotMessageViewHolder
 import com.example.voiceassistant.Viewholder.UserMessageViewHolder
 import com.example.voiceassistant.Viewholder.WeatherCardViewHolder
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class ChatAdapter( val messages: MutableList<Message>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
@@ -66,11 +68,10 @@ class ChatAdapter( val messages: MutableList<Message>) : RecyclerView.Adapter<Re
 
             is WeatherCardViewHolder ->{
                 val weather = message.weather
-
                 holder.city.text = weather?.name
                 holder.temperature.text = "%.1f".format(TempConverterUtils.convertKelvinToCelsius(weather?.main?.temp!!)) + " C"
                 holder.humidity.text = weather?.main?.humidity.toString() + "%"
-                holder.time.text = TimeUtils.getCurrentTime()
+                holder.time.text = message.date
             }
         }
     }

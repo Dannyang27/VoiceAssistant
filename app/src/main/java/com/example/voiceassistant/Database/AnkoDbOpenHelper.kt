@@ -22,7 +22,6 @@ class AnkoDbOpenHelper private constructor(ctx: Context) : ManagedSQLiteOpenHelp
 
     override fun onCreate(db: SQLiteDatabase) {
         db.createTable(WeatherPOJO.TABLE_NAME, true,
-            WeatherPOJO.WEATHER_ID to INTEGER + PRIMARY_KEY,
             WeatherPOJO.COLUMN_CITY to TEXT,
             WeatherPOJO.COLUMN_TEMP to REAL,
             WeatherPOJO.COLUMN_HUMIDITY to REAL,

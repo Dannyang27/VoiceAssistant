@@ -12,12 +12,11 @@ class WeatherRepository(val context: Context){
 
         val weathers = mutableListOf<WeatherPOJO>()
 
-        select(WeatherPOJO.TABLE_NAME, WeatherPOJO.WEATHER_ID, WeatherPOJO.COLUMN_CITY, WeatherPOJO.COLUMN_TEMP,
+        select(WeatherPOJO.TABLE_NAME, WeatherPOJO.COLUMN_CITY, WeatherPOJO.COLUMN_TEMP,
             WeatherPOJO.COLUMN_HUMIDITY, WeatherPOJO.COLUMN_CLIMA, WeatherPOJO.COLUMN_DATE, WeatherPOJO.COLUMN_IMAGE,
             WeatherPOJO.COLUM_QUERY)
             .parseList(object: MapRowParser<MutableList<WeatherPOJO>>{
                 override fun parseRow(columns: Map<String, Any?>): MutableList<WeatherPOJO> {
-                    val id = columns.getValue(WeatherPOJO.WEATHER_ID)
                     val city = columns.getValue(WeatherPOJO.COLUMN_CITY)
                     val temp = columns.getValue(WeatherPOJO.COLUMN_TEMP)
                     val humidity = columns.getValue(WeatherPOJO.COLUMN_HUMIDITY)
@@ -26,7 +25,7 @@ class WeatherRepository(val context: Context){
                     val image = columns.getValue(WeatherPOJO.COLUMN_IMAGE)
                     val query = columns.getValue(WeatherPOJO.COLUM_QUERY)
 
-                    val weather = WeatherPOJO(id.toString().toInt(),city.toString(), temp.toString().toDouble(),
+                    val weather = WeatherPOJO(city.toString(), temp.toString().toDouble(),
                         humidity.toString().toDouble(), clima.toString(), date.toString(), image.toString(), query.toString())
 
                     weathers.add(weather)
@@ -39,7 +38,6 @@ class WeatherRepository(val context: Context){
 
     fun insert(weather: WeatherPOJO) = context.database.use{
         insert(WeatherPOJO.TABLE_NAME,
-            WeatherPOJO.WEATHER_ID to weather.id,
             WeatherPOJO.COLUMN_CITY to weather.city,
             WeatherPOJO.COLUMN_TEMP to weather.temp,
             WeatherPOJO.COLUMN_HUMIDITY to weather.humidity,
@@ -52,7 +50,6 @@ class WeatherRepository(val context: Context){
 
     fun update(weather: WeatherPOJO) = context.database.use {
         val updateResult = update(WeatherPOJO.TABLE_NAME,
-            WeatherPOJO.WEATHER_ID to weather.id,
             WeatherPOJO.COLUMN_CITY to weather.city,
             WeatherPOJO.COLUMN_TEMP to weather.temp,
             WeatherPOJO.COLUMN_HUMIDITY to weather.humidity,
@@ -60,7 +57,7 @@ class WeatherRepository(val context: Context){
             WeatherPOJO.COLUMN_DATE to weather.date,
             WeatherPOJO.COLUMN_IMAGE to weather.image,
             WeatherPOJO.COLUM_QUERY to weather.query)
-            .whereArgs("${WeatherPOJO.WEATHER_ID} = {${weather.id}", WeatherPOJO.WEATHER_ID to weather.id)
+            .whereArgs("${WeatherPOJO.COLUMN_CITY} = {${weather.city}", WeatherPOJO.COLUMN_CITY to weather.city)
             .exec()
 
         Log.d(RetrofitClient.TAG, "Update result code is $updateResult")
@@ -68,10 +65,6 @@ class WeatherRepository(val context: Context){
 
     fun deleteByCity(city : String) = context.database.use {
          delete(WeatherPOJO.TABLE_NAME,  "city={city}", "city" to city)
-    }
-
-    fun deleteById(id : String) = context.database.use {
-        delete(WeatherPOJO.TABLE_NAME,  "id={id}", "id" to id)
     }
 }
 

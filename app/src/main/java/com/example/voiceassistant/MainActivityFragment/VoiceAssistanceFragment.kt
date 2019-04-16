@@ -23,6 +23,7 @@ import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Retrofit.RetrofitClient
+import com.example.voiceassistant.Util.TimeUtils
 import com.example.voiceassistant.Util.VoiceController
 import com.example.voiceassistant.Util.VoiceRecognition
 
@@ -58,6 +59,8 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         viewAdapter = ChatAdapter(messages)
         googleSpeaker = GoogleSpeaker(activity?.applicationContext!!)
 
+//        val weathers = WeatherRepository(context!!).findAll()
+//        Log.d(RetrofitClient.TAG, weathers.toString())
 
         messagesList = view.findViewById<RecyclerView>(R.id.chatList).apply {
             setHasFixedSize(true)
@@ -72,7 +75,6 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
         voiceButton.setOnClickListener {
             speechRecognizer.startListening(recognizerIntent)
-//            RetrofitClient.getWeatherByName("Barcelona")
         }
 
         return view
@@ -80,7 +82,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
     override fun onResults(results: Bundle?) {
         val voiceInput = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.get(0).toString().capitalize()
-        addMessage(Message(messages.size, Sender.USER, voiceInput))
+        addMessage(Message(messages.size, Sender.USER, voiceInput, TimeUtils.getCurrentTime()))
         voiceController.processVoiceInput(voiceInput)
     }
 
@@ -98,12 +100,6 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
-        val name = prefs.getString("name", "N/A")
-        val lastLocation = prefs.getString("last_location", "Barcelona")
-    }
 
     override fun onReadyForSpeech(params: Bundle?){}
     override fun onRmsChanged(rmsdB: Float){}

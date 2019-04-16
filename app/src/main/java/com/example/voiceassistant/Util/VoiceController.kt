@@ -44,7 +44,7 @@ class VoiceController(ctx: Context){
 
             }else{
                 val response = "Sorry, could not get the city"
-                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
+                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
                 googleSpeaker.speak(response)
             }
 
@@ -53,17 +53,17 @@ class VoiceController(ctx: Context){
         when(voiceInput.toUpperCase()){
             in HELLO -> {
                 val response = "Hi $name, I missed you"
-                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
+                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
                 googleSpeaker.speak(response)
             }
             IS_IT_COLD_OUTSIDE -> {
                 val response = "Nah, you should be fine"
-                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
+                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
                 googleSpeaker.speak(response)
             }
             IS_IT_HOT_OUTSIDE ->{
                 val response = "hot as hell mate"
-                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
+                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
                 googleSpeaker.speak(response)
             }
 
@@ -77,7 +77,7 @@ class VoiceController(ctx: Context){
 
             in RAINING -> {
                 val response = "Its raining cats and dogos"
-                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
+                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
                 googleSpeaker.speak(response)
             }
 
@@ -87,13 +87,13 @@ class VoiceController(ctx: Context){
 
             LOCAL_WEATHER_TOMORROW -> {
                 val response = "Tomorrow it will rain, so get your best coat Danny"
-                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
+                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
                 googleSpeaker.speak(response)
             }
 
             else -> {
                 val response = "Sorry, I did not get it"
-                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
+                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
                 googleSpeaker.speak(response)
             }
         }

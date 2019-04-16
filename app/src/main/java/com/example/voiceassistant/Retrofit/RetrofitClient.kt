@@ -6,6 +6,7 @@ import com.example.voiceassistant.Database.database
 import com.example.voiceassistant.Enums.MessageTypes
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
+import com.example.voiceassistant.MainActivityFragment.WeatherHistoryFragment
 import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.Model.Weather.CurrentWeather.CurrentWeather
@@ -71,17 +72,17 @@ object RetrofitClient{
                     }
 
                     googleSpeaker.speak(response)
-                    VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
+                    VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
 
                     if( property == "all"){
-                        VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT,
+                        VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, TimeUtils.getCurrentTime(),
                             "", MessageTypes.WEATHER_CARD, currentWeather))
 
-                        val nextId = WeatherRepository(VoiceAssistanceFragment.voiceContext).findAll().size + 1
-                        val weatherPojo = WeatherPOJO(nextId, city, currentTemp.toDouble(), humidity.toDouble(),
+                        val weatherPojo = WeatherPOJO(city, currentTemp.toDouble(), humidity.toDouble(),
                             "Sunny", TimeUtils.getCurrentTime(), "sun", query)
 
                         WeatherRepository(VoiceAssistanceFragment.voiceContext).insert(weatherPojo)
+                        WeatherHistoryFragment.addWeather(weatherPojo)
                         Log.d(TAG, "Inserted $weatherPojo")
                     }
                 }
