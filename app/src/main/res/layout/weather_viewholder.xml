@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:background="@color/colorAccent">
+
+
+    <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+        <ImageView
+                android:id="@+id/weather_pic"
+                android:layout_width="100dp"
+                android:layout_height="100sp"
+                app:srcCompat="@drawable/sunny"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"/>
+        <TextView
+                android:text="Sunny"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/weather_pic"
+                android:gravity="center"
+                android:textSize="25sp"/>
+    </RelativeLayout>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4">
+        <TextView
+                android:text="@string/weather_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/weather_cardview_city"
+                android:textSize="30sp"/>
+        <TextView
+                android:text="@string/weather_temp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/weather_cardview_temp"
+                android:textSize="38sp"/>
+    </LinearLayout>
+</LinearLayout>
