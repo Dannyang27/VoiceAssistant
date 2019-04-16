@@ -1,9 +1,6 @@
 package com.example.voiceassistant.Util
 
 import android.util.Log
-import com.example.voiceassistant.Enums.Sender
-import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
-import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.Retrofit.RetrofitClient
 
 object VoiceController{
@@ -55,7 +52,6 @@ object VoiceController{
 
         }
 
-        VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response))
         return response
     }
 }

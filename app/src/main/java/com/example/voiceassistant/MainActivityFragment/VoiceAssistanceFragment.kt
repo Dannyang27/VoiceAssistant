@@ -3,7 +3,6 @@ package com.example.voiceassistant.MainActivityFragment
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.SpeechRecognizer
-import android.speech.tts.TextToSpeech
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -20,13 +19,11 @@ import com.example.voiceassistant.R
 import com.example.voiceassistant.Retrofit.RetrofitClient
 import com.example.voiceassistant.Util.VoiceController
 import com.example.voiceassistant.Util.VoiceRecognition
-import java.util.*
 
 class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
     private lateinit var viewManager : RecyclerView.LayoutManager
     private lateinit var googleSpeaker: GoogleSpeaker
-
 
     companion object {
         val messages = mutableListOf<Message>()
@@ -71,44 +68,17 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         return view
     }
 
-    override fun onReadyForSpeech(params: Bundle?) {
-        Log.d(RetrofitClient.TAG, "onReadyForSpeech")
-    }
-
-    override fun onRmsChanged(rmsdB: Float) {
-    }
-
-    override fun onBufferReceived(buffer: ByteArray?) {
-    }
-
-    override fun onPartialResults(partialResults: Bundle?) {
-    }
-
-    override fun onEvent(eventType: Int, params: Bundle?) {
-        Log.d(RetrofitClient.TAG, "onEvent")
-    }
-
-    override fun onBeginningOfSpeech() {
-        Log.d(RetrofitClient.TAG, "onBeginningOfSpeech")
-    }
-
-    override fun onEndOfSpeech() {
-        Log.d(RetrofitClient.TAG, "onEndOfSpeech")
-    }
-
     override fun onResults(results: Bundle?) {
-        Log.d(RetrofitClient.TAG, "onResults")
         val voiceInput = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.get(0).toString().capitalize()
-        val message = Message(messages.size, Sender.USER, voiceInput)
+        addMessage(Message(messages.size, Sender.USER, voiceInput))
 
-        addMessage(message)
         val voiceText = VoiceController.processVoiceInput(voiceInput)
+        addMessage(Message(messages.size, Sender.BOT, voiceText))
 
         googleSpeaker.speak(voiceText)
     }
 
     override fun onError(error: Int) {
-        Log.d(RetrofitClient.TAG, "onError")
         when(error){
             SpeechRecognizer.ERROR_AUDIO -> Log.d(RetrofitClient.TAG, "ERROR AUDIO")
             SpeechRecognizer.ERROR_CLIENT -> Log.d(RetrofitClient.TAG, "ERROR CLIENT")
@@ -122,7 +92,14 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         }
     }
 
-    override fun onDestroy() {
+    override fun onReadyForSpeech(params: Bundle?){}
+    override fun onRmsChanged(rmsdB: Float){}
+    override fun onBufferReceived(buffer: ByteArray?){}
+    override fun onPartialResults(partialResults: Bundle?){}
+    override fun onEvent(eventType: Int, params: Bundle?){}
+    override fun onBeginningOfSpeech(){}
+    override fun onEndOfSpeech(){}
+    override fun onDestroy(){
         super.onDestroy()
         googleSpeaker.destroy()
     }
