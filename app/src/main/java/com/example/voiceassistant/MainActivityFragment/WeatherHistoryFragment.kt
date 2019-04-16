@@ -24,7 +24,7 @@ class WeatherHistoryFragment : Fragment(){
         val view = inflater.inflate(R.layout.history_fragment, container, false)
 
         viewManager = LinearLayoutManager(activity)
-        viewAdapter = HistorialAdapter(mutableListOf())
+        viewAdapter = HistorialAdapter(mutableListOf("1", "2", "3","1", "2", "3","1", "2", "3"))
 
         historialRV = view.findViewById<RecyclerView>(R.id.weather_history_rv).apply {
             setHasFixedSize(true)

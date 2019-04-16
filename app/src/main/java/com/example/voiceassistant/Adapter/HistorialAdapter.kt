@@ -7,7 +7,7 @@ import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Viewholder.WeatherHistorialViewHolder
 
-class HistorialAdapter(val historial: MutableList<WeatherPOJO>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class HistorialAdapter(val historial: MutableList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.weather_historial_viewholder, parent, false)
