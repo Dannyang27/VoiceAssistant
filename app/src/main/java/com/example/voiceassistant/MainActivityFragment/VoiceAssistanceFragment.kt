@@ -1,5 +1,6 @@
 package com.example.voiceassistant.MainActivityFragment
 
+import android.content.Context
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.speech.RecognitionListener
@@ -31,6 +32,8 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         lateinit var messagesList: RecyclerView
         lateinit var viewAdapter : RecyclerView.Adapter<*>
 
+        lateinit var voiceContext: Context
+
         fun newInstance(): VoiceAssistanceFragment = VoiceAssistanceFragment()
         fun addMessage(message : Message){
             RetrofitClient.getWeatherByNameSync("London")
@@ -44,6 +47,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         val view = inflater.inflate(R.layout.voice_assistance_fragment, container, false)
 
         val voiceButton = view.findViewById<ImageButton>(R.id.voiceButton)
+        voiceContext = activity?.applicationContext!!
 
         viewManager = LinearLayoutManager(activity)
         viewAdapter = ChatAdapter(messages)

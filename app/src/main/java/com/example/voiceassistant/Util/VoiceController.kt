@@ -1,6 +1,8 @@
 package com.example.voiceassistant.Util
 
+import android.preference.PreferenceManager
 import android.util.Log
+import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
 import com.example.voiceassistant.Retrofit.RetrofitClient
 
 object VoiceController{
@@ -27,7 +29,9 @@ object VoiceController{
         }
         when(voiceInput.toUpperCase()){
             in HELLO -> {
-                response = "Hi Danny, I missed you"
+                val prefs = PreferenceManager.getDefaultSharedPreferences(VoiceAssistanceFragment.voiceContext)
+                val name = prefs.getString("name", "N/A")
+                response = "Hi $name, I missed you"
             }
             IS_IT_COLD_OUTSIDE -> {
                 response = "Nah, you should be fine"
