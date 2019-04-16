@@ -1,6 +1,7 @@
 package com.example.voiceassistant.MainActivityFragment
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.speech.RecognitionListener
 import android.speech.SpeechRecognizer
 import android.support.v4.app.Fragment
@@ -90,6 +91,16 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
             SpeechRecognizer.ERROR_SERVER -> Log.d(RetrofitClient.TAG, "ERROR SERVER")
             SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> Log.d(RetrofitClient.TAG, "ERROR SPEECH TIMEOUT")
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
+        val name = prefs.getString("name", "N/A")
+        val lastLocation = prefs.getString("last_location", "Barcelona")
+        Log.d(RetrofitClient.TAG, name)
+        Log.d(RetrofitClient.TAG, lastLocation)
+
     }
 
     override fun onReadyForSpeech(params: Bundle?){}
