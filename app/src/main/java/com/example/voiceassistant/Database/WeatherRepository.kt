@@ -40,7 +40,7 @@ class WeatherRepository(val context: Context){
         weathers
     }
 
-    fun create(weather: WeatherPOJO) = context.database.use{
+    fun insert(weather: WeatherPOJO) = context.database.use{
         insert(WeatherPOJO.TABLE_NAME,
             WeatherPOJO.WEATHER_ID to weather.id,
             WeatherPOJO.COLUMN_CITY to weather.city,

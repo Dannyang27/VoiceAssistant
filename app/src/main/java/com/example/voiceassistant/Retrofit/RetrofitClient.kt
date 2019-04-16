@@ -1,12 +1,15 @@
 package com.example.voiceassistant.Retrofit
 
 import android.util.Log
+import com.example.voiceassistant.Database.WeatherRepository
+import com.example.voiceassistant.Database.database
 import com.example.voiceassistant.Enums.MessageTypes
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
 import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.Model.Weather.CurrentWeather.CurrentWeather
+import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.Util.TempConverterUtils
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,9 +42,10 @@ object RetrofitClient{
                 val currentWeather: CurrentWeather? = response.body()
                 currentWeather?.let {
                     var response = ""
+                    val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(it.main.temp))
+                    val humidity = it.main.humidity
                     try{
-                        val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(it.main.temp))
-                        val humidity = it.main.humidity
+
                         Log.d(TAG, "$currentTemp")
 
 
@@ -71,6 +75,11 @@ object RetrofitClient{
                     if( property == "all"){
                         VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT,
                             "", MessageTypes.WEATHER_CARD, currentWeather))
+                        val weatherPojo = WeatherPOJO(3, city, currentTemp.toDouble(), humidity.toDouble(),
+                            "Sunny", "27/09/2019 11:11", "sun", "Tell me the weather in Barcelona")
+
+                        WeatherRepository(VoiceAssistanceFragment.voiceContext).insert(weatherPojo)
+                        Log.d(TAG, "Inserted $weatherPojo")
                     }
                 }
             }

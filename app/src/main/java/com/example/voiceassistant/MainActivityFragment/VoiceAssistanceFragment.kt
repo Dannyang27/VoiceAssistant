@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import com.example.voiceassistant.Adapter.ChatAdapter
+import com.example.voiceassistant.Database.WeatherRepository
 import com.example.voiceassistant.Enums.MessageTypes
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.Model.GoogleSpeaker
@@ -50,6 +51,9 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         val voiceButton = view.findViewById<ImageButton>(R.id.voiceButton)
         voiceContext = activity?.applicationContext!!
         voiceController = VoiceController(voiceContext)
+
+        val list = WeatherRepository(context!!).findAll()
+        Log.d(RetrofitClient.TAG, list.toString())
 
 
         viewManager = LinearLayoutManager(activity)
