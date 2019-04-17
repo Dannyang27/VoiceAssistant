@@ -14,6 +14,7 @@ import com.example.voiceassistant.Model.Weather.CurrentWeather.CurrentWeather
 import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.Util.TempConverterUtils
 import com.example.voiceassistant.Util.TimeUtils
+import com.example.voiceassistant.Util.WeatherUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,7 +45,7 @@ object RetrofitClient{
             override fun onResponse(call: Call<CurrentWeather>, response: Response<CurrentWeather>) {
                 val currentWeather: CurrentWeather? = response.body()
                 currentWeather?.let {
-                    var response = ""
+                    var response : String
                     val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(it.main.temp))
                     val humidity = it.main.humidity
                     try{
@@ -81,7 +82,7 @@ object RetrofitClient{
                             TimeUtils.getCurrentTime(), MessageTypes.WEATHER_CARD, currentWeather))
 
                         val weatherPojo = WeatherPOJO(city, currentTemp.toDouble(), humidity.toDouble(),
-                            WeatherType.SUNNY, TimeUtils.getCurrentTime(), query)
+                            WeatherUtils.getWeatherCondition(currentWeather.weather[0].main), TimeUtils.getCurrentTime(), query)
 
                         WeatherRepository(VoiceAssistanceFragment.voiceContext).insert(weatherPojo)
                         WeatherHistoryFragment.addWeather(weatherPojo)

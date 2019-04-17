@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.voiceassistant.Enums.WeatherType
 import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.Retrofit.RetrofitClient
+import com.example.voiceassistant.Util.WeatherUtils
 import org.jetbrains.anko.db.*
 
 class WeatherRepository(val context: Context){
@@ -25,7 +26,7 @@ class WeatherRepository(val context: Context){
                     val query = columns.getValue(WeatherPOJO.COLUM_QUERY)
 
                     val weather = WeatherPOJO(city.toString(), temp.toString().toDouble(),
-                        humidity.toString().toDouble(), WeatherType.SUNNY, date.toString(), query.toString())
+                        humidity.toString().toDouble(), WeatherUtils.getWeatherCondition(clima.toString()), date.toString(), query.toString())
 
                     weathers.add(weather)
                     return weathers
@@ -40,7 +41,7 @@ class WeatherRepository(val context: Context){
             WeatherPOJO.COLUMN_CITY to weather.city,
             WeatherPOJO.COLUMN_TEMP to weather.temp,
             WeatherPOJO.COLUMN_HUMIDITY to weather.humidity,
-            WeatherPOJO.COLUMN_CLIMA to weather.clima.name,
+            WeatherPOJO.COLUMN_CLIMA to weather.clima,
             WeatherPOJO.COLUMN_DATE to weather.date,
             WeatherPOJO.COLUM_QUERY to weather.query)
     }
@@ -51,7 +52,7 @@ class WeatherRepository(val context: Context){
             WeatherPOJO.COLUMN_CITY to weather.city,
             WeatherPOJO.COLUMN_TEMP to weather.temp,
             WeatherPOJO.COLUMN_HUMIDITY to weather.humidity,
-            WeatherPOJO.COLUMN_CLIMA to weather.clima.name,
+            WeatherPOJO.COLUMN_CLIMA to weather.clima,
             WeatherPOJO.COLUMN_DATE to weather.date,
             WeatherPOJO.COLUM_QUERY to weather.query)
             .whereArgs("${WeatherPOJO.COLUMN_CITY} = {${weather.city}", WeatherPOJO.COLUMN_CITY to weather.city)

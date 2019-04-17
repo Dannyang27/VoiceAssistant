@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.R
+import com.example.voiceassistant.Util.WeatherUtils
 import com.example.voiceassistant.Viewholder.WeatherHistorialViewHolder
 
 class HistorialAdapter(val historial: MutableList<WeatherPOJO>) : RecyclerView.Adapter<WeatherHistorialViewHolder>(){
@@ -17,6 +18,7 @@ class HistorialAdapter(val historial: MutableList<WeatherPOJO>) : RecyclerView.A
     override fun onBindViewHolder(holder: WeatherHistorialViewHolder, position: Int) {
         val weather = historial[position]
 
+        holder.clima.text = WeatherUtils.getWeatherCondition(weather.clima)
         holder.query.text = weather.query
         holder.city.text = weather.city
         holder.temperature.text = weather.temp.toString() + "C"

@@ -56,12 +56,14 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         viewAdapter = ChatAdapter(messages)
         googleSpeaker = GoogleSpeaker(activity?.applicationContext!!)
 
-//        val weathers = WeatherRepository(context!!).findAll()
-//        Log.d(RetrofitClient.TAG, weathers.toString())
-//
-//        weathers.forEach {
-//            Log.d(RetrofitClient.TAG, it.clima.imagePath)
-//        }
+        val weathers = WeatherRepository(context!!).findAll()
+        Log.d(RetrofitClient.TAG, weathers.toString())
+
+        weathers.forEach {
+            Log.d(RetrofitClient.TAG, it.clima)
+        }
+
+        //WeatherRepository(context!!).deleteAll()
 
         messagesList = view.findViewById<RecyclerView>(R.id.chatList).apply {
             setHasFixedSize(true)

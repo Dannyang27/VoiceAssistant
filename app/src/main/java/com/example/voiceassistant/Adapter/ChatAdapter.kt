@@ -10,6 +10,7 @@ import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Util.TempConverterUtils
 import com.example.voiceassistant.Util.TimeUtils
+import com.example.voiceassistant.Util.WeatherUtils
 import com.example.voiceassistant.Viewholder.BotMessageViewHolder
 import com.example.voiceassistant.Viewholder.UserMessageViewHolder
 import com.example.voiceassistant.Viewholder.WeatherCardViewHolder
@@ -68,7 +69,8 @@ class ChatAdapter( val messages: MutableList<Message>) : RecyclerView.Adapter<Re
 
             is WeatherCardViewHolder ->{
                 val weather = message.weather
-                holder.city.text = weather?.name
+                holder.climaText.text = WeatherUtils.getWeatherCondition(weather!!.weather[0].main)
+                holder.city.text = weather.name
                 holder.temperature.text = "%.1f".format(TempConverterUtils.convertKelvinToCelsius(weather?.main?.temp!!)) + " C"
                 holder.humidity.text = weather?.main?.humidity.toString() + "%"
                 holder.time.text = message.date
