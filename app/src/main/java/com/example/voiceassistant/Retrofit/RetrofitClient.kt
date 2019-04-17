@@ -47,10 +47,6 @@ object RetrofitClient{
                     val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(it.main.temp))
                     val humidity = it.main.humidity
                     try{
-
-                        Log.d(TAG, "$currentTemp")
-
-
                         when(property){
                             "all" -> {
                                 response = "Sure, the temperature is $currentTemp celsius and $humidity % of humidity"
@@ -69,6 +65,8 @@ object RetrofitClient{
                         }
                     }catch (e : Exception){
                         response = "Sorry, could not get the city"
+                        VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
+                        googleSpeaker.speak(response)
                     }
 
                     googleSpeaker.speak(response)
