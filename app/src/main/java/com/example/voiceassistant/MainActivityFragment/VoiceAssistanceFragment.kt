@@ -2,7 +2,6 @@ package com.example.voiceassistant.MainActivityFragment
 
 import android.content.Context
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.speech.RecognitionListener
 import android.speech.SpeechRecognizer
 import android.support.v4.app.Fragment
@@ -15,12 +14,9 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import com.example.voiceassistant.Adapter.ChatAdapter
 import com.example.voiceassistant.Database.WeatherRepository
-import com.example.voiceassistant.Database.database
-import com.example.voiceassistant.Enums.MessageTypes
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
-import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Retrofit.RetrofitClient
 import com.example.voiceassistant.Util.TimeUtils
@@ -46,6 +42,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
             viewAdapter.notifyDataSetChanged()
             messagesList.scrollToPosition(viewAdapter.itemCount - 1)
         }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -61,6 +58,10 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
 //        val weathers = WeatherRepository(context!!).findAll()
 //        Log.d(RetrofitClient.TAG, weathers.toString())
+//
+//        weathers.forEach {
+//            Log.d(RetrofitClient.TAG, it.clima.imagePath)
+//        }
 
         messagesList = view.findViewById<RecyclerView>(R.id.chatList).apply {
             setHasFixedSize(true)

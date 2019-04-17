@@ -1,7 +1,9 @@
 package com.example.voiceassistant.Model.Weather
 
+import com.example.voiceassistant.Enums.WeatherType
+
 data class WeatherPOJO (val city: String, val temp: Double, val humidity: Double,
-                        val clima: String, val date: String, val image: String, val query: String){
+                        val clima: WeatherType, val date: String, val query: String){
 
     companion object{
         val TABLE_NAME = "WeatherHistorial"
@@ -10,7 +12,6 @@ data class WeatherPOJO (val city: String, val temp: Double, val humidity: Double
         val COLUMN_HUMIDITY = "humidity"
         val COLUMN_CLIMA = "clima"
         val COLUMN_DATE = "date"
-        val COLUMN_IMAGE = "image"
         val COLUM_QUERY = "query"
     }
 }

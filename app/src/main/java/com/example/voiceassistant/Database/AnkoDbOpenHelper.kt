@@ -27,7 +27,6 @@ class AnkoDbOpenHelper private constructor(ctx: Context) : ManagedSQLiteOpenHelp
             WeatherPOJO.COLUMN_HUMIDITY to REAL,
             WeatherPOJO.COLUMN_CLIMA to TEXT,
             WeatherPOJO.COLUMN_DATE to TEXT,
-            WeatherPOJO.COLUMN_IMAGE to TEXT,
             WeatherPOJO.COLUM_QUERY to TEXT)
         Log.d(RetrofitClient.TAG, "Creating table ${WeatherPOJO.TABLE_NAME}")
     }
