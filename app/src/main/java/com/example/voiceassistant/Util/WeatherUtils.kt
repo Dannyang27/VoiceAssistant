@@ -1,5 +1,7 @@
 package com.example.voiceassistant.Util
 
+import com.example.voiceassistant.R
+
 object WeatherUtils{
 
     val rainList = mutableListOf("Drizzle", "Rain")
@@ -28,5 +30,25 @@ object WeatherUtils{
         }
 
         return weather
+    }
+
+    fun getImageByWeather(weather: String): Int{
+        var image = -1
+        when(weather){
+            "Rain" -> {
+                image = R.drawable.rainy
+            }
+            "Clouds" -> {
+                image = R.drawable.cloudy
+            }
+            "Sunny" -> {
+                image = R.drawable.sunny
+            }
+            "Snow" -> {
+                image = R.drawable.snowy
+            }
+        }
+
+        return image
     }
 }

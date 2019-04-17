@@ -14,6 +14,7 @@ import com.example.voiceassistant.Util.WeatherUtils
 import com.example.voiceassistant.Viewholder.BotMessageViewHolder
 import com.example.voiceassistant.Viewholder.UserMessageViewHolder
 import com.example.voiceassistant.Viewholder.WeatherCardViewHolder
+import com.squareup.picasso.Picasso
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -69,7 +70,14 @@ class ChatAdapter( val messages: MutableList<Message>) : RecyclerView.Adapter<Re
 
             is WeatherCardViewHolder ->{
                 val weather = message.weather
-                holder.climaText.text = WeatherUtils.getWeatherCondition(weather!!.weather[0].main)
+                val clima = WeatherUtils.getWeatherCondition(weather!!.weather[0].main)
+                val image = WeatherUtils.getImageByWeather(clima)
+                Picasso.with(holder.weatherPic.context)
+                    .load(image)
+                    .placeholder(image)
+                    .into(holder.weatherPic)
+
+                holder.climaText.text = clima
                 holder.city.text = weather.name
                 holder.temperature.text = "%.1f".format(TempConverterUtils.convertKelvinToCelsius(weather?.main?.temp!!)) + " C"
                 holder.humidity.text = weather?.main?.humidity.toString() + "%"

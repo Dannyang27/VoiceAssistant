@@ -7,6 +7,7 @@ import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Util.WeatherUtils
 import com.example.voiceassistant.Viewholder.WeatherHistorialViewHolder
+import com.squareup.picasso.Picasso
 
 class HistorialAdapter(val historial: MutableList<WeatherPOJO>) : RecyclerView.Adapter<WeatherHistorialViewHolder>(){
 
@@ -17,8 +18,15 @@ class HistorialAdapter(val historial: MutableList<WeatherPOJO>) : RecyclerView.A
 
     override fun onBindViewHolder(holder: WeatherHistorialViewHolder, position: Int) {
         val weather = historial[position]
+        val clima = WeatherUtils.getWeatherCondition(weather.clima)
 
-        holder.clima.text = WeatherUtils.getWeatherCondition(weather.clima)
+        val image = WeatherUtils.getImageByWeather(clima)
+        Picasso.with(holder.image.context)
+            .load(image)
+            .placeholder(image)
+            .into(holder.image)
+
+        holder.clima.text = clima
         holder.query.text = weather.query
         holder.city.text = weather.city
         holder.temperature.text = weather.temp.toString() + "C"
