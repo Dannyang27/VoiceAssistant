@@ -12,4 +12,22 @@
             tools:layout_editor_absoluteY="102dp"
             tools:layout_editor_absoluteX="30dp"
             android:layout_alignParentStart="true"/>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/calendar"
+            android:layout_margin="10dp">
+        <TextView
+                android:text="@string/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/todolist_date"
+                android:textSize="16sp"/>
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/todo_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+    </LinearLayout>
+
 </RelativeLayout>
