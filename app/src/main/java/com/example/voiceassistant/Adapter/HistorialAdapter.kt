@@ -9,7 +9,7 @@ import com.example.voiceassistant.Util.WeatherUtils
 import com.example.voiceassistant.Viewholder.WeatherHistorialViewHolder
 import com.squareup.picasso.Picasso
 
-class HistorialAdapter(val historial: MutableList<WeatherPOJO>) : RecyclerView.Adapter<WeatherHistorialViewHolder>(){
+class HistorialAdapter(private val historial: MutableList<WeatherPOJO>) : RecyclerView.Adapter<WeatherHistorialViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherHistorialViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.weather_historial_viewholder, parent, false)

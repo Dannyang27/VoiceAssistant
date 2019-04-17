@@ -2,10 +2,8 @@ package com.example.voiceassistant.Retrofit
 
 import android.util.Log
 import com.example.voiceassistant.Database.WeatherRepository
-import com.example.voiceassistant.Database.database
 import com.example.voiceassistant.Enums.MessageTypes
 import com.example.voiceassistant.Enums.Sender
-import com.example.voiceassistant.Enums.WeatherType
 import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
 import com.example.voiceassistant.MainActivityFragment.WeatherHistoryFragment
 import com.example.voiceassistant.Model.GoogleSpeaker

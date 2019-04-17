@@ -93,5 +93,8 @@
     <string name="voiceAssistant">Voice Assistant</string>
     <string name="date">27/09/2019 11:11</string>
     <string name="query_sample">Tell me the weather in Barcelona</string>
+    <string name="clearHistory">Clear History</string>
+    <string name="clearHistoryButton">Clear History</string>
+    <string name="clearHistoryWarning">This action deletes all your weather history</string>
 
 </resources>

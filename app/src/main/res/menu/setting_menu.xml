@@ -3,5 +3,5 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_settings"
           android:title="@string/action_setting"
-          app:showAsAction="ifRoom"/>
+          app:showAsAction="collapseActionView"/>
 </menu>

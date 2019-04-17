@@ -2,7 +2,6 @@ package com.example.voiceassistant.Database
 
 import android.content.Context
 import android.util.Log
-import com.example.voiceassistant.Enums.WeatherType
 import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.Retrofit.RetrofitClient
 import com.example.voiceassistant.Util.WeatherUtils

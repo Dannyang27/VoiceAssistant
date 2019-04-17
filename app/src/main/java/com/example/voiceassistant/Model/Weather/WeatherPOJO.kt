@@ -1,7 +1,5 @@
 package com.example.voiceassistant.Model.Weather
 
-import com.example.voiceassistant.Enums.WeatherType
-
 data class WeatherPOJO (val city: String, val temp: Double, val humidity: Double,
                         val clima: String, val date: String, val query: String){
 

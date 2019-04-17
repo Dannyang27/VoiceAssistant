@@ -1,21 +1,11 @@
 package com.example.voiceassistant
 
-import android.annotation.TargetApi
-import android.content.Context
-import android.content.Intent
-import android.content.res.Configuration
-import android.media.RingtoneManager
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.preference.ListPreference
 import android.preference.Preference
-import android.preference.PreferenceActivity
-import android.preference.PreferenceFragment
 import android.preference.PreferenceManager
-import android.preference.RingtonePreference
-import android.text.TextUtils
-import android.view.MenuItem
+import android.widget.Toast
+import com.example.voiceassistant.Database.WeatherRepository
+import com.example.voiceassistant.MainActivityFragment.WeatherHistoryFragment
 
 class SettingsActivity: AppCompatPreferenceActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +14,15 @@ class SettingsActivity: AppCompatPreferenceActivity(){
 
         PreferenceManager.setDefaultValues(this, R.xml.pref_general, false)
         addPreferencesFromResource(R.xml.pref_general)
+
+        val historyButton = findPreference(getString(R.string.clearHistoryButton))
+        historyButton.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            Toast.makeText(this, "History deleted", Toast.LENGTH_SHORT).show()
+            WeatherRepository(this).deleteAll()
+            WeatherHistoryFragment.historial.clear()
+            WeatherHistoryFragment.viewAdapter.notifyDataSetChanged()
+            true
+        }
     }
     private fun setupActionBar() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
