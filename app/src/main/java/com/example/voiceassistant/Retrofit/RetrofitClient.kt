@@ -76,7 +76,7 @@ object RetrofitClient{
                     if( property == "all"){
                         val date = TimeUtils.getCurrentTime()
                         val weather = Weather(city,WeatherUtils.getWeatherCondition(currentWeather.weather[0].main),
-                            currentTemp.toDouble(), humidity.toDouble(), date )
+                            currentTemp.toDouble(), humidity.toDouble(), date, TimeUtils.getDayOfWeek(0))
 
                         VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, "",
                             TimeUtils.getCurrentTime(), MessageTypes.WEATHER_CARD, weather))
@@ -131,20 +131,18 @@ object RetrofitClient{
                 googleSpeaker.speak(messageResp)
 
                 val forecast = response.body()
+                var i = 1
                 forecast?.list?.forEachIndexed{index, weather ->
                     if(index % 8 == 0 ){
-                        Log.d(TAG, "Temperature in kelvin is ${weather.main.temp}")
                         val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(weather.main.temp))
-                        Log.d(TAG, "Temperature in celsius is ${currentTemp}")
                         val wth = Weather(forecast.city.name, forecast.list[index].weather[0].main,
-                          currentTemp.toDouble()  , weather.main.humidity, date)
+                          currentTemp.toDouble()  , weather.main.humidity, date, TimeUtils.getDayOfWeek(i))
+                        i++
 
                         VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size,
                             Sender.BOT, messageResp, date, MessageTypes.FORECAST, wth ))
-
                     }
                 }
-
             }
 
             override fun onFailure(call: Call<Forecast>, t: Throwable) {

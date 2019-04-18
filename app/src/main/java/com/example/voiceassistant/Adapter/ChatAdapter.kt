@@ -87,6 +87,7 @@ class ChatAdapter( val messages: MutableList<Message>) : RecyclerView.Adapter<Re
                     .into(holder.weatherPic)
 
                 holder.climaText.text = clima
+                holder.dayOfWeek.text = weather.dayOfWeek
                 holder.city.text = weather.city
                 holder.temperature.text = "${weather.temp}°"
                 holder.humidity.text = "${weather.humidity}%"

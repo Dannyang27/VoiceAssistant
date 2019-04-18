@@ -22,6 +22,7 @@ import com.example.voiceassistant.Retrofit.RetrofitClient
 import com.example.voiceassistant.Util.TimeUtils
 import com.example.voiceassistant.Util.VoiceController
 import com.example.voiceassistant.Util.VoiceRecognition
+import java.util.*
 
 class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
@@ -66,6 +67,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         //WeatherRepository(context!!).deleteAll()
 
 //        RetrofitClient.getWeatherForecastByName("Denia")
+        Log.d(RetrofitClient.TAG, "Day of week: " + TimeUtils.getDayOfWeek(0))
 
 
         messagesList = view.findViewById<RecyclerView>(R.id.chatList).apply {

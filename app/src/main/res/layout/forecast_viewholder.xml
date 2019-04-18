@@ -19,18 +19,18 @@
             android:layout_weight="2">
 
         <ImageView
-                android:id="@+id/weather_pic"
+                android:id="@+id/weather_pic_forecast"
                 android:layout_width="60dp"
                 android:layout_height="60sp"
                 app:srcCompat="@drawable/sunny"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"/>
         <TextView
-                android:id="@+id/clima_text"
+                android:id="@+id/clima_text_forecast"
                 android:text="Sunny"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/weather_pic"
+                android:layout_below="@id/weather_pic_forecast"
                 android:gravity="center"
                 android:textSize="15sp"
                 android:layout_marginTop="5dp"
@@ -44,7 +44,7 @@
             android:layout_marginLeft="10dp">
 
         <TextView
-                android:id="@+id/dayOfWeek"
+                android:id="@+id/dayOfWeek_forecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dayOfWeek"
@@ -55,7 +55,7 @@
                 android:text="@string/weather_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/weather_cardview_city"
+                android:id="@+id/weather_cardview_city_forecast"
                 android:textSize="20sp"/>
 
 
@@ -75,7 +75,7 @@
                         android:text="@string/weather_temp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/weather_cardview_temp"
+                        android:id="@+id/weather_cardview_temp_forecast"
                         android:textSize="18sp"/>
             </LinearLayout>
             <LinearLayout
@@ -92,7 +92,7 @@
                         android:text="@string/weather_humidity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/weather_cardview_humidity"
+                        android:id="@+id/weather_cardview_humidity_forecast"
                         android:textSize="18sp"/>
             </LinearLayout>
         </LinearLayout>
@@ -107,7 +107,7 @@
                     android:text="@string/sample_hour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/weather_cardview_time"
+                    android:id="@+id/weather_cardview_time_forecast"
                     android:textStyle="italic"
                     android:layout_marginBottom="5dp"/>
         </LinearLayout>
