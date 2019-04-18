@@ -7,11 +7,16 @@ import android.view.ViewGroup
 import com.example.voiceassistant.Enums.MessageTypes
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.Model.Message
+import com.example.voiceassistant.Model.Weather.CurrentWeather.CurrentWeather
+import com.example.voiceassistant.Model.Weather.NextWeather.Forecast
+import com.example.voiceassistant.Model.Weather.NextWeather.Weather
+import com.example.voiceassistant.Model.Weather.NextWeather.WeatherList
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Util.TempConverterUtils
 import com.example.voiceassistant.Util.TimeUtils
 import com.example.voiceassistant.Util.WeatherUtils
 import com.example.voiceassistant.Viewholder.BotMessageViewHolder
+import com.example.voiceassistant.Viewholder.ForecastViewHolder
 import com.example.voiceassistant.Viewholder.UserMessageViewHolder
 import com.example.voiceassistant.Viewholder.WeatherCardViewHolder
 import com.squareup.picasso.Picasso
@@ -24,6 +29,10 @@ class ChatAdapter( val messages: MutableList<Message>) : RecyclerView.Adapter<Re
         var viewType: Int
 
         if(messages[position].type == MessageTypes.WEATHER_CARD){
+            return 2
+        }
+
+        if(messages[position].type == MessageTypes.FORECAST){
             return 2
         }
 
@@ -70,7 +79,7 @@ class ChatAdapter( val messages: MutableList<Message>) : RecyclerView.Adapter<Re
 
             is WeatherCardViewHolder ->{
                 val weather = message.weather
-                val clima = WeatherUtils.getWeatherCondition(weather!!.weather[0].main)
+                val clima = WeatherUtils.getWeatherCondition(weather?.clima!!)
                 val image = WeatherUtils.getImageByWeather(clima)
                 Picasso.with(holder.weatherPic.context)
                     .load(image)
@@ -78,9 +87,9 @@ class ChatAdapter( val messages: MutableList<Message>) : RecyclerView.Adapter<Re
                     .into(holder.weatherPic)
 
                 holder.climaText.text = clima
-                holder.city.text = weather.name
-                holder.temperature.text = "%.1f".format(TempConverterUtils.convertKelvinToCelsius(weather?.main?.temp!!)) + " C"
-                holder.humidity.text = weather?.main?.humidity.toString() + "%"
+                holder.city.text = weather.city
+                holder.temperature.text = "${weather.temp}°"
+                holder.humidity.text = "${weather.humidity}%"
                 holder.time.text = message.date
             }
         }

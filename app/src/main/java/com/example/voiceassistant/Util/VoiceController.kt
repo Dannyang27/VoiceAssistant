@@ -19,6 +19,7 @@ class VoiceController(ctx: Context){
     private val RAINING = listOf("SHOULD I GET AN UMBRELLA", "IS IT RAINING")
     private val TEMPERATURE = "TELL ME THE TEMPERATURE"
     private val HUMIDITY = "TELL ME THE HUMIDITY"
+    private val NEXT_DAYS = "TELL ME THE WEATHER FOR THE NEXT DAYS"
 
     private var googleSpeaker = GoogleSpeaker(ctx)
 
@@ -84,6 +85,10 @@ class VoiceController(ctx: Context){
                 val response = "Tomorrow it will rain, so get your best coat Danny"
                 VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
                 googleSpeaker.speak(response)
+            }
+
+            NEXT_DAYS -> {
+                RetrofitClient.getWeatherForecastByName(lastLocation)
             }
 
             else -> {

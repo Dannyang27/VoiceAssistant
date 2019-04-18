@@ -10,6 +10,6 @@ data class Main (
 	@SerializedName("pressure") val pressure : Double,
 	@SerializedName("sea_level") val sea_level : Double,
 	@SerializedName("grnd_level") val grnd_level : Double,
-	@SerializedName("humidity") val humidity : Int,
+	@SerializedName("humidity") val humidity : Double,
 	@SerializedName("temp_kf") val temp_kf : Double
 )

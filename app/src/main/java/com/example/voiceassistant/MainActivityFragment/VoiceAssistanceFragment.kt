@@ -65,7 +65,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
         //WeatherRepository(context!!).deleteAll()
 
-        RetrofitClient.getWeatherForecastByName("Denia")
+//        RetrofitClient.getWeatherForecastByName("Denia")
 
 
         messagesList = view.findViewById<RecyclerView>(R.id.chatList).apply {

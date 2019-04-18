@@ -10,6 +10,7 @@ import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.Model.Weather.CurrentWeather.CurrentWeather
 import com.example.voiceassistant.Model.Weather.NextWeather.Forecast
+import com.example.voiceassistant.Model.Weather.Weather
 import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.Util.TempConverterUtils
 import com.example.voiceassistant.Util.TimeUtils
@@ -26,8 +27,6 @@ object RetrofitClient{
     const val baseUrl = "https://api.openweathermap.org"
     const val TAG = "Weather"
     val googleSpeaker = GoogleSpeaker(VoiceAssistanceFragment.voiceContext)
-//    http://api.openweathermap.org/data/2.5/forecast?q=London&appid=b4139617dc083e665e03aa3f9d1d0064
-//    https://api.openweathermap.org/data/2.5/forecast?q=london&appid=b4139617dc083e665e03aa3f9d1d0064
 
     val retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
@@ -75,11 +74,15 @@ object RetrofitClient{
                     VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
 
                     if( property == "all"){
+                        val date = TimeUtils.getCurrentTime()
+                        val weather = Weather(city,WeatherUtils.getWeatherCondition(currentWeather.weather[0].main),
+                            currentTemp.toDouble(), humidity.toDouble(), date )
+
                         VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, "",
-                            TimeUtils.getCurrentTime(), MessageTypes.WEATHER_CARD, currentWeather))
+                            TimeUtils.getCurrentTime(), MessageTypes.WEATHER_CARD, weather))
 
                         val weatherPojo = WeatherPOJO(city, currentTemp.toDouble(), humidity.toDouble(),
-                            WeatherUtils.getWeatherCondition(currentWeather.weather[0].main), TimeUtils.getCurrentTime(), query)
+                            WeatherUtils.getWeatherCondition(currentWeather.weather[0].main), date, query)
 
                         WeatherRepository(VoiceAssistanceFragment.voiceContext).insert(weatherPojo)
                         WeatherHistoryFragment.addWeather(weatherPojo)
@@ -122,9 +125,22 @@ object RetrofitClient{
 
             override fun onResponse(call: Call<Forecast>, response: Response<Forecast>) {
                 Log.d(TAG, "Retrieving forecast")
+                val messageResp = "Sure, here is the forecast for the next days"
+                val date = TimeUtils.getCurrentTime()
+                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, messageResp, date))
+                googleSpeaker.speak(messageResp)
+
                 val forecast = response.body()
-                forecast?.let {
-                    it.list.forEach {
+                forecast?.list?.forEachIndexed{index, weather ->
+                    if(index % 8 == 0 ){
+                        Log.d(TAG, "Temperature in kelvin is ${weather.main.temp}")
+                        val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(weather.main.temp))
+                        Log.d(TAG, "Temperature in celsius is ${currentTemp}")
+                        val wth = Weather(forecast.city.name, forecast.list[index].weather[0].main,
+                          currentTemp.toDouble()  , weather.main.humidity, date)
+
+                        VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size,
+                            Sender.BOT, messageResp, date, MessageTypes.FORECAST, wth ))
 
                     }
                 }
