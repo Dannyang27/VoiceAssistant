@@ -17,6 +17,7 @@ import com.example.voiceassistant.Database.WeatherRepository
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
+import com.example.voiceassistant.Model.Weather.Weather
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Retrofit.RetrofitClient
 import com.example.voiceassistant.Util.TimeUtils
@@ -40,6 +41,12 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         fun newInstance(): VoiceAssistanceFragment = VoiceAssistanceFragment()
         fun addMessage(message : Message){
             messages.add(message)
+            viewAdapter.notifyDataSetChanged()
+            messagesList.scrollToPosition(viewAdapter.itemCount - 1)
+        }
+
+        fun addAllMessages( messages : MutableList<Message>){
+            messages.addAll(messages)
             viewAdapter.notifyDataSetChanged()
             messagesList.scrollToPosition(viewAdapter.itemCount - 1)
         }

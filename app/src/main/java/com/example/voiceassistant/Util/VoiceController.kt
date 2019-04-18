@@ -35,7 +35,7 @@ class VoiceController(ctx: Context){
         val isWeatherAbroad = text.containsAll(cityWeather)
         if(isWeatherAbroad){
             if(text.size > cityWeather.size){
-                val city = text.drop(5).joinToString(" ")
+                val city = text.drop(5).joinToString(" ").toLowerCase().capitalize()
                 RetrofitClient.getWeatherByName(city, voiceInput)
 
             }else{
@@ -88,7 +88,7 @@ class VoiceController(ctx: Context){
             }
 
             NEXT_DAYS -> {
-                RetrofitClient.getWeatherForecastByName(lastLocation)
+                RetrofitClient.getWeatherForecastByName(lastLocation, voiceInput)
             }
 
             else -> {

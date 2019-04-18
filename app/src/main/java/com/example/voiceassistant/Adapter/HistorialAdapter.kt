@@ -28,6 +28,7 @@ class HistorialAdapter(private val historial: MutableList<WeatherPOJO>) : Recycl
 
         holder.clima.text = clima
         holder.query.text = weather.query
+        holder.dayOfWeek.text = weather.dayOfWeek
         holder.city.text = weather.city
         holder.temperature.text = "${weather.temp}°"
         holder.humidity.text = "${weather.humidity}%"

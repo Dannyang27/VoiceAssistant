@@ -9,6 +9,7 @@ import com.example.voiceassistant.R
 class WeatherHistorialViewHolder(view: View): RecyclerView.ViewHolder(view){
     val image = view.findViewById<ImageView>(R.id.weather_historial_pic)
     val clima = view.findViewById<TextView>(R.id.clima_historial_text)
+    val dayOfWeek = view.findViewById<TextView>(R.id.dayOfWeek_historial)
     val city = view.findViewById<TextView>(R.id.weather_historial_city)
     val temperature = view.findViewById<TextView>(R.id.weather_historial_temp)
     val humidity = view.findViewById<TextView>(R.id.weather_historial_humidity)

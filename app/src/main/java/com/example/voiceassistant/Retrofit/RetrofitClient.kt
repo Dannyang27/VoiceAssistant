@@ -1,6 +1,7 @@
 package com.example.voiceassistant.Retrofit
 
 import android.util.Log
+import com.example.voiceassistant.Adapter.HistorialAdapter
 import com.example.voiceassistant.Database.WeatherRepository
 import com.example.voiceassistant.Enums.MessageTypes
 import com.example.voiceassistant.Enums.Sender
@@ -75,14 +76,15 @@ object RetrofitClient{
 
                     if( property == "all"){
                         val date = TimeUtils.getCurrentTime()
+                        val dayOfWeek = TimeUtils.getDayOfWeek(0)
                         val weather = Weather(city,WeatherUtils.getWeatherCondition(currentWeather.weather[0].main),
-                            currentTemp.toDouble(), humidity.toDouble(), date, TimeUtils.getDayOfWeek(0))
+                            currentTemp.toDouble(), humidity.toDouble(), date, dayOfWeek)
 
                         VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, "",
                             TimeUtils.getCurrentTime(), MessageTypes.WEATHER_CARD, weather))
 
                         val weatherPojo = WeatherPOJO(city, currentTemp.toDouble(), humidity.toDouble(),
-                            WeatherUtils.getWeatherCondition(currentWeather.weather[0].main), date, query)
+                            WeatherUtils.getWeatherCondition(currentWeather.weather[0].main), date, query, dayOfWeek)
 
                         WeatherRepository(VoiceAssistanceFragment.voiceContext).insert(weatherPojo)
                         WeatherHistoryFragment.addWeather(weatherPojo)
@@ -92,7 +94,11 @@ object RetrofitClient{
             }
 
             override fun onFailure(call: Call<CurrentWeather>, t: Throwable) {
-                Log.d(TAG, "Could not get weather for city $city")
+                val response = "Could not get the weather for $city"
+                Log.d(TAG, response)
+                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT,
+                   response , TimeUtils.getCurrentTime()))
+                googleSpeaker.speak(response)
             }
         })
     }
@@ -117,7 +123,7 @@ object RetrofitClient{
     }
 
 
-    fun getWeatherForecastByName(city: String){
+    fun getWeatherForecastByName(city: String, query: String = ""){
         val call = service.getForecastByCityName(city, token)
         Log.d(TAG, "Test forecast for city $city")
 
@@ -134,13 +140,22 @@ object RetrofitClient{
                 var i = 1
                 forecast?.list?.forEachIndexed{index, weather ->
                     if(index % 8 == 0 ){
-                        val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(weather.main.temp))
-                        val wth = Weather(forecast.city.name, forecast.list[index].weather[0].main,
-                          currentTemp.toDouble()  , weather.main.humidity, date, TimeUtils.getDayOfWeek(i))
-                        i++
+                        val city = forecast.city.name
+                        val clima = forecast.list[index].weather[0].main
+                        val humidity = weather.main.humidity
+                        val dayOfWeek = TimeUtils.getDayOfWeek(i)
+                        val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(weather.main.temp)).toDouble()
+
+                        val wth = Weather(city, clima, currentTemp  , humidity, date, dayOfWeek )
+                        val q = query + " ($i/5)"
+                        val weatherPojo = WeatherPOJO(forecast.city.name,currentTemp, humidity, clima, date, q, dayOfWeek)
 
                         VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size,
                             Sender.BOT, messageResp, date, MessageTypes.FORECAST, wth ))
+
+                        WeatherHistoryFragment.addWeather(weatherPojo)
+                        WeatherRepository(VoiceAssistanceFragment.voiceContext).insert(weatherPojo)
+                        i++
                     }
                 }
             }

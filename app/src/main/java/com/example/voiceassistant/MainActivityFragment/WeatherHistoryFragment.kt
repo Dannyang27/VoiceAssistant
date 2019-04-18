@@ -28,6 +28,11 @@ class WeatherHistoryFragment : Fragment(){
             historial.add(weather)
             viewAdapter.notifyDataSetChanged()
         }
+
+        fun addAllWeather( weathers : MutableList<WeatherPOJO>){
+            historial.addAll(weathers)
+            viewAdapter.notifyDataSetChanged()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
