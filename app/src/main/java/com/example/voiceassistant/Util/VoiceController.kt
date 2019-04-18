@@ -31,7 +31,10 @@ class VoiceController(ctx: Context){
         val name = prefs.getString("name", "N/A")
         val lastLocation = prefs.getString("last_location", "Barcelona")
 
-        val isWeatherAbroad = voiceInput.substring(0, CITY_WEATHER.length).toUpperCase() == CITY_WEATHER
+        var isWeatherAbroad = false
+        if(voiceInput.length> CITY_WEATHER.length){
+            isWeatherAbroad = voiceInput.substring(0, CITY_WEATHER.length).toUpperCase() == CITY_WEATHER
+        }
         Log.d(RetrofitClient.TAG, "" + isWeatherAbroad)
         if(isWeatherAbroad){
             val text = voiceInput.toUpperCase().split(" ")
@@ -51,7 +54,12 @@ class VoiceController(ctx: Context){
         }
 
 
-        val isNextDaysWeatherAbroad = voiceInput.substring(0, NEXT_DAYS_CITY.length).toUpperCase() == NEXT_DAYS_CITY
+//        val isNextDaysWeatherAbroad = voiceInput.substring(0, NEXT_DAYS_CITY.length).toUpperCase().or == NEXT_DAYS_CITY
+
+        var isNextDaysWeatherAbroad = false
+        if(voiceInput.length > NEXT_DAYS_CITY.length){
+            isNextDaysWeatherAbroad = voiceInput.substring(0, NEXT_DAYS_CITY.length).toUpperCase() == NEXT_DAYS_CITY
+        }
 
         Log.d(RetrofitClient.TAG, "isnextdayweatherabroad: " + isNextDaysWeatherAbroad)
 

@@ -97,5 +97,7 @@
     <string name="clearHistoryButton">Clear History</string>
     <string name="clearHistoryWarning">This action deletes all your weather history</string>
     <string name="dayOfWeek">Now</string>
+    <string name="nextDayWeather">Next Day Weathers [2-5]</string>
+    <string name="nextDayWeatherSummary">Retrieves the number of weather when asked for next day weathers</string>
 
 </resources>
