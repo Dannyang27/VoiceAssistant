@@ -7,21 +7,12 @@ import android.view.ViewGroup
 import com.example.voiceassistant.Enums.MessageTypes
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.Model.Message
-import com.example.voiceassistant.Model.Weather.CurrentWeather.CurrentWeather
-import com.example.voiceassistant.Model.Weather.NextWeather.Forecast
-import com.example.voiceassistant.Model.Weather.NextWeather.Weather
-import com.example.voiceassistant.Model.Weather.NextWeather.WeatherList
 import com.example.voiceassistant.R
-import com.example.voiceassistant.Util.TempConverterUtils
-import com.example.voiceassistant.Util.TimeUtils
 import com.example.voiceassistant.Util.WeatherUtils
 import com.example.voiceassistant.Viewholder.BotMessageViewHolder
-import com.example.voiceassistant.Viewholder.ForecastViewHolder
 import com.example.voiceassistant.Viewholder.UserMessageViewHolder
 import com.example.voiceassistant.Viewholder.WeatherCardViewHolder
 import com.squareup.picasso.Picasso
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class ChatAdapter( val messages: MutableList<Message>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
