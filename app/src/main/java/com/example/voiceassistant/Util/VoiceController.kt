@@ -2,6 +2,7 @@ package com.example.voiceassistant.Util
 
 import android.content.Context
 import android.preference.PreferenceManager
+import android.util.Log
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
 import com.example.voiceassistant.Model.GoogleSpeaker
@@ -20,6 +21,7 @@ class VoiceController(ctx: Context){
     private val TEMPERATURE = "TELL ME THE TEMPERATURE"
     private val HUMIDITY = "TELL ME THE HUMIDITY"
     private val NEXT_DAYS = "TELL ME THE WEATHER FOR THE NEXT DAYS"
+    private val NEXT_DAYS_CITY = "TELL ME THE WEATHER FOR THE NEXT DAYS IN"
 
     private var googleSpeaker = GoogleSpeaker(ctx)
 
@@ -29,11 +31,12 @@ class VoiceController(ctx: Context){
         val name = prefs.getString("name", "N/A")
         val lastLocation = prefs.getString("last_location", "Barcelona")
 
-        val text = voiceInput.toUpperCase().split(" ")
-        val cityWeather = CITY_WEATHER.split(" ")
-
-        val isWeatherAbroad = text.containsAll(cityWeather)
+        val isWeatherAbroad = voiceInput.substring(0, CITY_WEATHER.length).toUpperCase() == CITY_WEATHER
+        Log.d(RetrofitClient.TAG, "" + isWeatherAbroad)
         if(isWeatherAbroad){
+            val text = voiceInput.toUpperCase().split(" ")
+            val cityWeather = CITY_WEATHER.split(" ")
+
             if(text.size > cityWeather.size){
                 val city = text.drop(5).joinToString(" ").toLowerCase().capitalize()
                 RetrofitClient.getWeatherByName(city, voiceInput)
@@ -46,6 +49,28 @@ class VoiceController(ctx: Context){
 
             return
         }
+
+
+        val isNextDaysWeatherAbroad = voiceInput.substring(0, NEXT_DAYS_CITY.length).toUpperCase() == NEXT_DAYS_CITY
+
+        Log.d(RetrofitClient.TAG, "isnextdayweatherabroad: " + isNextDaysWeatherAbroad)
+
+
+        if(isNextDaysWeatherAbroad){
+            val text = voiceInput.toUpperCase().split(" ")
+            val nextDaysWeather = NEXT_DAYS_CITY.split(" ")
+
+            if(text.size > nextDaysWeather.size){
+                val city = text.drop(9).joinToString(" ").toLowerCase().capitalize()
+                RetrofitClient.getWeatherForecastByName(city, voiceInput)
+            }else{
+                val response = "Sorry, could not get the city"
+                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
+                googleSpeaker.speak(response)
+            }
+            return
+        }
+
         when(voiceInput.toUpperCase()){
             in HELLO -> {
                 val response = "Hi $name, I missed you"
