@@ -9,6 +9,7 @@ import com.example.voiceassistant.MainActivityFragment.WeatherHistoryFragment
 import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.Model.Weather.CurrentWeather.CurrentWeather
+import com.example.voiceassistant.Model.Weather.NextWeather.Forecast
 import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.Util.TempConverterUtils
 import com.example.voiceassistant.Util.TimeUtils
@@ -108,6 +109,30 @@ object RetrofitClient{
 
             override fun onFailure(call: Call<CurrentWeather>, t: Throwable) {
                 Log.d(TAG, "Could not get weather for city $cityId")
+            }
+        })
+    }
+
+
+    fun getWeatherForecastByName(city: String){
+        val call = service.getForecastByCityName(city, token)
+        Log.d(TAG, "Test forecast for city $city")
+
+        call.enqueue(object: Callback<Forecast>{
+
+            override fun onResponse(call: Call<Forecast>, response: Response<Forecast>) {
+                Log.d(TAG, "Retrieving forecast")
+                val forecast = response.body()
+                forecast?.let {
+                    it.list.forEach {
+
+                    }
+                }
+
+            }
+
+            override fun onFailure(call: Call<Forecast>, t: Throwable) {
+                Log.d(TAG, "Could not get forecast")
             }
         })
     }

@@ -2,21 +2,14 @@ package com.example.voiceassistant.Model.Weather.NextWeather
 
 import com.google.gson.annotations.SerializedName
 
-data class Main(
-    @SerializedName("grnd_level")
-    val grndLevel: Double,
-    @SerializedName("humidity")
-    val humidity: Int,
-    @SerializedName("pressure")
-    val pressure: Double,
-    @SerializedName("sea_level")
-    val seaLevel: Double,
-    @SerializedName("temp")
-    val temp: Double,
-    @SerializedName("temp_kf")
-    val tempKf: Int,
-    @SerializedName("temp_max")
-    val tempMax: Double,
-    @SerializedName("temp_min")
-    val tempMin: Double
+data class Main (
+
+	@SerializedName("temp") val temp : Double,
+	@SerializedName("temp_min") val temp_min : Double,
+	@SerializedName("temp_max") val temp_max : Double,
+	@SerializedName("pressure") val pressure : Double,
+	@SerializedName("sea_level") val sea_level : Double,
+	@SerializedName("grnd_level") val grnd_level : Double,
+	@SerializedName("humidity") val humidity : Int,
+	@SerializedName("temp_kf") val temp_kf : Double
 )

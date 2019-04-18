@@ -2,12 +2,10 @@ package com.example.voiceassistant.Util
 
 import android.content.Context
 import android.preference.PreferenceManager
-import android.util.Log
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
 import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
-import com.example.voiceassistant.Model.Weather.NextWeather.City
 import com.example.voiceassistant.Retrofit.RetrofitClient
 
 class VoiceController(ctx: Context){
