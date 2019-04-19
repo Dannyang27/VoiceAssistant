@@ -3,6 +3,7 @@ package com.example.voiceassistant.Database
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
+import com.example.voiceassistant.Model.Weather.MessagePOJO
 import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.Retrofit.RetrofitClient
 import org.jetbrains.anko.db.*
@@ -29,11 +30,20 @@ class AnkoDbOpenHelper private constructor(ctx: Context) : ManagedSQLiteOpenHelp
             WeatherPOJO.COLUMN_DATE to TEXT,
             WeatherPOJO.COLUM_QUERY to TEXT,
             WeatherPOJO.COLUMN_DAYOFWEEK to TEXT)
+
         Log.d(RetrofitClient.TAG, "Creating table ${WeatherPOJO.TABLE_NAME}")
+
+        db.createTable(MessagePOJO.TABLE_NAME, true,
+            MessagePOJO.COLUMN_QUERY to TEXT,
+            MessagePOJO.COLUMN_RESPONSE to TEXT,
+            MessagePOJO.COLUMN_DATE to TEXT)
+
+        Log.d(RetrofitClient.TAG, "Creating table ${MessagePOJO.TABLE_NAME}")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.dropTable(WeatherPOJO.TABLE_NAME, true)
+        db.dropTable(MessagePOJO.TABLE_NAME, true)
     }
 
     override fun onDowngrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {

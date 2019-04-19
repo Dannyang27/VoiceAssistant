@@ -59,7 +59,7 @@ class WeatherRepository(val context: Context){
             WeatherPOJO.COLUMN_DATE to weather.date,
             WeatherPOJO.COLUM_QUERY to weather.query,
             WeatherPOJO.COLUMN_DAYOFWEEK to weather.dayOfWeek)
-            .whereArgs("${WeatherPOJO.COLUMN_CITY} = {${weather.city}", WeatherPOJO.COLUMN_CITY to weather.city)
+            .whereArgs("${WeatherPOJO.COLUMN_CITY} = ${weather.city}", WeatherPOJO.COLUMN_CITY to weather.city)
             .exec()
 
         Log.d(RetrofitClient.TAG, "Update result code is $updateResult")

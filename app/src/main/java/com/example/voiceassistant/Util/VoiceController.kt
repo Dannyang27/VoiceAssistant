@@ -25,7 +25,6 @@ class VoiceController(ctx: Context){
 
     private var googleSpeaker = GoogleSpeaker(ctx)
 
-
     fun processVoiceInput(voiceInput: String){
         val prefs = PreferenceManager.getDefaultSharedPreferences(VoiceAssistanceFragment.voiceContext)
         val name = prefs.getString("name", "N/A")
@@ -35,7 +34,7 @@ class VoiceController(ctx: Context){
         if(voiceInput.length> CITY_WEATHER.length){
             isWeatherAbroad = voiceInput.substring(0, CITY_WEATHER.length).toUpperCase() == CITY_WEATHER
         }
-        Log.d(RetrofitClient.TAG, "" + isWeatherAbroad)
+
         if(isWeatherAbroad){
             val text = voiceInput.toUpperCase().split(" ")
             val cityWeather = CITY_WEATHER.split(" ")
@@ -60,9 +59,6 @@ class VoiceController(ctx: Context){
         if(voiceInput.length > NEXT_DAYS_CITY.length){
             isNextDaysWeatherAbroad = voiceInput.substring(0, NEXT_DAYS_CITY.length).toUpperCase() == NEXT_DAYS_CITY
         }
-
-        Log.d(RetrofitClient.TAG, "isnextdayweatherabroad: " + isNextDaysWeatherAbroad)
-
 
         if(isNextDaysWeatherAbroad){
             val text = voiceInput.toUpperCase().split(" ")
