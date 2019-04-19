@@ -73,10 +73,6 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
         //WeatherRepository(context!!).deleteAll()
 
-//        RetrofitClient.getWeatherForecastByName("Denia")
-        Log.d(RetrofitClient.TAG, "Day of week: " + TimeUtils.getDayOfWeek(0))
-
-
         messagesList = view.findViewById<RecyclerView>(R.id.chatList).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
