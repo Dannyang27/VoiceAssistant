@@ -7,8 +7,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.CalendarView
 import android.widget.TextView
+import android.widget.Toast
 import com.example.voiceassistant.Adapter.TodoListAdapter
 import com.example.voiceassistant.Model.Task
 import com.example.voiceassistant.R
@@ -33,8 +35,14 @@ class CalendarFragment : Fragment(){
         val todolistTitle = view.findViewById<TextView>(R.id.todolist_date)
         todolistTitle.text = TimeUtils.getTodayDate()
 
+        val viewAllBtn = view.findViewById<Button>(R.id.view_all_button)
+
         calendar.setOnDateChangeListener{view, year, month, dayOfMonth ->
             todolistTitle.text = "$dayOfMonth/${month + 1}/$year"
+        }
+
+        viewAllBtn.setOnClickListener {
+            Toast.makeText(activity, "Going to activity", Toast.LENGTH_SHORT).show()
         }
 
         viewManager = LinearLayoutManager(activity)

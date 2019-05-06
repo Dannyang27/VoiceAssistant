@@ -18,13 +18,33 @@
             android:layout_height="match_parent"
             android:layout_below="@id/calendar"
             android:layout_margin="10dp">
-        <TextView
-                android:text="@string/date"
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/todolist_date"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+            <TextView
+                    android:text="@string/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/todolist_date"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="2dp"/>
+            <Button
+                    android:text="@string/view_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/view_all_button"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/colorPrimary"/>
+
+        </LinearLayout>
+
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/todo_list"
                 android:layout_width="match_parent"

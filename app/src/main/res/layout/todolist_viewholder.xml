@@ -7,7 +7,7 @@
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
+                android:layout_height="80dp">
 
             <CheckBox
                     android:layout_width="wrap_content"
@@ -21,6 +21,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/todolist_textview"
                     android:layout_gravity="center_vertical"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:ellipsize="end"
+                    android:maxLines="2"/>
         </LinearLayout>
 </RelativeLayout>
