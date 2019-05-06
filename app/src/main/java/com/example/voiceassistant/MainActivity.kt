@@ -4,21 +4,17 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import com.example.voiceassistant.MainActivityFragment.CalendarFragment
 import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
 import com.example.voiceassistant.MainActivityFragment.WeatherHistoryFragment
-import com.example.voiceassistant.Retrofit.RetrofitClient
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -67,16 +63,13 @@ class MainActivity : AppCompatActivity() {
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
             if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)){
-                Log.d(RetrofitClient.TAG, "Permission already granted")
+                // do something?
             }else{
                 ActivityCompat.requestPermissions(this,
                     arrayOf(Manifest.permission.RECORD_AUDIO),
                     RECORD_REQUEST_CODE)
-                Log.d(RetrofitClient.TAG, "Asking permission")
             }
         }
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
