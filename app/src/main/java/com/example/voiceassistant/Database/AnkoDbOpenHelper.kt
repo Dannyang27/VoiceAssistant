@@ -4,6 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import com.example.voiceassistant.Model.Weather.MessagePOJO
+import com.example.voiceassistant.Model.Weather.TaskPOJO
 import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.Retrofit.RetrofitClient
 import org.jetbrains.anko.db.*
@@ -31,19 +32,27 @@ class AnkoDbOpenHelper private constructor(ctx: Context) : ManagedSQLiteOpenHelp
             WeatherPOJO.COLUM_QUERY to TEXT,
             WeatherPOJO.COLUMN_DAYOFWEEK to TEXT)
 
-        Log.d(RetrofitClient.TAG, "Creating table ${WeatherPOJO.TABLE_NAME}")
+        Log.d(RetrofitClient.TAG, "Creating table WeatherPOJO${WeatherPOJO.TABLE_NAME}")
 
         db.createTable(MessagePOJO.TABLE_NAME, true,
             MessagePOJO.COLUMN_QUERY to TEXT,
             MessagePOJO.COLUMN_RESPONSE to TEXT,
             MessagePOJO.COLUMN_DATE to TEXT)
 
-        Log.d(RetrofitClient.TAG, "Creating table ${MessagePOJO.TABLE_NAME}")
+        Log.d(RetrofitClient.TAG, "Creating table MessagePOJO ${MessagePOJO.TABLE_NAME}")
+
+        db.createTable(TaskPOJO.TABLE_NAME, true,
+            TaskPOJO.COLUMN_DONE to TEXT,
+            TaskPOJO.COLUMN_TEXT to TEXT,
+            TaskPOJO.COLUMN_DATE to TEXT)
+
+        Log.d(RetrofitClient.TAG, "Creating table TaskPOJO ${TaskPOJO.TABLE_NAME}")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.dropTable(WeatherPOJO.TABLE_NAME, true)
         db.dropTable(MessagePOJO.TABLE_NAME, true)
+        db.dropTable(TaskPOJO.TABLE_NAME, true)
     }
 
     override fun onDowngrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
