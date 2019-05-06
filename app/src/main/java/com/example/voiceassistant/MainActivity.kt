@@ -78,19 +78,22 @@ class MainActivity : AppCompatActivity() {
 
         // add some task to calendar
 //        addDummyDataToCalendar()
-        val tasks = TaskRepository(this).findTaskByDate("07/05/2019")
-
-        tasks.forEach {
-            Log.d(RetrofitClient.TAG, "Text: ${it.text} date: ${it.date}")
-        }
+//        val tasks = TaskRepository(this).findTaskByDate("06/05/2019")
+//
+//        tasks.forEach {
+//            Log.d(RetrofitClient.TAG, "Id: ${it.id} Text: ${it.text} date: ${it.date}")
+//        }.also {
+//            Log.d(RetrofitClient.TAG, "Finished tasks")
+//
+//        }
     }
 
     fun addDummyDataToCalendar(){
-        TaskRepository(this).insert(TaskPOJO(false, "Test 1", "06/05/2019"))
-        TaskRepository(this).insert(TaskPOJO(false, "Test 2", "06/05/2019"))
-        TaskRepository(this).insert(TaskPOJO(false, "Test 3", "06/05/2019"))
-        TaskRepository(this).insert(TaskPOJO(false, "Test 4", "06/05/2019"))
-        TaskRepository(this).insert(TaskPOJO(false, "Test 5", "06/05/2019"))
+        TaskRepository(this).insert(TaskPOJO(1,false, "Test 1", "06/05/2019"))
+        TaskRepository(this).insert(TaskPOJO(2,false, "Test 2", "06/05/2019"))
+        TaskRepository(this).insert(TaskPOJO(3,false, "Test 3", "06/05/2019"))
+        TaskRepository(this).insert(TaskPOJO(4,false, "Test 4", "06/05/2019"))
+        TaskRepository(this).insert(TaskPOJO(5,false, "Test 5", "06/05/2019"))
     }
 
 
