@@ -101,5 +101,6 @@
     <string name="nextDayWeatherSummary">Retrieves the number of weather when asked for next day weathers</string>
     <string name="todolist_sample">Llevar el coche al taller</string>
     <string name="view_all">View All</string>
+    <string name="task_sample">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</string>
 
 </resources>
