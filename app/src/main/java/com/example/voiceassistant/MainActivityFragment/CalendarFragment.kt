@@ -1,5 +1,6 @@
 package com.example.voiceassistant.MainActivityFragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import android.widget.Button
 import android.widget.CalendarView
 import android.widget.TextView
 import android.widget.Toast
+import com.example.voiceassistant.Activity.TodoListActivity
 import com.example.voiceassistant.Adapter.TodoListAdapter
 import com.example.voiceassistant.Model.Task
 import com.example.voiceassistant.R
@@ -30,7 +32,6 @@ class CalendarFragment : Fragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.calendar_fragment , container, false)
-
         val calendar = view.findViewById<CalendarView>(R.id.calendar)
         val todolistTitle = view.findViewById<TextView>(R.id.todolist_date)
         todolistTitle.text = TimeUtils.getTodayDate()
@@ -42,7 +43,8 @@ class CalendarFragment : Fragment(){
         }
 
         viewAllBtn.setOnClickListener {
-            Toast.makeText(activity, "Going to activity", Toast.LENGTH_SHORT).show()
+            val intent = Intent(activity, TodoListActivity::class.java)
+            startActivity(intent)
         }
 
         viewManager = LinearLayoutManager(activity)

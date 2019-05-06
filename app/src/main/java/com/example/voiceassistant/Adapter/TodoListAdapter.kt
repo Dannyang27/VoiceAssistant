@@ -4,7 +4,6 @@ import android.graphics.Paint
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import com.example.voiceassistant.Model.Task
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Viewholder.TodoListViewHolder
@@ -23,11 +22,24 @@ class TodoListAdapter (private val todolist: MutableList<Task>): RecyclerView.Ad
             strikeText(holder)
         }
 
-        holder.checkbox.setOnCheckedChangeListener { view , isChecked ->
+        holder.itemView.setOnClickListener {
+            if(task.isDone){
+                removeStrike(holder)
+                task.isDone = false
+            }
+            else{
+                strikeText(holder)
+                task.isDone = true
+            }
+        }
+
+        holder.checkbox.setOnCheckedChangeListener { _ , isChecked ->
             if(isChecked){
                 strikeText(holder)
+                task.isDone = true
             }else{
                 removeStrike(holder)
+                task.isDone = false
             }
         }
     }
