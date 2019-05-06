@@ -23,7 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/todolist_date"
-                android:textSize="16sp"/>
+                android:textSize="18sp"
+                android:textStyle="bold"/>
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/todo_list"
                 android:layout_width="match_parent"
