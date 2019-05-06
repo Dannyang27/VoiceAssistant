@@ -1,10 +1,14 @@
 package com.example.voiceassistant
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
@@ -23,6 +27,8 @@ class MainActivity : AppCompatActivity() {
     val weatherFragment = WeatherHistoryFragment.newInstance()
     val calendarFragment = CalendarFragment.newInstance()
     var activeFragment: Fragment = voiceFragment
+
+    private val RECORD_REQUEST_CODE = 101
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -58,6 +64,19 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().add(R.id.container, weatherFragment, "2").hide(weatherFragment).commit()
         supportFragmentManager.beginTransaction().add(R.id.container, calendarFragment, "3").hide(calendarFragment).commit()
         supportFragmentManager.beginTransaction().add(R.id.container, voiceFragment, "1").commit()
+
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)){
+                Log.d(RetrofitClient.TAG, "Permission already granted")
+            }else{
+                ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.RECORD_AUDIO),
+                    RECORD_REQUEST_CODE)
+                Log.d(RetrofitClient.TAG, "Asking permission")
+            }
+        }
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
