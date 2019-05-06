@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.CalendarView
 import android.widget.TextView
 import com.example.voiceassistant.Adapter.TodoListAdapter
+import com.example.voiceassistant.Model.Task
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Util.TimeUtils
 import com.example.voiceassistant.Viewholder.HorizontalDivider
@@ -38,8 +39,11 @@ class CalendarFragment : Fragment(){
 
         viewManager = LinearLayoutManager(activity)
         viewAdapter = TodoListAdapter(mutableListOf(
-            "Pasear al perro","Hacer la comida al niño",
-            "Enviar email a Pepe","Ir al gimnasio","Ducharse"))
+            Task(true, "Pasear al perro"),
+            Task(false, "Hacer la comida al niño"),
+            Task(true, "Enviar email a Pepe"),
+            Task(false, "Ir al gimnasio"),
+            Task(false, "Ducharse")))
 
         todolistRecyclerView = view.findViewById<RecyclerView>(R.id.todo_list).apply {
             setHasFixedSize(true)
