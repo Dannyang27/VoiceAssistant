@@ -10,11 +10,16 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import com.example.voiceassistant.Database.TaskRepository
+import com.example.voiceassistant.Database.database
 import com.example.voiceassistant.MainActivityFragment.CalendarFragment
 import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
 import com.example.voiceassistant.MainActivityFragment.WeatherHistoryFragment
+import com.example.voiceassistant.Model.Weather.TaskPOJO
+import com.example.voiceassistant.Retrofit.RetrofitClient
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -70,7 +75,24 @@ class MainActivity : AppCompatActivity() {
                     RECORD_REQUEST_CODE)
             }
         }
+
+        // add some task to calendar
+//        addDummyDataToCalendar()
+        val tasks = TaskRepository(this).findTaskByDate("07/05/2019")
+
+        tasks.forEach {
+            Log.d(RetrofitClient.TAG, "Text: ${it.text} date: ${it.date}")
+        }
     }
+
+    fun addDummyDataToCalendar(){
+        TaskRepository(this).insert(TaskPOJO(false, "Test 1", "06/05/2019"))
+        TaskRepository(this).insert(TaskPOJO(false, "Test 2", "06/05/2019"))
+        TaskRepository(this).insert(TaskPOJO(false, "Test 3", "06/05/2019"))
+        TaskRepository(this).insert(TaskPOJO(false, "Test 4", "06/05/2019"))
+        TaskRepository(this).insert(TaskPOJO(false, "Test 5", "06/05/2019"))
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.setting_menu, menu)

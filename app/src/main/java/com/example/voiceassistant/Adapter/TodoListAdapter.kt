@@ -5,10 +5,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.voiceassistant.Model.Task
+import com.example.voiceassistant.Model.Weather.TaskPOJO
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Viewholder.TodoListViewHolder
 
-class TodoListAdapter (private val todolist: MutableList<Task>): RecyclerView.Adapter<TodoListViewHolder>(){
+class TodoListAdapter (private val todolist: MutableList<TaskPOJO>): RecyclerView.Adapter<TodoListViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.todolist_viewholder, parent, false)
         return TodoListViewHolder(view)
@@ -55,5 +56,4 @@ class TodoListAdapter (private val todolist: MutableList<Task>): RecyclerView.Ad
         holder.checkbox.isChecked = false
         holder.todolistText.paintFlags = Paint.ANTI_ALIAS_FLAG
     }
-
 }

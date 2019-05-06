@@ -11,10 +11,10 @@ import java.nio.file.Files.delete
 
 class TaskRepository (val context: Context){
 
-    fun findTaskByDate(): MutableList<TaskPOJO> = context.database.use {
+    fun findTaskByDate(date : String): MutableList<TaskPOJO> = context.database.use {
         val tasks = mutableListOf<TaskPOJO>()
 
-        select(TaskPOJO.TABLE_NAME, TaskPOJO.COLUMN_DONE, TaskPOJO.COLUMN_TEXT, TaskPOJO.COLUMN_DATE)
+        select(TaskPOJO.TABLE_NAME, TaskPOJO.COLUMN_DONE, TaskPOJO.COLUMN_TEXT, TaskPOJO.COLUMN_DATE).whereArgs("date={date}", "date" to date )
             .parseList(object: MapRowParser<MutableList<TaskPOJO>>{
                 override fun parseRow(columns: Map<String, Any?>): MutableList<TaskPOJO> {
                     val isDone = columns.getValue(TaskPOJO.COLUMN_DONE)
