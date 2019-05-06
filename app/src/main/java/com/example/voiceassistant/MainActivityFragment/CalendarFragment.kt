@@ -28,13 +28,13 @@ class CalendarFragment : Fragment(){
 
     lateinit var viewManager : RecyclerView.LayoutManager
     lateinit var todolistRecyclerView: RecyclerView
-    lateinit var viewAdapter : RecyclerView.Adapter<TodoListViewHolder>
 
     var date = TimeUtils.getTodayDate()
     var todolist = mutableListOf<TaskPOJO>()
 
     companion object {
         fun newInstance(): CalendarFragment = CalendarFragment()
+        lateinit var viewAdapter : RecyclerView.Adapter<TodoListViewHolder>
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

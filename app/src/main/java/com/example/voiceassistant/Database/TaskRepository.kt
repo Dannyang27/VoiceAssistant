@@ -8,6 +8,19 @@ import org.jetbrains.anko.db.*
 
 class TaskRepository (val context: Context){
 
+    fun getLastId(): Int = context.database.use {
+        val tasks = mutableListOf<TaskPOJO>()
+        var cont = 0
+        select(TaskPOJO.TABLE_NAME, TaskPOJO.COLUMN_ID, TaskPOJO.COLUMN_DONE, TaskPOJO.COLUMN_TEXT, TaskPOJO.COLUMN_DATE)
+            .parseList(object: MapRowParser<MutableList<TaskPOJO>>{
+                override fun parseRow(columns: Map<String, Any?>): MutableList<TaskPOJO> {
+                    cont++
+                    return tasks
+                }
+            })
+        cont
+    }
+
     fun findTaskByDate(date : String): MutableList<TaskPOJO> = context.database.use {
         val tasks = mutableListOf<TaskPOJO>()
 

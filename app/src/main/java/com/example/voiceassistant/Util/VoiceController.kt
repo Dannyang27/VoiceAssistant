@@ -3,10 +3,13 @@ package com.example.voiceassistant.Util
 import android.content.Context
 import android.preference.PreferenceManager
 import android.util.Log
+import com.example.voiceassistant.Database.TaskRepository
 import com.example.voiceassistant.Enums.Sender
+import com.example.voiceassistant.MainActivityFragment.CalendarFragment
 import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
 import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
+import com.example.voiceassistant.Model.Weather.TaskPOJO
 import com.example.voiceassistant.Retrofit.RetrofitClient
 
 class VoiceController(ctx: Context){
@@ -22,8 +25,10 @@ class VoiceController(ctx: Context){
     private val HUMIDITY = "TELL ME THE HUMIDITY"
     private val NEXT_DAYS = "TELL ME THE WEATHER FOR THE NEXT DAYS"
     private val NEXT_DAYS_CITY = "TELL ME THE WEATHER FOR THE NEXT DAYS IN"
+    private val ADD_TASK = "REMIND ME TO"
 
     private var googleSpeaker = GoogleSpeaker(ctx)
+    val context = ctx
 
     fun processVoiceInput(voiceInput: String){
         val prefs = PreferenceManager.getDefaultSharedPreferences(VoiceAssistanceFragment.voiceContext)
@@ -52,9 +57,6 @@ class VoiceController(ctx: Context){
             return
         }
 
-
-//        val isNextDaysWeatherAbroad = voiceInput.substring(0, NEXT_DAYS_CITY.length).toUpperCase().or == NEXT_DAYS_CITY
-
         var isNextDaysWeatherAbroad = false
         if(voiceInput.length > NEXT_DAYS_CITY.length){
             isNextDaysWeatherAbroad = voiceInput.substring(0, NEXT_DAYS_CITY.length).toUpperCase() == NEXT_DAYS_CITY
@@ -69,6 +71,31 @@ class VoiceController(ctx: Context){
                 RetrofitClient.getWeatherForecastByName(city, voiceInput)
             }else{
                 val response = "Sorry, could not get the city"
+                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
+                googleSpeaker.speak(response)
+            }
+            return
+        }
+
+        var isReminder = false
+        if(voiceInput.length > ADD_TASK.length){
+            isReminder = voiceInput.substring(0, ADD_TASK.length).toUpperCase() == ADD_TASK
+        }
+
+        if(isReminder){
+            val text = voiceInput.toUpperCase().split(" ")
+            val reminder = ADD_TASK.split(" ")
+
+            if(text.size > reminder.size){
+                val note = text.drop(3).joinToString(" ").toLowerCase().capitalize()
+                val response = "Sure, '$note' is added to the calendar for today"
+                val lastId = TaskRepository(context).getLastId()
+                TaskRepository(context).insert(TaskPOJO(lastId, false, note, TimeUtils.getTodayDate()))
+                CalendarFragment.viewAdapter.notifyDataSetChanged()
+                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
+                googleSpeaker.speak(response)
+            }else{
+                val response = "Sorry, could not get the reminder"
                 VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
                 googleSpeaker.speak(response)
             }
