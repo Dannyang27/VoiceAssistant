@@ -76,16 +76,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // add some task to calendar
-//        addDummyDataToCalendar()
-//        val tasks = TaskRepository(this).findTaskByDate("06/05/2019")
-//
-//        tasks.forEach {
-//            Log.d(RetrofitClient.TAG, "Id: ${it.id} Text: ${it.text} date: ${it.date}")
-//        }.also {
-//            Log.d(RetrofitClient.TAG, "Finished tasks")
-//
-//        }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
+                // do something?
+            }else{
+                ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    RECORD_REQUEST_CODE)
+            }
+        }
+
     }
 
     fun addDummyDataToCalendar(){

@@ -1,10 +1,16 @@
 package com.example.voiceassistant.MainActivityFragment
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.speech.RecognitionListener
 import android.speech.SpeechRecognizer
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -23,6 +29,8 @@ import com.example.voiceassistant.Retrofit.RetrofitClient
 import com.example.voiceassistant.Util.TimeUtils
 import com.example.voiceassistant.Util.VoiceController
 import com.example.voiceassistant.Util.VoiceRecognition
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import java.util.*
 
 class VoiceAssistanceFragment : Fragment(), RecognitionListener{
@@ -30,6 +38,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
     private lateinit var viewManager : RecyclerView.LayoutManager
     private lateinit var googleSpeaker: GoogleSpeaker
     private lateinit var voiceController: VoiceController
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     companion object {
         val messages = mutableListOf<Message>()
@@ -63,15 +72,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         viewManager = LinearLayoutManager(activity)
         viewAdapter = ChatAdapter(messages)
         googleSpeaker = GoogleSpeaker(activity?.applicationContext!!)
-
-//        val weathers = WeatherRepository(context!!).findAll()
-//        Log.d(RetrofitClient.TAG, weathers.toString())
-//
-//        weathers.forEach {
-//            Log.d(RetrofitClient.TAG, it.clima)
-//        }
-
-        //WeatherRepository(context!!).deleteAll()
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity?.applicationContext!!)
 
         messagesList = view.findViewById<RecyclerView>(R.id.chatList).apply {
             setHasFixedSize(true)
@@ -87,6 +88,29 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         voiceButton.setOnClickListener {
             speechRecognizer.startListening(recognizerIntent)
         }
+
+        val locationPermission = ContextCompat.checkSelfPermission(
+            activity?.applicationContext!!,
+            Manifest.permission.ACCESS_FINE_LOCATION)
+
+        if(locationPermission == PackageManager.PERMISSION_GRANTED){
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                val latitude = location?.latitude
+                val longitude = location?.longitude
+                val geocoder = Geocoder(activity?.applicationContext!!, Locale.getDefault())
+
+                val address = geocoder.getFromLocation(latitude!!, longitude!!, 1)
+                if(!address.isEmpty()){
+                    val prefs = PreferenceManager.getDefaultSharedPreferences(activity?.applicationContext!!)
+                    val editor = prefs.edit()
+                    editor.putString("last_location", address[0].locality)
+                    editor.apply()
+
+                    Log.d(RetrofitClient.TAG, "City: " + address[0].locality)
+                }
+            }
+        }
+
 
         return view
     }

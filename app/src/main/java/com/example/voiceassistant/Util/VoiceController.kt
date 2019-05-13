@@ -104,7 +104,7 @@ class VoiceController(ctx: Context){
 
         when(voiceInput.toUpperCase()){
             in HELLO -> {
-                val response = "Hi $name, I missed you"
+                val response = "Hi $name, how can I help you"
                 VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
                 googleSpeaker.speak(response)
             }
