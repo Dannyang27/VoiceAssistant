@@ -100,13 +100,11 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
                 val geocoder = Geocoder(activity?.applicationContext!!, Locale.getDefault())
 
                 val address = geocoder.getFromLocation(latitude!!, longitude!!, 1)
-                if(!address.isEmpty()){
+                if(address.isNotEmpty()){
                     val prefs = PreferenceManager.getDefaultSharedPreferences(activity?.applicationContext!!)
                     val editor = prefs.edit()
                     editor.putString("last_location", address[0].locality)
                     editor.apply()
-
-                    Log.d(RetrofitClient.TAG, "City: " + address[0].locality)
                 }
             }
         }
