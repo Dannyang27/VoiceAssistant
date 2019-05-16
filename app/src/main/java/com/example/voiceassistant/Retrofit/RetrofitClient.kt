@@ -184,7 +184,7 @@ object RetrofitClient{
         call.enqueue(object: Callback<Forecast>{
 
             override fun onResponse(call: Call<Forecast>, response: Response<Forecast>) {
-                val messageResp = "Sure, here is the weather for tomorrow"
+                val messageResp = "Sure, here is the weather for tomorrow in $city"
                 val date = TimeUtils.getCurrentTime()
                 VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, messageResp, date))
                 googleSpeaker.speak(messageResp)

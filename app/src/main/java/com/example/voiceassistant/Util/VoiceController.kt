@@ -18,6 +18,7 @@ class VoiceController(ctx: Context){
     private val LOCAL_WEATHER = "TELL ME THE WEATHER"
     private val CITY_WEATHER = "TELL ME THE WEATHER IN"
     private val LOCAL_WEATHER_TOMORROW = "TELL ME THE WEATHER FOR TOMORROW"
+    private val LOCAL_WEATHER_TOMORROW_CITY = "TELL ME THE WEATHER FOR TOMORROW IN"
     private val IS_IT_COLD_OUTSIDE = "IS IT COLD OUTSIDE"
     private val IS_IT_HOT_OUTSIDE = "IS IT HOT OUTSIDE"
     private val RAINING = listOf("SHOULD I GET AN UMBRELLA", "IS IT RAINING")
@@ -26,7 +27,6 @@ class VoiceController(ctx: Context){
     private val NEXT_DAYS = "TELL ME THE WEATHER FOR THE NEXT DAYS"
     private val NEXT_DAYS_CITY = "TELL ME THE WEATHER FOR THE NEXT DAYS IN"
     private val ADD_TASK = "REMIND ME TO"
-    private val WEATHER_TOMORROW_CITY = "TELL ME THE WEATHER FOR TOMORROW IN"
 
 
     private var googleSpeaker = GoogleSpeaker(ctx)
@@ -104,19 +104,26 @@ class VoiceController(ctx: Context){
             return
         }
 
+        var isTomorrowWeatherCity = false
+        if(voiceInput.length > LOCAL_WEATHER_TOMORROW_CITY.length){
+            isTomorrowWeatherCity = voiceInput.substring(0, LOCAL_WEATHER_TOMORROW_CITY.length).toUpperCase() == LOCAL_WEATHER_TOMORROW_CITY
+        }
+
+        if(isTomorrowWeatherCity){
+            val text = voiceInput.toUpperCase().split(" ")
+            val tomorrowCity = LOCAL_WEATHER_TOMORROW_CITY.split(" ")
+
+            if(text.size > tomorrowCity.size){
+                val city = text.drop(tomorrowCity.size).joinToString(" ").toLowerCase().capitalize()
+                RetrofitClient.getTomorrowWeather(city, voiceInput)
+            }
+            return
+        }
+
+
         when(voiceInput.toUpperCase()){
             in HELLO -> {
                 val response = "Hi $name, how can I help you"
-                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
-                googleSpeaker.speak(response)
-            }
-            IS_IT_COLD_OUTSIDE -> {
-                val response = "Nah, you should be fine"
-                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
-                googleSpeaker.speak(response)
-            }
-            IS_IT_HOT_OUTSIDE ->{
-                val response = "Hot as hell mate"
                 VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
                 googleSpeaker.speak(response)
             }
@@ -127,12 +134,6 @@ class VoiceController(ctx: Context){
 
             HUMIDITY -> {
                 RetrofitClient.getWeatherByName(lastLocation, voiceInput, "humidity")
-            }
-
-            in RAINING -> {
-                val response = "Its raining cats and dogos"
-                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
-                googleSpeaker.speak(response)
             }
 
             LOCAL_WEATHER -> {
