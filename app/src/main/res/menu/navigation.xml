@@ -19,5 +19,5 @@
     <item
             android:id="@+id/calendar_item"
             android:icon="@drawable/calendar"
-            android:title="@string/todo"/>
+            android:title="@string/calendar"/>
 </menu>
