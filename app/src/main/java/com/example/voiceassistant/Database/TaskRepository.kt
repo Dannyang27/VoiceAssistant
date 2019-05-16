@@ -21,11 +21,10 @@ class TaskRepository (val context: Context){
         cont
     }
 
-    fun findTaskByDate(id : Int): MutableList<TaskPOJO> = context.database.use {
+    fun getAllTasks(): MutableList<TaskPOJO> = context.database.use {
         val tasks = mutableListOf<TaskPOJO>()
 
         select(TaskPOJO.TABLE_NAME, TaskPOJO.COLUMN_ID, TaskPOJO.COLUMN_DONE, TaskPOJO.COLUMN_TEXT)
-            .whereArgs("id={id}", "id" to id )
             .parseList(object: MapRowParser<MutableList<TaskPOJO>>{
                 override fun parseRow(columns: Map<String, Any?>): MutableList<TaskPOJO> {
                     val id = columns.getValue(TaskPOJO.COLUMN_ID)
@@ -61,5 +60,9 @@ class TaskRepository (val context: Context){
             .exec()
 
         Log.d(RetrofitClient.TAG, "Task id: ${task.id} Update isDone:  $done")
+    }
+
+    fun delete(id: Int) = context.database.use{
+        delete(TaskPOJO.TABLE_NAME, "id={id}", "id" to id)
     }
 }

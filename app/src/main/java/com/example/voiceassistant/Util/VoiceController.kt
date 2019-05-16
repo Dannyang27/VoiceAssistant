@@ -6,6 +6,7 @@ import android.util.Log
 import com.example.voiceassistant.Database.TaskRepository
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.MainActivityFragment.CalendarFragment
+import com.example.voiceassistant.MainActivityFragment.TodoListFragment
 import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
 import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
@@ -23,7 +24,8 @@ class VoiceController(ctx: Context){
     private val HUMIDITY = "TELL ME THE HUMIDITY"
     private val NEXT_DAYS = "TELL ME THE WEATHER FOR THE NEXT DAYS"
     private val NEXT_DAYS_CITY = "TELL ME THE WEATHER FOR THE NEXT DAYS IN"
-    private val ADD_TASK = "REMIND ME TO"
+    private val CALENDAR_TASK = "REMIND ME TO"
+    private val TODOLIST = "NOTE"
 
 
     private var googleSpeaker = GoogleSpeaker(ctx)
@@ -77,13 +79,13 @@ class VoiceController(ctx: Context){
         }
 
         var isReminder = false
-        if(voiceInput.length > ADD_TASK.length){
-            isReminder = voiceInput.substring(0, ADD_TASK.length).toUpperCase() == ADD_TASK
+        if(voiceInput.length > CALENDAR_TASK.length){
+            isReminder = voiceInput.substring(0, CALENDAR_TASK.length).toUpperCase() == CALENDAR_TASK
         }
 
         if(isReminder){
             val text = voiceInput.toUpperCase().split(" ")
-            val reminder = ADD_TASK.split(" ")
+            val reminder = CALENDAR_TASK.split(" ")
 
             if(text.size > reminder.size){
                 val note = text.drop(3).joinToString(" ").toLowerCase().capitalize()
@@ -114,6 +116,16 @@ class VoiceController(ctx: Context){
                 val city = text.drop(tomorrowCity.size).joinToString(" ").toLowerCase().capitalize()
                 RetrofitClient.getTomorrowWeather(city, voiceInput)
             }
+            return
+        }
+
+        if(voiceInput.toUpperCase().split(" ")[0] == TODOLIST){
+            val input = voiceInput.split(" ").drop(1).joinToString(" ").toLowerCase().capitalize()
+            val lastId = TaskRepository(context).getLastId()
+            val task = TaskPOJO(lastId + 1, false, input)
+            TaskRepository(context).insert(task)
+            TodoListFragment.todolist.add(task)
+            TodoListFragment.viewAdapter.notifyDataSetChanged()
             return
         }
 
