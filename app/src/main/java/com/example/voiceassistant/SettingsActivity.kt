@@ -1,8 +1,10 @@
 package com.example.voiceassistant
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.preference.Preference
 import android.preference.PreferenceManager
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.Toolbar
 import android.util.TypedValue
 import android.widget.Toast
@@ -24,11 +26,25 @@ class SettingsActivity: AppCompatPreferenceActivity(){
 
         val historyButton = findPreference(getString(R.string.clearHistoryButton))
         historyButton.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            Toast.makeText(this, "History deleted", Toast.LENGTH_SHORT).show()
-            WeatherRepository(this).deleteAll()
-            WeatherHistoryFragment.historial.clear()
-            WeatherHistoryFragment.viewAdapter.notifyDataSetChanged()
-            true
+            var isHistoryDeleted = false
+
+            AlertDialog.Builder(this)
+                .setTitle("Delete History")
+                .setMessage("Are you sure you want to delete all the history?")
+                .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, which ->
+                    Toast.makeText(this, "History deleted", Toast.LENGTH_SHORT).show()
+                    WeatherRepository(this).deleteAll()
+                    WeatherHistoryFragment.historial.clear()
+                    WeatherHistoryFragment.viewAdapter.notifyDataSetChanged()
+                    isHistoryDeleted = true
+                })
+                .setNegativeButton(android.R.string.no, DialogInterface.OnClickListener { dialog, which ->
+                    isHistoryDeleted = false
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show()
+
+            isHistoryDeleted
         }
     }
     private fun setupActionBar() {
