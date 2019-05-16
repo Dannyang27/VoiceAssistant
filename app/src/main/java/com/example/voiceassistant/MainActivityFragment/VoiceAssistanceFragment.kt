@@ -109,6 +109,9 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
             }
         }
 
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val lastLocation = prefs.getString("last_location", "Barcelona")
+        RetrofitClient.getWeatherByName(lastLocation, "TELL ME THE WEATHER", property = "welcomeMessage", voiceActivated = false)
 
         return view
     }

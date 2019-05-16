@@ -36,7 +36,7 @@ object RetrofitClient{
 
     val service = retrofit.create(GithubService::class.java)
 
-    fun getWeatherByName( city: String, query: String, property: String = "all"){
+    fun getWeatherByName( city: String, query: String, property: String = "all", voiceActivated : Boolean = true){
         val call = service.getWeatherByCityName(city, token)
 
         call.enqueue(object : Callback<CurrentWeather>{
@@ -62,19 +62,28 @@ object RetrofitClient{
                             "pressure" -> {
                                 response = "The temperature in $city is ${it.main.pressure} pascal"
                             }
+
+                            "welcomeMessage" -> {
+                                response = "Current Weather in $city"
+                            }
                             else -> response = "Sorry, I did not get it"
                         }
                     }catch (e : Exception){
                         response = "Sorry, could not get the city"
                         VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
+                        if(voiceActivated){
+                            googleSpeaker.speak(response)
+
+                        }
+                    }
+
+                    if(voiceActivated){
                         googleSpeaker.speak(response)
                     }
 
-                    googleSpeaker.speak(response)
-
                     VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
 
-                    if( property == "all"){
+                    if( property == "all" || property == "welcomeMessage"){
                         val date = TimeUtils.getCurrentTime()
                         val dayOfWeek = TimeUtils.getDayOfWeek(0)
                         val weather = Weather(city,WeatherUtils.getWeatherCondition(currentWeather.weather[0].main),
@@ -86,19 +95,22 @@ object RetrofitClient{
                         val weatherPojo = WeatherPOJO(city, currentTemp.toDouble(), humidity.toDouble(),
                             WeatherUtils.getWeatherCondition(currentWeather.weather[0].main), date, query, dayOfWeek)
 
-                        WeatherRepository(VoiceAssistanceFragment.voiceContext).insert(weatherPojo)
-                        WeatherHistoryFragment.addWeather(weatherPojo)
-                        Log.d(TAG, "Inserted $weatherPojo")
+                        if(property == "all"){
+                            WeatherRepository(VoiceAssistanceFragment.voiceContext).insert(weatherPojo)
+                            WeatherHistoryFragment.addWeather(weatherPojo)
+                            Log.d(TAG, "Inserted $weatherPojo")
+                        }
                     }
                 }
             }
 
             override fun onFailure(call: Call<CurrentWeather>, t: Throwable) {
                 val response = "Could not get the weather for $city"
-                Log.d(TAG, response)
                 VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT,
                    response , TimeUtils.getCurrentTime()))
-                googleSpeaker.speak(response)
+                if(voiceActivated){
+                    googleSpeaker.speak(response)
+                }
             }
         })
     }
