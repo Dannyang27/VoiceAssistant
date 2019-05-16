@@ -38,16 +38,13 @@ class SettingsActivity: AppCompatPreferenceActivity(){
 
 
     private fun fixPadding(){
-        val horizontalMargin =
-            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2f, resources.displayMetrics).toInt()
-        val verticalMargin =
-            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2f, resources.displayMetrics).toInt()
+        val horizontalMargin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2f, resources.displayMetrics).toInt()
+        val verticalMargin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2f, resources.displayMetrics).toInt()
         val topMargin = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             (resources.getDimension(R.dimen.preference_padding).toInt() + 30).toFloat(),
-            resources.displayMetrics
-        ).toInt()
+            resources.displayMetrics).toInt()
+
         listView.setPadding(horizontalMargin, topMargin, horizontalMargin, verticalMargin)
     }
-
 }
