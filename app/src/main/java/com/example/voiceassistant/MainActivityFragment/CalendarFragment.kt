@@ -45,9 +45,9 @@ class CalendarFragment : Fragment(){
 
         calendar.setOnDateChangeListener{ _ , year, month, dayOfMonth ->
             date = getDataFormatted(dayOfMonth, month + 1, year)
-            todolistTitle.text = date
-            todolist.clear()
-            todolist.addAll(TaskRepository(activity?.applicationContext!!).findTaskByDate(date))
+//            todolistTitle.text = date
+//            todolist.clear()
+//            todolist.addAll(TaskRepository(activity?.applicationContext!!).findTaskByDate(date))
             viewAdapter.notifyDataSetChanged()
         }
 

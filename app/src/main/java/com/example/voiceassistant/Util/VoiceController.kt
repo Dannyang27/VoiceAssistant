@@ -89,7 +89,7 @@ class VoiceController(ctx: Context){
                 val note = text.drop(3).joinToString(" ").toLowerCase().capitalize()
                 val response = "Sure, '$note' is added to the calendar for today"
                 val lastId = TaskRepository(context).getLastId()
-                TaskRepository(context).insert(TaskPOJO(lastId, false, note, TimeUtils.getTodayDate()))
+                TaskRepository(context).insert(TaskPOJO(lastId, false, note))
                 CalendarFragment.viewAdapter.notifyDataSetChanged()
                 VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
                 googleSpeaker.speak(response)

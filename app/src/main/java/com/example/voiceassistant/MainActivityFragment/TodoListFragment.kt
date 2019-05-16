@@ -41,15 +41,15 @@ class TodoListFragment : Fragment() {
     }
 
     private fun loadData(list: MutableList<TaskPOJO>){
-        list.add(TaskPOJO(1,false, "Task1", "date"))
-        list.add(TaskPOJO(2,false, "Task2", "date"))
-        list.add(TaskPOJO(3,false, "Task3", "date"))
-        list.add(TaskPOJO(4,false, "Task4", "date"))
-        list.add(TaskPOJO(5,false, "Task5", "date"))
-        list.add(TaskPOJO(6,false, "Task6", "date"))
-        list.add(TaskPOJO(7,false, "Task7", "date"))
-        list.add(TaskPOJO(8,false, "Task8", "date"))
-        list.add(TaskPOJO(9,false, "Task9", "date"))
-        list.add(TaskPOJO(10,false, "Task10", "date"))
+        list.add(TaskPOJO(1,false, "Task1"))
+        list.add(TaskPOJO(2,false, "Task2"))
+        list.add(TaskPOJO(3,false, "Task3"))
+        list.add(TaskPOJO(4,false, "Task4"))
+        list.add(TaskPOJO(5,false, "Task5"))
+        list.add(TaskPOJO(6,false, "Task6"))
+        list.add(TaskPOJO(7,false, "Task7"))
+        list.add(TaskPOJO(8,false, "Task8"))
+        list.add(TaskPOJO(9,false, "Task9"))
+        list.add(TaskPOJO(10,false, "Task10"))
     }
 }

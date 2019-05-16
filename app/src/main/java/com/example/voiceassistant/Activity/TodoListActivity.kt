@@ -21,9 +21,8 @@ class TodoListActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.task_toolbar)
         val date = intent.getStringExtra("date")
         toolbar.title = date
-        val taskList = TaskRepository(this).findTaskByDate(date)
         val viewManager = LinearLayoutManager(this)
-        val viewAdapter = TaskAdapter(taskList)
+        val viewAdapter = TaskAdapter(mutableListOf())
 
         val recyclerView = findViewById<RecyclerView>(R.id.task_recyclerview).apply {
             setHasFixedSize(true)
