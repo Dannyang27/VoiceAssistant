@@ -30,6 +30,7 @@ class TodoListFragment : Fragment() {
         //TaskRepository(activity?.applicationContext!!).delete(5)
 
         todolist.addAll(TaskRepository(activity?.applicationContext!!).getAllTasks())
+        todolist.sortBy { it.isDone }
         viewManager = LinearLayoutManager(activity)
         viewAdapter = TodoListAdapter(todolist)
 
