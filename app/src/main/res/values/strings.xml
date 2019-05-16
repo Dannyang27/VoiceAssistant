@@ -104,5 +104,6 @@
     <string name="task_sample">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
         ut labore et dolore magna aliqua
     </string>
+    <string name="todolist">To Do List</string>
 
 </resources>

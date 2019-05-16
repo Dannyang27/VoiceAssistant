@@ -16,6 +16,7 @@ import android.view.MenuItem
 import com.example.voiceassistant.Database.TaskRepository
 import com.example.voiceassistant.Database.database
 import com.example.voiceassistant.MainActivityFragment.CalendarFragment
+import com.example.voiceassistant.MainActivityFragment.TodoListFragment
 import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
 import com.example.voiceassistant.MainActivityFragment.WeatherHistoryFragment
 import com.example.voiceassistant.Model.Weather.TaskPOJO
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     val voiceFragment = VoiceAssistanceFragment.newInstance()
     val weatherFragment = WeatherHistoryFragment.newInstance()
+    val todoListFragment = TodoListFragment.newInstance()
     val calendarFragment = CalendarFragment.newInstance()
     var activeFragment: Fragment = voiceFragment
 
@@ -39,6 +41,10 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.weather_history_item -> {
                 openFragment(weatherFragment)
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.todo_list_item -> {
+                openFragment(todoListFragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.calendar_item -> {
@@ -63,7 +69,8 @@ class MainActivity : AppCompatActivity() {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         supportFragmentManager.beginTransaction().add(R.id.container, weatherFragment, "2").hide(weatherFragment).commit()
-        supportFragmentManager.beginTransaction().add(R.id.container, calendarFragment, "3").hide(calendarFragment).commit()
+        supportFragmentManager.beginTransaction().add(R.id.container, todoListFragment, "3").hide(todoListFragment).commit()
+        supportFragmentManager.beginTransaction().add(R.id.container, calendarFragment, "4").hide(calendarFragment).commit()
         supportFragmentManager.beginTransaction().add(R.id.container, voiceFragment, "1").commit()
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
@@ -87,15 +94,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-    fun addDummyDataToCalendar(){
-        TaskRepository(this).insert(TaskPOJO(1,false, "Test 1", "06/05/2019"))
-        TaskRepository(this).insert(TaskPOJO(2,false, "Test 2", "06/05/2019"))
-        TaskRepository(this).insert(TaskPOJO(3,false, "Test 3", "06/05/2019"))
-        TaskRepository(this).insert(TaskPOJO(4,false, "Test 4", "06/05/2019"))
-        TaskRepository(this).insert(TaskPOJO(5,false, "Test 5", "06/05/2019"))
-    }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.setting_menu, menu)
