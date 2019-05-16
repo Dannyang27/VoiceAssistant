@@ -31,10 +31,8 @@ class TaskRepository (val context: Context){
                     val isDone = columns.getValue(TaskPOJO.COLUMN_DONE)
                     val text = columns.getValue(TaskPOJO.COLUMN_TEXT)
 
-                    val task = TaskPOJO(id.toString().toInt(),isDone.toString() == "true", text.toString())
+                    val task = TaskPOJO(id.toString().toInt(),isDone.toString().toInt(), text.toString())
                     tasks.add(task)
-                    Log.d(RetrofitClient.TAG, "task text: ${task.text} isDone: ${task.isDone}")
-
                     return tasks
                 }
             })
@@ -51,15 +49,12 @@ class TaskRepository (val context: Context){
     }
 
     fun update(task: TaskPOJO) = context.database.use {
-        val done = task.isDone
         update(TaskPOJO.TABLE_NAME,
-            TaskPOJO.COLUMN_ID to task.id,
-            TaskPOJO.COLUMN_DONE to !done,
-            TaskPOJO.COLUMN_TEXT to task.text)
+            TaskPOJO.COLUMN_DONE to task.isDone)
             .whereArgs("id={id}", "id" to task.id)
             .exec()
 
-        Log.d(RetrofitClient.TAG, "Task id: ${task.id} Update isDone:  $done")
+        Log.d(RetrofitClient.TAG, "Task id: ${task.id} Update isDone:  ${task.isDone}")
     }
 
     fun delete(id: Int) = context.database.use{

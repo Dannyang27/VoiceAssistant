@@ -27,7 +27,7 @@ class TodoListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.todo_list_fragment , container, false)
 
-        //TaskRepository(activity?.applicationContext!!).delete(4)
+        //TaskRepository(activity?.applicationContext!!).delete(5)
 
         todolist.addAll(TaskRepository(activity?.applicationContext!!).getAllTasks())
         viewManager = LinearLayoutManager(activity)
@@ -44,24 +44,17 @@ class TodoListFragment : Fragment() {
     }
 
     private fun loadData(list: MutableList<TaskPOJO>){
-        list.add(TaskPOJO(1,false, "Task1"))
-        list.add(TaskPOJO(2,false, "Task2"))
-        list.add(TaskPOJO(3,false, "Task3"))
-        list.add(TaskPOJO(4,false, "Task4"))
-        list.add(TaskPOJO(5,false, "Task5"))
-        list.add(TaskPOJO(6,false, "Task6"))
-        list.add(TaskPOJO(7,false, "Task7"))
-        list.add(TaskPOJO(8,false, "Task8"))
-        list.add(TaskPOJO(9,false, "Task9"))
-        list.add(TaskPOJO(10,false, "Task10"))
+        list.add(TaskPOJO(1,0, "Task1"))
+        list.add(TaskPOJO(2,0, "Task2"))
+        list.add(TaskPOJO(3,0, "Task3"))
     }
 
     private fun insertData(){
         val ctx = activity?.applicationContext!!
         val lastId = TaskRepository(ctx).getLastId()
-        val task1 = TaskPOJO(lastId + 1, false, "Watch Game Of Thrones")
-        val task2 = TaskPOJO(lastId + 2, false, "Google I/O Keynote")
-        val task3 = TaskPOJO(lastId + 3, false, "Oneplus 7 Pro Presentation")
+        val task1 = TaskPOJO(lastId + 1, 0, "Watch Game Of Thrones")
+        val task2 = TaskPOJO(lastId + 2, 0, "Google I/O Keynote")
+        val task3 = TaskPOJO(lastId + 3, 1, "Oneplus 7 Pro Presentation")
         TaskRepository(ctx).insert(task1)
         TaskRepository(ctx).insert(task2)
         TaskRepository(ctx).insert(task3)

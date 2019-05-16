@@ -91,7 +91,7 @@ class VoiceController(ctx: Context){
                 val note = text.drop(3).joinToString(" ").toLowerCase().capitalize()
                 val response = "Sure, '$note' is added to the calendar for today"
                 val lastId = TaskRepository(context).getLastId()
-                TaskRepository(context).insert(TaskPOJO(lastId, false, note))
+                TaskRepository(context).insert(TaskPOJO(lastId, 0, note))
                 CalendarFragment.viewAdapter.notifyDataSetChanged()
                 VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
                 googleSpeaker.speak(response)
@@ -122,10 +122,15 @@ class VoiceController(ctx: Context){
         if(voiceInput.toUpperCase().split(" ")[0] == TODOLIST){
             val input = voiceInput.split(" ").drop(1).joinToString(" ").toLowerCase().capitalize()
             val lastId = TaskRepository(context).getLastId()
-            val task = TaskPOJO(lastId + 1, false, input)
+            val task = TaskPOJO(lastId + 1, 0, input)
             TaskRepository(context).insert(task)
             TodoListFragment.todolist.add(task)
             TodoListFragment.viewAdapter.notifyDataSetChanged()
+
+            TaskRepository(context).getAllTasks().forEach {
+                Log.d(RetrofitClient.TAG,  it.toString())
+
+            }
             return
         }
 

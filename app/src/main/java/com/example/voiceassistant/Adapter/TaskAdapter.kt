@@ -18,28 +18,18 @@ class TaskAdapter (private val todolist: MutableList<TaskPOJO>): RecyclerView.Ad
         val task = todolist[position]
         holder.todolistText.text = task.text
 
-        if(task.isDone){
+        if(task.isDone == 1){
             strikeText(holder)
         }
 
         holder.itemView.setOnClickListener {
-            if(task.isDone){
+            if(task.isDone == 0){
                 removeStrike(holder)
-                task.isDone = false
+                task.isDone = 1
             }
             else{
                 strikeText(holder)
-                task.isDone = true
-            }
-        }
-
-        holder.checkbox.setOnCheckedChangeListener { _ , isChecked ->
-            if(isChecked){
-                strikeText(holder)
-                task.isDone = true
-            }else{
-                removeStrike(holder)
-                task.isDone = false
+                task.isDone = 0
             }
         }
     }

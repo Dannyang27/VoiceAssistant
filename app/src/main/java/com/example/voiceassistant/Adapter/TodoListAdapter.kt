@@ -2,12 +2,14 @@ package com.example.voiceassistant.Adapter
 
 import android.graphics.Paint
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.voiceassistant.Database.TaskRepository
 import com.example.voiceassistant.Model.Task
 import com.example.voiceassistant.Model.Weather.TaskPOJO
 import com.example.voiceassistant.R
+import com.example.voiceassistant.Retrofit.RetrofitClient
 import com.example.voiceassistant.Viewholder.TodoListViewHolder
 
 class TodoListAdapter (private val todolist: MutableList<TaskPOJO>): RecyclerView.Adapter<TodoListViewHolder>(){
@@ -22,32 +24,21 @@ class TodoListAdapter (private val todolist: MutableList<TaskPOJO>): RecyclerVie
         holder.todolistText.text = task.text
         val context = holder.todolistText.context
 
-        if(task.isDone){
+        if(task.isDone == 1){
             strikeText(holder)
         }
 
         holder.itemView.setOnClickListener {
-            if(task.isDone){
+            if(task.isDone == 1){
                 removeStrike(holder)
-                task.isDone = false
+                task.isDone = 0
             }
             else{
                 strikeText(holder)
-                task.isDone = true
+                task.isDone = 1
             }
             TaskRepository(context).update(task)
         }
-
-//        holder.checkbox.setOnCheckedChangeListener { _ , isChecked ->
-//            if(isChecked){
-//                strikeText(holder)
-//                task.isDone = true
-//            }else{
-//                removeStrike(holder)
-//                task.isDone = false
-//            }
-//            TaskRepository(context).update(task)
-//        }
     }
 
     override fun getItemCount(): Int = todolist.size
