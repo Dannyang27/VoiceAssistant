@@ -91,6 +91,9 @@
     <string name="weather_humidity">88%</string>
     <string name="sample_hour">11:11</string>
     <string name="voiceAssistant">Voice Assistant</string>
+    <string name="history">History</string>
+    <string name="todolist_title">To-Do List</string>
+    <string name="calendar">Calendar</string>
     <string name="date">27/09/2019 11:11</string>
     <string name="query_sample">Tell me the weather in Barcelona</string>
     <string name="clearHistory">Clear History</string>

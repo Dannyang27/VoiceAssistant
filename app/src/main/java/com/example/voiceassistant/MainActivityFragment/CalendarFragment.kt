@@ -41,7 +41,7 @@ class CalendarFragment : Fragment(){
 
         val viewAllBtn = view.findViewById<Button>(R.id.view_all_button)
 
-        todolist = TaskRepository(activity?.applicationContext!!).findTaskByDate(date)
+        //todolist = TaskRepository(activity?.applicationContext!!).findTaskByDate(date)
 
         calendar.setOnDateChangeListener{ _ , year, month, dayOfMonth ->
             date = getDataFormatted(dayOfMonth, month + 1, year)

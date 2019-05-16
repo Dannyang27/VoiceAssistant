@@ -22,6 +22,7 @@ import com.example.voiceassistant.MainActivityFragment.WeatherHistoryFragment
 import com.example.voiceassistant.Model.Weather.TaskPOJO
 import com.example.voiceassistant.Retrofit.RetrofitClient
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,24 +32,33 @@ class MainActivity : AppCompatActivity() {
     val calendarFragment = CalendarFragment.newInstance()
     var activeFragment: Fragment = voiceFragment
 
+    lateinit var toolbar: Toolbar
+
     private val RECORD_REQUEST_CODE = 101
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.voice_assistance_item -> {
                 openFragment(voiceFragment)
+                toolbar.title = getString(R.string.voiceAssistant)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.weather_history_item -> {
                 openFragment(weatherFragment)
+                toolbar.title = getString(R.string.history)
+
                 return@OnNavigationItemSelectedListener true
             }
             R.id.todo_list_item -> {
                 openFragment(todoListFragment)
+                toolbar.title = getString(R.string.todolist_title)
+
                 return@OnNavigationItemSelectedListener true
             }
             R.id.calendar_item -> {
                 openFragment(calendarFragment)
+                toolbar.title = getString(R.string.calendar)
+
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -63,7 +73,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val toolbar = findViewById<Toolbar>(R.id.my_toolbar)
+        toolbar = findViewById(R.id.my_toolbar)
         toolbar.title = getString(R.string.voiceAssistant)
         setSupportActionBar(toolbar)
 
