@@ -7,7 +7,7 @@ import android.os.Handler
 
 class SplashActivity : AppCompatActivity() {
 
-    private val SPLASH_TIME_OUT = 1500L
+    private val SPLASH_TIME_OUT = 500L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

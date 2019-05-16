@@ -177,4 +177,42 @@ object RetrofitClient{
             }
         })
     }
+
+    fun getTomorrowWeather( city: String, query: String ){
+        val call = service.getForecastByCityName(city, token)
+
+        call.enqueue(object: Callback<Forecast>{
+
+            override fun onResponse(call: Call<Forecast>, response: Response<Forecast>) {
+                val messageResp = "Sure, here is the weather for tomorrow"
+                val date = TimeUtils.getCurrentTime()
+                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, messageResp, date))
+                googleSpeaker.speak(messageResp)
+
+                val forecast = response.body()
+                val tomorrowWeather = forecast?.list?.get(8)
+                tomorrowWeather?.let {
+                    val city = forecast.city.name
+                    val clima = tomorrowWeather.weather[0].main
+                    val humidity = tomorrowWeather.main.humidity
+                    val dayOfWeek = TimeUtils.getDayOfWeek(1)
+                    val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(tomorrowWeather.main.temp)).toDouble()
+
+                    val wth = Weather(city, clima, currentTemp  , humidity, date, dayOfWeek )
+                    val weatherPojo = WeatherPOJO(forecast.city.name,currentTemp, humidity, clima, date, query, dayOfWeek)
+
+                    VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size,
+                        Sender.BOT, messageResp, date, MessageTypes.WEATHER_CARD, wth ))
+
+                    WeatherHistoryFragment.addWeather(weatherPojo)
+                    WeatherRepository(VoiceAssistanceFragment.voiceContext).insert(weatherPojo)
+                }
+
+            }
+
+            override fun onFailure(call: Call<Forecast>, t: Throwable) {
+                Log.d(TAG, "Could not get forecast")
+            }
+        })
+    }
 }
