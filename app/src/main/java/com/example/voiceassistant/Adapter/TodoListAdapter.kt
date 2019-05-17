@@ -23,6 +23,7 @@ class TodoListAdapter (private val todolist: MutableList<TaskPOJO>): RecyclerVie
         val task = todolist[position]
         holder.todolistText.text = task.text
         val context = holder.todolistText.context
+        holder.id = task.id
 
         if(task.isDone == 1){
             strikeText(holder)
@@ -51,5 +52,10 @@ class TodoListAdapter (private val todolist: MutableList<TaskPOJO>): RecyclerVie
     private fun removeStrike( holder: TodoListViewHolder){
         holder.checkbox.isChecked = false
         holder.todolistText.paintFlags = Paint.ANTI_ALIAS_FLAG
+    }
+
+    fun removeAt(position: Int){
+        todolist.removeAt(position)
+        notifyItemRemoved(position)
     }
 }

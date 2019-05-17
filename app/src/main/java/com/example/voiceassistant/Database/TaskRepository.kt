@@ -57,7 +57,7 @@ class TaskRepository (val context: Context){
         Log.d(RetrofitClient.TAG, "Task id: ${task.id} Update isDone:  ${task.isDone}")
     }
 
-    fun delete(id: Int) = context.database.use{
+    fun delete(id: String) = context.database.use{
         delete(TaskPOJO.TABLE_NAME, "id={id}", "id" to id)
     }
 }
