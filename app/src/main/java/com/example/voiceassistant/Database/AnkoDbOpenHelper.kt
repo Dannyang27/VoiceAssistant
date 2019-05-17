@@ -42,7 +42,7 @@ class AnkoDbOpenHelper private constructor(ctx: Context) : ManagedSQLiteOpenHelp
         Log.d(RetrofitClient.TAG, "Creating table MessagePOJO ${MessagePOJO.TABLE_NAME}")
 
         db.createTable(TaskPOJO.TABLE_NAME, true,
-            TaskPOJO.COLUMN_ID to INTEGER,
+            TaskPOJO.COLUMN_ID to TEXT,
             TaskPOJO.COLUMN_DONE to TEXT,
             TaskPOJO.COLUMN_TEXT to TEXT)
 

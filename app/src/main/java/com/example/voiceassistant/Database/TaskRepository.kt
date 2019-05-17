@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.example.voiceassistant.Model.Weather.TaskPOJO
 import com.example.voiceassistant.Retrofit.RetrofitClient
+import com.example.voiceassistant.Util.TimeUtils
 import org.jetbrains.anko.db.*
 
 class TaskRepository (val context: Context){
@@ -31,7 +32,7 @@ class TaskRepository (val context: Context){
                     val isDone = columns.getValue(TaskPOJO.COLUMN_DONE)
                     val text = columns.getValue(TaskPOJO.COLUMN_TEXT)
 
-                    val task = TaskPOJO(id.toString().toInt(),isDone.toString().toInt(), text.toString())
+                    val task = TaskPOJO(id.toString(),isDone.toString().toInt(), text.toString())
                     tasks.add(task)
                     return tasks
                 }
@@ -41,9 +42,8 @@ class TaskRepository (val context: Context){
 
 
     fun insert(task: TaskPOJO) = context.database.use {
-        val lastItem = getLastId() + 1
         insert(TaskPOJO.TABLE_NAME,
-            TaskPOJO.COLUMN_ID to lastItem,
+            TaskPOJO.COLUMN_ID to task.id,
             TaskPOJO.COLUMN_DONE to task.isDone,
             TaskPOJO.COLUMN_TEXT to task.text)
     }

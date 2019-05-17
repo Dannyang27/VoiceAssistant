@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.util.TimeUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,11 @@ class TodoListFragment : Fragment() {
 
         todolist.addAll(TaskRepository(activity?.applicationContext!!).getAllTasks())
         todolist.sortBy { it.isDone }
+        todolist.forEach {
+            Log.d(RetrofitClient.TAG, it.toString())
+
+        }
+
         viewManager = LinearLayoutManager(activity)
         viewAdapter = TodoListAdapter(todolist)
 
@@ -45,17 +51,17 @@ class TodoListFragment : Fragment() {
     }
 
     private fun loadData(list: MutableList<TaskPOJO>){
-        list.add(TaskPOJO(1,0, "Task1"))
-        list.add(TaskPOJO(2,0, "Task2"))
-        list.add(TaskPOJO(3,0, "Task3"))
+        list.add(TaskPOJO("23123213",0, "Task1"))
+        list.add(TaskPOJO("23123215",0, "Task2"))
+        list.add(TaskPOJO("23123216",0, "Task3"))
     }
 
     private fun insertData(){
         val ctx = activity?.applicationContext!!
         val lastId = TaskRepository(ctx).getLastId()
-        val task1 = TaskPOJO(lastId + 1, 0, "Watch Game Of Thrones")
-        val task2 = TaskPOJO(lastId + 2, 0, "Google I/O Keynote")
-        val task3 = TaskPOJO(lastId + 3, 1, "Oneplus 7 Pro Presentation")
+        val task1 = TaskPOJO("23123513", 0, "Watch Game Of Thrones")
+        val task2 = TaskPOJO("23123613", 0, "Google I/O Keynote")
+        val task3 = TaskPOJO("23123713", 1, "Oneplus 7 Pro Presentation")
         TaskRepository(ctx).insert(task1)
         TaskRepository(ctx).insert(task2)
         TaskRepository(ctx).insert(task3)

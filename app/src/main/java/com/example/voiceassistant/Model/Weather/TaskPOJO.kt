@@ -2,7 +2,7 @@ package com.example.voiceassistant.Model.Weather
 
 import java.util.*
 
-data class TaskPOJO (val id: Int, var isDone: Int, val text: String){
+data class TaskPOJO (val id: String, var isDone: Int, val text: String){
     companion object{
         val TABLE_NAME = "Task"
         val COLUMN_ID = "id"

@@ -1,6 +1,7 @@
 package com.example.voiceassistant.Util
 
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -16,6 +17,10 @@ object TimeUtils {
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         return current.format(formatter)
+    }
+
+    fun getTimeInEpochs(): String{
+        return LocalDateTime.now().toEpochSecond(ZoneOffset.UTC).toString()
     }
 
     fun getDayOfWeek(daysToincrement : Int): String{

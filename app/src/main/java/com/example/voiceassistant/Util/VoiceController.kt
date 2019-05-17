@@ -115,8 +115,8 @@ class VoiceController(ctx: Context){
 
         if(voiceInput.toUpperCase().split(" ")[0] == TODOLIST){
             val input = voiceInput.split(" ").drop(1).joinToString(" ").toLowerCase().capitalize()
-            val lastId = TaskRepository(context).getLastId()
-            val task = TaskPOJO(lastId + 1, 0, input)
+            val epochs = TimeUtils.getTimeInEpochs()
+            val task = TaskPOJO(epochs, 0, input)
             TaskRepository(context).insert(task)
             TodoListFragment.todolist.add(task)
             TodoListFragment.viewAdapter.notifyDataSetChanged()
