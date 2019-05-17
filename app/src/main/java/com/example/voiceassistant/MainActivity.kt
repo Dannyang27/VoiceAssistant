@@ -83,26 +83,10 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().add(R.id.container, calendarFragment, "4").hide(calendarFragment).commit()
         supportFragmentManager.beginTransaction().add(R.id.container, voiceFragment, "1").commit()
 
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)){
-                // do something?
-            }else{
-                ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.RECORD_AUDIO),
-                    RECORD_REQUEST_CODE)
-            }
-        }
-
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
-                // do something?
-            }else{
-                ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    RECORD_REQUEST_CODE)
-            }
-        }
-
+        requestAudio()
+        requestMicrophone()
+        requestReadCalendar()
+        requestWriteCalendar()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -118,5 +102,53 @@ class MainActivity : AppCompatActivity() {
         }
 
         else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun requestAudio(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)){
+                // do something?
+            }else{
+                ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.RECORD_AUDIO),
+                    RECORD_REQUEST_CODE)
+            }
+        }
+    }
+
+    private fun requestMicrophone(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
+                // do something?
+            }else{
+                ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    RECORD_REQUEST_CODE)
+            }
+        }
+    }
+
+    private fun requestReadCalendar(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CALENDAR)){
+                // do something?
+            }else{
+                ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.READ_CALENDAR),
+                    RECORD_REQUEST_CODE)
+            }
+        }
+    }
+
+    private fun requestWriteCalendar(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_CALENDAR)){
+                // do something?
+            }else{
+                ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.WRITE_CALENDAR),
+                    RECORD_REQUEST_CODE)
+            }
+        }
     }
 }

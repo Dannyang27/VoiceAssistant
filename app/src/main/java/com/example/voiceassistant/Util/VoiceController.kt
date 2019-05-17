@@ -32,8 +32,8 @@ class VoiceController(ctx: Context){
     val context = ctx
 
     fun processVoiceInput(voiceInput: String){
-        val prefs = PreferenceManager.getDefaultSharedPreferences(VoiceAssistanceFragment.voiceContext)
-        val name = prefs.getString("name", "N/A")
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val name = prefs.getString("name", "Danny")
         val lastLocation = prefs.getString("last_location", "Barcelona")
 
         var isWeatherAbroad = false
