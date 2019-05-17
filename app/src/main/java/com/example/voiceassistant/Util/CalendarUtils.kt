@@ -25,6 +25,7 @@ class CalendarUtils(ctx: Context) {
             .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.timeInMillis)
             .putExtra(CalendarContract.Events.TITLE, description)
             .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
         context.startActivity(intent)
     }
