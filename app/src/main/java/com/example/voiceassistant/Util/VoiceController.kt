@@ -5,7 +5,6 @@ import android.preference.PreferenceManager
 import android.util.Log
 import com.example.voiceassistant.Database.TaskRepository
 import com.example.voiceassistant.Enums.Sender
-import com.example.voiceassistant.MainActivityFragment.CalendarFragment
 import com.example.voiceassistant.MainActivityFragment.TodoListFragment
 import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
 import com.example.voiceassistant.Model.GoogleSpeaker
@@ -88,13 +87,8 @@ class VoiceController(ctx: Context){
             val reminder = CALENDAR_TASK.split(" ")
 
             if(text.size > reminder.size){
-                val note = text.drop(3).joinToString(" ").toLowerCase().capitalize()
-                val response = "Sure, '$note' is added to the calendar for today"
-                val lastId = TaskRepository(context).getLastId()
-                TaskRepository(context).insert(TaskPOJO(lastId, 0, note))
-                CalendarFragment.viewAdapter.notifyDataSetChanged()
-                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
-                googleSpeaker.speak(response)
+                val event = text.drop(3).joinToString(" ").toLowerCase().capitalize()
+                CalendarUtils(context).createEventByIntent(event)
             }else{
                 val response = "Sorry, could not get the reminder"
                 VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))

@@ -53,13 +53,6 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
             viewAdapter.notifyDataSetChanged()
             messagesList.scrollToPosition(viewAdapter.itemCount - 1)
         }
-
-        fun addAllMessages( messages : MutableList<Message>){
-            messages.addAll(messages)
-            viewAdapter.notifyDataSetChanged()
-            messagesList.scrollToPosition(viewAdapter.itemCount - 1)
-        }
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
