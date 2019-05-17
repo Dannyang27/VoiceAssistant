@@ -2,7 +2,6 @@ package com.example.voiceassistant.MainActivityFragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -21,17 +20,6 @@ import com.example.voiceassistant.Viewholder.HorizontalDivider
 import com.example.voiceassistant.Viewholder.TodoListViewHolder
 
 class CalendarFragment : Fragment(){
-
-    private val PROJECTION_ID_INDEX: Int = 0
-    private val PROJECTION_ACCOUNT_NAME_INDEX: Int = 1
-    private val PROJECTION_DISPLAY_NAME_INDEX: Int = 2
-    private val PROJECTION_OWNER_ACCOUNT_INDEX: Int = 3
-
-    private val EVENT_PROJECTION: Array<String> = arrayOf(
-        CalendarContract.Calendars._ID,
-        CalendarContract.Calendars.ACCOUNT_NAME,
-        CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
-        CalendarContract.Calendars.OWNER_ACCOUNT)
 
     lateinit var viewManager : RecyclerView.LayoutManager
     lateinit var todolistRecyclerView: RecyclerView
