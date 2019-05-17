@@ -121,10 +121,10 @@ class VoiceController(ctx: Context){
             TodoListFragment.todolist.add(task)
             TodoListFragment.viewAdapter.notifyDataSetChanged()
 
-            TaskRepository(context).getAllTasks().forEach {
-                Log.d(RetrofitClient.TAG,  it.toString())
+            val response = "Sure, your note has been added to the to-do list"
+            VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
+            googleSpeaker.speak(response)
 
-            }
             return
         }
 
