@@ -115,26 +115,6 @@ object RetrofitClient{
         })
     }
 
-    fun getWeatherById( cityId: Int){
-        val call = service.getWeatherByCityId(cityId.toString(), token)
-
-        call.enqueue(object : Callback<CurrentWeather>{
-
-            override fun onResponse(call: Call<CurrentWeather>, response: Response<CurrentWeather>) {
-                val currentWeather: CurrentWeather? = response.body()
-                currentWeather.let {
-                    val currentTemp ="%.1f".format(TempConverterUtils.convertKelvinToCelsius(it?.main?.temp!!))
-                    Log.d(TAG, "$currentTemp")
-                }
-            }
-
-            override fun onFailure(call: Call<CurrentWeather>, t: Throwable) {
-                Log.d(TAG, "Could not get weather for city $cityId")
-            }
-        })
-    }
-
-
     fun getWeatherForecastByName(city: String, query: String = ""){
         val call = service.getForecastByCityName(city, token)
         Log.d(TAG, "Test forecast for city $city")

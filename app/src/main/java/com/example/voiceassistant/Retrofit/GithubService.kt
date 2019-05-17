@@ -10,9 +10,6 @@ interface GithubService {
     @GET("/data/2.5/weather")
     fun getWeatherByCityName(@Query("q") city: String, @Query("appid") apiKey: String): Call<CurrentWeather>
 
-    @GET("/data/2.5/weather")
-    fun getWeatherByCityId(@Query("id") cityId: String, @Query("appid") apiKey: String): Call<CurrentWeather>
-
     @GET("/data/2.5/forecast")
     fun getForecastByCityName(@Query("q") city: String, @Query("appid") apiKey: String): Call<Forecast>
 }
