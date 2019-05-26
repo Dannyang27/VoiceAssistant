@@ -38,6 +38,13 @@ class HistorialAdapter(private val historial: MutableList<WeatherPOJO>) : Recycl
 
         holder.itemView.setOnClickListener {
             val intent = Intent(it.context, WeatherInfoActivity::class.java)
+            intent.putExtra(WeatherPOJO.COLUM_QUERY, weather.query)
+            intent.putExtra(WeatherPOJO.COLUMN_DATE, weather.date)
+            intent.putExtra(WeatherPOJO.COLUMN_CITY, weather.city)
+            intent.putExtra(WeatherPOJO.COLUMN_CLIMA, weather.clima)
+            intent.putExtra(WeatherPOJO.COLUMN_TEMP, weather.temp)
+            intent.putExtra(WeatherPOJO.COLUMN_HUMIDITY, weather.humidity)
+
             it.context.startActivity(intent)
         }
     }
