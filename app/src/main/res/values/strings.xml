@@ -107,5 +107,12 @@
         ut labore et dolore magna aliqua
     </string>
     <string name="todolist">To Do List</string>
+    <string name="weatherCondition">Sunny</string>
+    <string name="city">City:</string>
+    <string name="tempAcronym">Temperature:</string>
+    <string name="humidityAcronym">Humidity:</string>
+    <string name="city_sample">Barcelona</string>
+    <string name="temp_sample">24.2</string>
+    <string name="humidity_sample">72.0%</string>
 
 </resources>

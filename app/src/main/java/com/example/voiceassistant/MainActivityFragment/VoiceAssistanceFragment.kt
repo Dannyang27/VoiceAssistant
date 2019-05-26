@@ -104,7 +104,17 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val lastLocation = prefs.getString("last_location", "Barcelona")
-        RetrofitClient.getWeatherByName(lastLocation, "TELL ME THE WEATHER", property = "welcomeMessage", voiceActivated = false)
+
+        val hasWelcomed = prefs.getBoolean("welcomeMessage", false)
+
+
+
+        if(!hasWelcomed){
+            RetrofitClient.getWeatherByName(lastLocation, "TELL ME THE WEATHER", property = "welcomeMessage", voiceActivated = false)
+            val editor = prefs.edit()
+            editor.putBoolean("welcomeMessage", true)
+            editor.apply()
+        }
 
         return view
     }

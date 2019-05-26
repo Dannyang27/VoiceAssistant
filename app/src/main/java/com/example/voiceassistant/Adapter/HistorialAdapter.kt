@@ -1,8 +1,10 @@
 package com.example.voiceassistant.Adapter
 
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.example.voiceassistant.Activity.WeatherInfoActivity
 import com.example.voiceassistant.Model.Weather.WeatherPOJO
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Util.WeatherUtils
@@ -33,6 +35,11 @@ class HistorialAdapter(private val historial: MutableList<WeatherPOJO>) : Recycl
         holder.temperature.text = "${weather.temp}°"
         holder.humidity.text = "${weather.humidity}%"
         holder.date.text = weather.date
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(it.context, WeatherInfoActivity::class.java)
+            it.context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int = historial.size

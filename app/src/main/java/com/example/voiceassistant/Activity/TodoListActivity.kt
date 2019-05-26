@@ -19,8 +19,12 @@ class TodoListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_todo_list)
 
         val toolbar = findViewById<Toolbar>(R.id.task_toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(true)
         val date = intent.getStringExtra("date")
         toolbar.title = date
+
         val viewManager = LinearLayoutManager(this)
         val viewAdapter = TaskAdapter(mutableListOf())
 
