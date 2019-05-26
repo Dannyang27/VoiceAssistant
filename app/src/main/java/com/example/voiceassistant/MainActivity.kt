@@ -1,6 +1,7 @@
 package com.example.voiceassistant
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -35,6 +36,13 @@ class MainActivity : AppCompatActivity() {
     lateinit var toolbar: Toolbar
 
     private val RECORD_REQUEST_CODE = 101
+
+    val PERMISSION_ALL = 1
+    val PERMISSIONS = arrayOf(
+        Manifest.permission.READ_CALENDAR,
+        Manifest.permission.WRITE_CALENDAR,
+        Manifest.permission.RECORD_AUDIO,
+        Manifest.permission.ACCESS_FINE_LOCATION)
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -83,10 +91,10 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().add(R.id.container, calendarFragment, "4").hide(calendarFragment).commit()
         supportFragmentManager.beginTransaction().add(R.id.container, voiceFragment, "1").commit()
 
-        requestAudio()
-        requestMicrophone()
-        requestReadCalendar()
-        requestWriteCalendar()
+
+        if(!hasPermissions(this, PERMISSIONS)){
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -104,51 +112,6 @@ class MainActivity : AppCompatActivity() {
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun requestAudio(){
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)){
-                // do something?
-            }else{
-                ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.RECORD_AUDIO),
-                    RECORD_REQUEST_CODE)
-            }
-        }
-    }
-
-    private fun requestMicrophone(){
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
-                // do something?
-            }else{
-                ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    RECORD_REQUEST_CODE)
-            }
-        }
-    }
-
-    private fun requestReadCalendar(){
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CALENDAR)){
-                // do something?
-            }else{
-                ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.READ_CALENDAR),
-                    RECORD_REQUEST_CODE)
-            }
-        }
-    }
-
-    private fun requestWriteCalendar(){
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_CALENDAR)){
-                // do something?
-            }else{
-                ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.WRITE_CALENDAR),
-                    RECORD_REQUEST_CODE)
-            }
-        }
-    }
-}
+    private fun hasPermissions(context: Context, permissions: Array<String>): Boolean = permissions.all {
+        ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+    }}
