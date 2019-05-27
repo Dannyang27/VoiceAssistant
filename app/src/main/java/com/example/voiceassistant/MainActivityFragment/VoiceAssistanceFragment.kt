@@ -169,6 +169,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
     private fun processVoiceInput(input: String){
         if(input.toUpperCase().equals("SHOW ME MY TO DO LIST")){
             updateLastQuery(input)
+            addMessage(Message(messages.size, Sender.USER, input, TimeUtils.getCurrentTime()))
             val editor = prefs.edit().putString("lastQuery", input)
             editor.apply()
 
