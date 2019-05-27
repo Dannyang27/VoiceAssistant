@@ -176,8 +176,11 @@ class VoiceController(ctx: Context){
                 var response = ""
                 if(responses.isEmpty()){
                     response = "No events for today"
+                }else if(responses.size == 1){
+                    response = "Here is the event for today:\n"
+                    response += "-${responses[0]}\n"
                 }else{
-                    response = "Here is the events for today:\n"
+                    response = "Here are the events for today:\n"
                     responses.forEach {
                         response += "-$it\n"
                     }
