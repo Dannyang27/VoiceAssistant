@@ -25,7 +25,6 @@ class CalendarUtils(ctx: Context) {
     private val PROJECTION_ID_INDEX: Int = 0
     private val PROJECTION_ACCOUNT_NAME_INDEX: Int = 1
     private val PROJECTION_DISPLAY_NAME_INDEX: Int = 2
-    private val PROJECTION_OWNER_ACCOUNT_INDEX: Int = 3
 
     fun createEventByIntent( description : String){
         val today = TimeUtils.getTodayDate().split("/")
@@ -58,7 +57,6 @@ class CalendarUtils(ctx: Context) {
         val cur: Cursor = context.contentResolver.query(uri, EVENT_PROJECTION, selection, selectionArgs, null)
 
         while (cur.moveToNext()) {
-            // Get the field values
             val calID: Long = cur.getLong(PROJECTION_ID_INDEX)
             val displayName: String = cur.getString(PROJECTION_DISPLAY_NAME_INDEX)
             val accountName: String = cur.getString(PROJECTION_ACCOUNT_NAME_INDEX)
@@ -83,8 +81,6 @@ class CalendarUtils(ctx: Context) {
                 for (i in 0 until eventCursor.count) {
                     val nameEvents = eventCursor.getString(1)
                     val startDates = getDate(eventCursor.getString(3).toLong())
-                    val endDates = getDate(eventCursor.getString(4).toLong())
-                    val description = eventCursor.getShort(2)
 
                     if (startDates.equals(TimeUtils.getTodayDate())) {
                         events.add(nameEvents)

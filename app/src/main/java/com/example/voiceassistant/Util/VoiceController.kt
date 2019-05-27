@@ -2,11 +2,8 @@ package com.example.voiceassistant.Util
 
 import android.content.Context
 import android.preference.PreferenceManager
-import android.support.v4.app.Fragment
-import android.util.Log
 import com.example.voiceassistant.Database.TaskRepository
 import com.example.voiceassistant.Enums.Sender
-import com.example.voiceassistant.MainActivity
 import com.example.voiceassistant.MainActivityFragment.TodoListFragment
 import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
 import com.example.voiceassistant.Model.GoogleSpeaker
