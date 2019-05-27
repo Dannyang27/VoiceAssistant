@@ -8,35 +8,25 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.example.voiceassistant.Database.TaskRepository
-import com.example.voiceassistant.Database.database
-import com.example.voiceassistant.MainActivityFragment.CalendarFragment
 import com.example.voiceassistant.MainActivityFragment.TodoListFragment
 import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
 import com.example.voiceassistant.MainActivityFragment.WeatherHistoryFragment
-import com.example.voiceassistant.Model.Weather.TaskPOJO
-import com.example.voiceassistant.Retrofit.RetrofitClient
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity() {
 
-    val voiceFragment = VoiceAssistanceFragment.newInstance()
-    val weatherFragment = WeatherHistoryFragment.newInstance()
-    val todoListFragment = TodoListFragment.newInstance()
-    //val calendarFragment = CalendarFragment.newInstance()
-    var activeFragment: Fragment = voiceFragment
-
-    lateinit var toolbar: Toolbar
-
-    private val RECORD_REQUEST_CODE = 101
-
+    companion object{
+        lateinit var toolbar: Toolbar
+        lateinit var navigationBar : BottomNavigationView
+        val voiceFragment = VoiceAssistanceFragment.newInstance()
+        val weatherFragment = WeatherHistoryFragment.newInstance()
+        val todoListFragment = TodoListFragment.newInstance()
+        var activeFragment: Fragment = voiceFragment
+    }
     val PERMISSION_ALL = 1
     val PERMISSIONS = arrayOf(
         Manifest.permission.READ_CALENDAR,
@@ -63,12 +53,6 @@ class MainActivity : AppCompatActivity() {
 
                 return@OnNavigationItemSelectedListener true
             }
-//            R.id.calendar_item -> {
-//                openFragment(calendarFragment)
-//                toolbar.title = getString(R.string.calendar)
-//
-//                return@OnNavigationItemSelectedListener true
-//            }
         }
         false
     }
@@ -85,10 +69,11 @@ class MainActivity : AppCompatActivity() {
         toolbar.title = getString(R.string.voiceAssistant)
         setSupportActionBar(toolbar)
 
+        navigationBar = findViewById(R.id.navigation)
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         supportFragmentManager.beginTransaction().add(R.id.container, weatherFragment, "2").hide(weatherFragment).commit()
         supportFragmentManager.beginTransaction().add(R.id.container, todoListFragment, "3").hide(todoListFragment).commit()
-        //supportFragmentManager.beginTransaction().add(R.id.container, calendarFragment, "4").hide(calendarFragment).commit()
         supportFragmentManager.beginTransaction().add(R.id.container, voiceFragment, "1").commit()
 
 

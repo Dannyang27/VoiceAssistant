@@ -24,6 +24,7 @@ import android.widget.TextView
 import com.example.voiceassistant.Adapter.ChatAdapter
 import com.example.voiceassistant.Database.WeatherRepository
 import com.example.voiceassistant.Enums.Sender
+import com.example.voiceassistant.MainActivity
 import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
 import com.example.voiceassistant.Model.Weather.Weather
@@ -34,6 +35,7 @@ import com.example.voiceassistant.Util.VoiceController
 import com.example.voiceassistant.Util.VoiceRecognition
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 class VoiceAssistanceFragment : Fragment(), RecognitionListener{
@@ -42,6 +44,8 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
     private lateinit var googleSpeaker: GoogleSpeaker
     private lateinit var voiceController: VoiceController
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    lateinit var prefs: SharedPreferences
 
     companion object {
         val messages = mutableListOf<Message>()
@@ -65,7 +69,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.voice_assistance_fragment, container, false)
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val lastLocation = prefs.getString("last_location", "Barcelona")
         val hasWelcomed = prefs.getBoolean("welcomeMessage", false)
 
@@ -163,7 +167,20 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
     }
 
     private fun processVoiceInput(input: String){
-        addMessage(Message(messages.size, Sender.USER, input, TimeUtils.getCurrentTime()))
-        voiceController.processVoiceInput(input)
+        if(input.toUpperCase().equals("SHOW ME MY TO DO LIST")){
+            updateLastQuery(input)
+            val editor = prefs.edit().putString("lastQuery", input)
+            editor.apply()
+
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.hide(MainActivity.activeFragment)?.show(MainActivity.todoListFragment)?.commit()
+
+            MainActivity.activeFragment = MainActivity.todoListFragment
+            MainActivity.toolbar.title = getString(R.string.todolist_title)
+            MainActivity.navigationBar.menu.getItem(2).setChecked(true)
+        }else{
+            addMessage(Message(messages.size, Sender.USER, input, TimeUtils.getCurrentTime()))
+            voiceController.processVoiceInput(input)
+        }
     }
 }

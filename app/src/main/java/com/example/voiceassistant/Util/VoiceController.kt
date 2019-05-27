@@ -2,9 +2,11 @@ package com.example.voiceassistant.Util
 
 import android.content.Context
 import android.preference.PreferenceManager
+import android.support.v4.app.Fragment
 import android.util.Log
 import com.example.voiceassistant.Database.TaskRepository
 import com.example.voiceassistant.Enums.Sender
+import com.example.voiceassistant.MainActivity
 import com.example.voiceassistant.MainActivityFragment.TodoListFragment
 import com.example.voiceassistant.MainActivityFragment.VoiceAssistanceFragment
 import com.example.voiceassistant.Model.GoogleSpeaker
@@ -26,7 +28,6 @@ class VoiceController(ctx: Context){
     private val CALENDAR_TASK = "REMIND ME TO"
     private val TODOLIST = "NOTE"
     private val CURRENT_LOCATION = "WHERE AM I"
-    private val GO_TO_TODO_LIST = "SHOW ME MY TASKS"
 
 
     private var googleSpeaker = GoogleSpeaker(ctx)
