@@ -29,4 +29,13 @@ class CalendarUtils(ctx: Context) {
 
         context.startActivity(intent)
     }
+
+    fun getTodayEvents(): String{
+
+
+
+
+
+        return "You have shit today"
+    }
 }

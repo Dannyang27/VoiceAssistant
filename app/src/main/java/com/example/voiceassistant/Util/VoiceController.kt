@@ -28,7 +28,7 @@ class VoiceController(ctx: Context){
     private val CALENDAR_TASK = "REMIND ME TO"
     private val TODOLIST = "NOTE"
     private val CURRENT_LOCATION = "WHERE AM I"
-
+    private val EVENTS = "SHOW EVENTS FOR TODAY"
 
     private var googleSpeaker = GoogleSpeaker(ctx)
     val context = ctx
@@ -167,6 +167,12 @@ class VoiceController(ctx: Context){
 
             CURRENT_LOCATION ->{
                 val response = "Current city is $lastLocation"
+                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
+                googleSpeaker.speak(response)
+            }
+
+            EVENTS ->{
+                val response = CalendarUtils(context).getTodayEvents()
                 VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
                 googleSpeaker.speak(response)
             }

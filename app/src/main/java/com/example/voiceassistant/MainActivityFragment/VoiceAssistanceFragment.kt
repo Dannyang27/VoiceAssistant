@@ -20,14 +20,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.TextView
 import com.example.voiceassistant.Adapter.ChatAdapter
-import com.example.voiceassistant.Database.WeatherRepository
 import com.example.voiceassistant.Enums.Sender
 import com.example.voiceassistant.MainActivity
 import com.example.voiceassistant.Model.GoogleSpeaker
 import com.example.voiceassistant.Model.Message
-import com.example.voiceassistant.Model.Weather.Weather
 import com.example.voiceassistant.R
 import com.example.voiceassistant.Retrofit.RetrofitClient
 import com.example.voiceassistant.Util.TimeUtils
@@ -35,7 +32,6 @@ import com.example.voiceassistant.Util.VoiceController
 import com.example.voiceassistant.Util.VoiceRecognition
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 class VoiceAssistanceFragment : Fragment(), RecognitionListener{
