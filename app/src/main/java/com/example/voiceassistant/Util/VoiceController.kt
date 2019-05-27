@@ -172,7 +172,16 @@ class VoiceController(ctx: Context){
             }
 
             EVENTS ->{
-                val response = CalendarUtils(context).getTodayEvents()
+                val responses = CalendarUtils(context).getTodayEvents()
+                var response = ""
+                if(responses.isEmpty()){
+                    response = "No events for today"
+                }else{
+                    response = "Here is the events for today:\n"
+                    responses.forEach {
+                        response += "-$it\n"
+                    }
+                }
                 VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
                 googleSpeaker.speak(response)
             }
