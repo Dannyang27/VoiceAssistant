@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     val voiceFragment = VoiceAssistanceFragment.newInstance()
     val weatherFragment = WeatherHistoryFragment.newInstance()
     val todoListFragment = TodoListFragment.newInstance()
-    val calendarFragment = CalendarFragment.newInstance()
+    //val calendarFragment = CalendarFragment.newInstance()
     var activeFragment: Fragment = voiceFragment
 
     lateinit var toolbar: Toolbar
@@ -63,12 +63,12 @@ class MainActivity : AppCompatActivity() {
 
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.calendar_item -> {
-                openFragment(calendarFragment)
-                toolbar.title = getString(R.string.calendar)
-
-                return@OnNavigationItemSelectedListener true
-            }
+//            R.id.calendar_item -> {
+//                openFragment(calendarFragment)
+//                toolbar.title = getString(R.string.calendar)
+//
+//                return@OnNavigationItemSelectedListener true
+//            }
         }
         false
     }
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         supportFragmentManager.beginTransaction().add(R.id.container, weatherFragment, "2").hide(weatherFragment).commit()
         supportFragmentManager.beginTransaction().add(R.id.container, todoListFragment, "3").hide(todoListFragment).commit()
-        supportFragmentManager.beginTransaction().add(R.id.container, calendarFragment, "4").hide(calendarFragment).commit()
+        //supportFragmentManager.beginTransaction().add(R.id.container, calendarFragment, "4").hide(calendarFragment).commit()
         supportFragmentManager.beginTransaction().add(R.id.container, voiceFragment, "1").commit()
 
 

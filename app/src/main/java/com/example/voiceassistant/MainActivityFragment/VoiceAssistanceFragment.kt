@@ -2,6 +2,7 @@ package com.example.voiceassistant.MainActivityFragment
 
 import android.Manifest
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
@@ -17,7 +18,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
+import android.widget.TextView
 import com.example.voiceassistant.Adapter.ChatAdapter
 import com.example.voiceassistant.Database.WeatherRepository
 import com.example.voiceassistant.Enums.Sender
@@ -44,6 +47,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
         val messages = mutableListOf<Message>()
         lateinit var messagesList: RecyclerView
         lateinit var viewAdapter : RecyclerView.Adapter<*>
+        lateinit var lastQueryBtn: Button
 
         lateinit var voiceContext: Context
 
@@ -53,10 +57,24 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
             viewAdapter.notifyDataSetChanged()
             messagesList.scrollToPosition(viewAdapter.itemCount - 1)
         }
+
+        fun updateLastQuery(text : String){
+            lastQueryBtn.text = text
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.voice_assistance_fragment, container, false)
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val lastLocation = prefs.getString("last_location", "Barcelona")
+        val hasWelcomed = prefs.getBoolean("welcomeMessage", false)
+
+        lastQueryBtn = view.findViewById(R.id.buttonQuery)
+        updateLastQuery(prefs.getString("lastQuery", "None"))
+
+        lastQueryBtn.setOnClickListener {
+            processVoiceInput(lastQueryBtn.text.toString())
+        }
 
         val voiceButton = view.findViewById<ImageButton>(R.id.voiceButton)
         voiceContext = activity?.applicationContext!!
@@ -102,13 +120,6 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
             }
         }
 
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val lastLocation = prefs.getString("last_location", "Barcelona")
-
-        val hasWelcomed = prefs.getBoolean("welcomeMessage", false)
-
-
-
         if(!hasWelcomed){
             RetrofitClient.getWeatherByName(lastLocation, "TELL ME THE WEATHER", property = "welcomeMessage", voiceActivated = false)
             val editor = prefs.edit()
@@ -121,8 +132,7 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
 
     override fun onResults(results: Bundle?) {
         val voiceInput = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.get(0).toString().capitalize()
-        addMessage(Message(messages.size, Sender.USER, voiceInput, TimeUtils.getCurrentTime()))
-        voiceController.processVoiceInput(voiceInput)
+        processVoiceInput(voiceInput)
     }
 
     override fun onError(error: Int) {
@@ -150,5 +160,10 @@ class VoiceAssistanceFragment : Fragment(), RecognitionListener{
     override fun onDestroy(){
         super.onDestroy()
         googleSpeaker.destroy()
+    }
+
+    private fun processVoiceInput(input: String){
+        addMessage(Message(messages.size, Sender.USER, input, TimeUtils.getCurrentTime()))
+        voiceController.processVoiceInput(input)
     }
 }

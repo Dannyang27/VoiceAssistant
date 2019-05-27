@@ -19,7 +19,7 @@ class SplashActivity : AppCompatActivity() {
         editor.apply()
 
 
-        Handler().postDelayed(Runnable {
+        Handler().postDelayed( {
             run {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)

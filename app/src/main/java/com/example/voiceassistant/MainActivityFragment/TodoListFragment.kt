@@ -58,23 +58,4 @@ class TodoListFragment : Fragment() {
 
         return view
     }
-
-    private fun loadData(list: MutableList<TaskPOJO>){
-        list.add(TaskPOJO("23123213",0, "Task1"))
-        list.add(TaskPOJO("23123215",0, "Task2"))
-        list.add(TaskPOJO("23123216",0, "Task3"))
-    }
-
-    private fun insertData(){
-        val ctx = activity?.applicationContext!!
-        val task1 = TaskPOJO("23123513", 0, "Watch Game Of Thrones")
-        val task2 = TaskPOJO("23123613", 0, "Google I/O Keynote")
-        val task3 = TaskPOJO("23123713", 1, "Oneplus 7 Pro Presentation")
-        TaskRepository(ctx).insert(task1)
-        TaskRepository(ctx).insert(task2)
-        TaskRepository(ctx).insert(task3)
-
-
-        Log.d(RetrofitClient.TAG, "Task Added correctly")
-    }
 }

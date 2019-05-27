@@ -115,5 +115,6 @@
     <string name="temp_sample">24.2º</string>
     <string name="humidity_sample">72.0%</string>
     <string name="poweredby">Powered By</string>
+    <string name="lastQuery">Last query:</string>
 
 </resources>

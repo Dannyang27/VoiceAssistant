@@ -25,6 +25,8 @@ class VoiceController(ctx: Context){
     private val NEXT_DAYS_CITY = "TELL ME THE WEATHER FOR THE NEXT DAYS IN"
     private val CALENDAR_TASK = "REMIND ME TO"
     private val TODOLIST = "NOTE"
+    private val CURRENT_LOCATION = "WHERE AM I"
+    private val GO_TO_TODO_LIST = "SHOW ME MY TASKS"
 
 
     private var googleSpeaker = GoogleSpeaker(ctx)
@@ -34,6 +36,12 @@ class VoiceController(ctx: Context){
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val name = prefs.getString("name", "Danny")
         val lastLocation = prefs.getString("last_location", "Barcelona")
+
+        val editor = prefs.edit()
+        editor.putString("lastQuery", voiceInput)
+        editor.apply()
+
+        VoiceAssistanceFragment.updateLastQuery(voiceInput)
 
         var isWeatherAbroad = false
         if(voiceInput.length> CITY_WEATHER.length){
@@ -154,6 +162,12 @@ class VoiceController(ctx: Context){
 
             NEXT_DAYS -> {
                 RetrofitClient.getWeatherForecastByName(lastLocation, voiceInput)
+            }
+
+            CURRENT_LOCATION ->{
+                val response = "Current city is $lastLocation"
+                VoiceAssistanceFragment.addMessage(Message(VoiceAssistanceFragment.messages.size, Sender.BOT, response, TimeUtils.getCurrentTime()))
+                googleSpeaker.speak(response)
             }
 
             else -> {
